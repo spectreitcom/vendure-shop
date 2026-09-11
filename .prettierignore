@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs & cache
+.next
+out
+build
+dist
+.turbo
+coverage
+
+# Package manager & IDE files
+package-lock.json
+.idea
+.DS_Store
