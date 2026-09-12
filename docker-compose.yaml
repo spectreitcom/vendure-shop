@@ -1,0 +1,68 @@
+services:
+  vendure_db:
+    container_name: vendure_db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vendure
+      MYSQL_USER: vendure
+      MYSQL_PASSWORD: vendure
+    networks:
+      vendure_shop_network:
+    volumes:
+      - vendure_db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  vendure:
+    container_name: vendure
+    build:
+      context: .
+      dockerfile: apps/vendure/Dockerfile
+    env_file:
+      - apps/vendure/.env
+    environment:
+      DB_HOST: vendure_db
+    depends_on:
+      vendure_db:
+        condition: service_healthy
+    networks:
+      vendure_shop_network:
+    volumes:
+      - .:/repo
+      - vendure_repo_node_modules:/repo/node_modules
+      - vendure_app_node_modules:/repo/apps/vendure/node_modules
+    ports:
+      - "3000:3000"
+
+  shop-frontend:
+    container_name: shop-frontend
+    build:
+      context: .
+      dockerfile: apps/shop-frontend/Dockerfile
+    depends_on:
+      - vendure
+    networks:
+      vendure_shop_network:
+    volumes:
+      - .:/repo
+      - shop_frontend_repo_node_modules:/repo/node_modules
+      - shop_frontend_app_node_modules:/repo/apps/shop-frontend/node_modules
+    ports:
+      - "3001:3001"
+
+volumes:
+  vendure_db_data:
+  vendure_repo_node_modules:
+  vendure_app_node_modules:
+  shop_frontend_repo_node_modules:
+  shop_frontend_app_node_modules:
+
+networks:
+  vendure_shop_network:

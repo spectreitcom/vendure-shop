@@ -15,3 +15,7 @@ coverage
 package-lock.json
 .idea
 .DS_Store
+
+# Generated files & templates
+*.hbs
+routeTree.gen.ts
