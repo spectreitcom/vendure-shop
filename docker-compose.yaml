@@ -46,6 +46,8 @@ services:
     build:
       context: .
       dockerfile: apps/shop-frontend/Dockerfile
+    environment:
+      SHOP_API_URL: http://vendure:3000/shop-api
     depends_on:
       - vendure
     networks:
