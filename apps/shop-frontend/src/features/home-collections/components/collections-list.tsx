@@ -18,7 +18,7 @@ export function CollectionsList({ items, className }: Props) {
       </Typography>
       <Grid className={'mt-8'} container spacing={2}>
         {items.map((item) => (
-          <Grid key={item.id} size={2}>
+          <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
             <CollectionsListItem
               slug={item.slug}
               title={item.name}
