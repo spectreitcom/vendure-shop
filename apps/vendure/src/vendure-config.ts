@@ -85,10 +85,13 @@ export const config: VendureConfig = {
     AssetServerPlugin.init({
       route: "assets",
       assetUploadDir: path.join(__dirname, "../static/assets"),
-      // For local dev, the correct value for assetUrlPrefix should
-      // be guessed correctly, but for production it will usually need
-      // to be set manually to match your production url.
-      assetUrlPrefix: IS_DEV ? undefined : "https://www.my-shop.com/assets/",
+      // Without an explicit prefix, Vendure guesses it from the Host header
+      // of whichever request produced the asset URL. In dev that request is
+      // often the shop-frontend's SSR call to the "vendure" Docker Compose
+      // service name, which produces asset URLs unreachable from the browser.
+      assetUrlPrefix: IS_DEV
+        ? "http://localhost:3000/assets/"
+        : "https://www.my-shop.com/assets/",
     }),
     DefaultSchedulerPlugin.init(),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),

@@ -15,7 +15,11 @@
     "test:watch": "vitest",
     "start:server": "node ./dist/index.js",
     "start:worker": "node ./dist/index-worker.js",
-    "start": "vendure start all"
+    "start": "vendure start all",
+    "migrate": "vendure migrate",
+    "migration:generate": "vendure migrate --generate",
+    "migration:run": "vendure migrate --run",
+    "migration:revert": "vendure migrate --revert"
   },
   "dependencies": {
     "@vendure/asset-server-plugin": "3.7.3",

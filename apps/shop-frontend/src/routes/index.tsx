@@ -1,14 +1,28 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { getHomeCollections } from '#/features/home-collections/api';
+import { CircularProgress } from '@mui/material';
+import { CollectionsList } from '#/features/home-collections';
 
-export const Route = createFileRoute('/')({ component: Home });
+export const Route = createFileRoute('/')({
+  component: Home,
+  pendingComponent: () => <CircularProgress aria-label="Loading…" />,
+  loader: async () => {
+    const homeCollections = await getHomeCollections();
+
+    return {
+      homeCollections,
+    };
+  },
+});
 
 function Home() {
+  const { homeCollections } = Route.useLoaderData();
+
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold">Welcome to TanStack Start</h1>
-      <p className="mt-4 text-lg">
-        Edit <code>src/routes/index.tsx</code> to get started.
-      </p>
+    <div>
+      <div className="container">
+        <CollectionsList className={'mt-8'} items={homeCollections} />
+      </div>
     </div>
   );
 }
