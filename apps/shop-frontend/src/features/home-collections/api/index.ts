@@ -17,7 +17,10 @@ export const getHomeCollections = createServerFn({ method: 'GET' }).handler(
     const validationResult = homeCollectionResponseSchema.safeParse(data);
 
     if (!validationResult.success)
-      throw new Error('getHomeCollections: Invalid response');
+      throw new Error(
+        'getHomeCollections: Invalid response',
+        validationResult.error,
+      );
 
     return validationResult.data.collections.items;
   },

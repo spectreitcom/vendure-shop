@@ -36,7 +36,6 @@ services:
       vendure_shop_network:
     volumes:
       - .:/repo
-      - vendure_repo_node_modules:/repo/node_modules
       - vendure_app_node_modules:/repo/apps/vendure/node_modules
     ports:
       - "3000:3000"
@@ -61,7 +60,6 @@ services:
 
 volumes:
   vendure_db_data:
-  vendure_repo_node_modules:
   vendure_app_node_modules:
   shop_frontend_repo_node_modules:
   shop_frontend_app_node_modules:
