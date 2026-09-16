@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from '@tanstack/react-router';
 
 export function TopBar() {
   return (
@@ -23,7 +24,7 @@ export function TopBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Vendure Shop
+            <Link to={'/'}>Vendure Shop</Link>
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
