@@ -31,9 +31,9 @@ export function ProductLineQty({ quantity, orderLineId }: Props) {
   };
 
   const increaseQuantity = async () => {
-    setLoading(true);
     const nextQty = quantity + 1;
     if (nextQty < 0 || nextQty > 100) return;
+    setLoading(true);
 
     try {
       await adjust(nextQty);
@@ -45,9 +45,10 @@ export function ProductLineQty({ quantity, orderLineId }: Props) {
   };
 
   const decreaseQuantity = async () => {
-    setLoading(true);
     const nextQty = quantity - 1;
     if (nextQty < 0) return;
+    setLoading(true);
+
     try {
       await adjust(nextQty);
     } catch (e) {

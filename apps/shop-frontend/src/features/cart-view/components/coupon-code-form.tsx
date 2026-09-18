@@ -78,9 +78,15 @@ export function CouponCodeForm() {
         open={showSuccessSnackbar}
         autoHideDuration={6000}
         message={'Coupon code applied successfully'}
+        onClose={() => setShowSuccessSnackbar(false)}
       />
 
-      <Snackbar open={!!error} autoHideDuration={6000} message={error} />
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        message={error}
+        onClose={() => setError(null)}
+      />
     </>
   );
 }

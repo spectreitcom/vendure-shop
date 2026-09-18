@@ -31,14 +31,16 @@ export function CouponCodesList() {
 
   return (
     <>
-      {activeCart.promotions.map((promotion) => (
-        <Chip
-          label={promotion.couponCode}
-          variant="outlined"
-          deleteIcon={<CloseIcon />}
-          onDelete={() => handleRemoveCouponCode(promotion.couponCode ?? '')}
-        />
-      ))}
+      {activeCart.promotions
+        .filter((promotion) => promotion.couponCode)
+        .map((promotion) => (
+          <Chip
+            label={promotion.couponCode}
+            variant="outlined"
+            deleteIcon={<CloseIcon />}
+            onDelete={() => handleRemoveCouponCode(promotion.couponCode ?? '')}
+          />
+        ))}
 
       <Snackbar
         open={showSuccess}

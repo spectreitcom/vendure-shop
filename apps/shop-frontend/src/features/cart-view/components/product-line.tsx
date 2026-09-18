@@ -4,6 +4,7 @@ import type { ActiveCartLine } from '#/features/shared/cart';
 import { ProductLineQty } from '#/features/cart-view/components/product-line-qty.tsx';
 import { ProductPrice } from '#/components/product-price.tsx';
 import type { CurrencyCode } from '#/graphql/generated.ts';
+import { cn } from '#/utils';
 
 type Props = Readonly<{
   line: ActiveCartLine;
@@ -29,12 +30,16 @@ export function ProductLine({ line, currencyCode }: Props) {
             {line.productVariant.name}
           </Typography>
           <ProductPrice
+            className={cn(
+              line.proratedLinePriceWithTax !== line.linePriceWithTax &&
+                'line-through',
+            )}
             price={line.linePriceWithTax}
             currencyCode={currencyCode}
           />
           {line.proratedLinePriceWithTax !== line.linePriceWithTax && (
             <ProductPrice
-              price={-line.proratedLinePriceWithTax}
+              price={line.proratedLinePriceWithTax}
               currencyCode={currencyCode}
             />
           )}

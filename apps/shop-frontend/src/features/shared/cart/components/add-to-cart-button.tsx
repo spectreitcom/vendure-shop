@@ -84,11 +84,17 @@ export function AddToCartButton({
   return (
     <>
       {component}
-      <Snackbar open={!!error} autoHideDuration={6000} message={error} />
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        message={error}
+        onClick={() => setError(null)}
+      />
       <Snackbar
         open={showSuccessSnackbar}
         autoHideDuration={6000}
         message={'Product został dodany poprawnie do koszyka'}
+        onClose={() => setShowSuccessSnackbar(false)}
       />
     </>
   );
