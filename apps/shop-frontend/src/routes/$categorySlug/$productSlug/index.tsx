@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import { getProductDetailsView } from '#/features/product-view';
-import { ShoppingCart } from '@mui/icons-material';
 import { ProductPrice } from '#/components/product-price.tsx';
+import { AddToCartButton } from '#/features/shared/cart';
 
 export const Route = createFileRoute('/$categorySlug/$productSlug/')({
   component: RouteComponent,
@@ -51,23 +51,21 @@ function RouteComponent() {
               </Typography>
 
               {productViewDetails.variants.length && (
-                <ProductPrice
-                  className={'font-semibold text-2xl mt-4'}
-                  price={productViewDetails.variants[0].priceWithTax}
-                  currencyCode={productViewDetails.variants[0].currencyCode}
-                />
+                <>
+                  <ProductPrice
+                    className={'font-semibold text-2xl mt-4'}
+                    price={productViewDetails.variants[0].priceWithTax}
+                    currencyCode={productViewDetails.variants[0].currencyCode}
+                  />
+                  <div className={'mt-4'}>
+                    <AddToCartButton
+                      variant={'large'}
+                      quantity={1}
+                      productVariantId={productViewDetails.variants[0].id}
+                    />
+                  </div>
+                </>
               )}
-            </div>
-
-            <div className={'mt-4'}>
-              <Button
-                className={'w-full'}
-                variant={'contained'}
-                size={'large'}
-                startIcon={<ShoppingCart />}
-              >
-                Add to Cart
-              </Button>
             </div>
           </Grid>
         </Grid>

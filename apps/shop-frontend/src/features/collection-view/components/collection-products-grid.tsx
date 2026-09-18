@@ -1,6 +1,6 @@
-import type { CollectionProduct } from '../schemas';
 import { Grid } from '@mui/material';
 import { CollectionProductsItem } from '#/features/collection-view/components/collection-products-item.tsx';
+import type { CollectionProduct } from '#/features/collection-view/types';
 
 type Props = Readonly<{
   items: CollectionProduct[];
