@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from '@tanstack/react-router';
+import { MenuCartButton } from '#/features/cart-view';
 
 export function TopBar() {
   return (
@@ -26,6 +27,7 @@ export function TopBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to={'/'}>Vendure Shop</Link>
           </Typography>
+          <MenuCartButton />
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>

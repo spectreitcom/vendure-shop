@@ -1,27 +1,20 @@
 import { createServerFn } from '@tanstack/react-start';
 import { createApolloClient } from '#/apollo-client.ts';
-import { GET_HOME_COLLECTIONS } from './graphql.ts';
-import { homeCollectionResponseSchema } from '../schemas';
+import { GetHomeCollectionsDocument } from '#/graphql/generated.ts';
 
 export const getHomeCollections = createServerFn({ method: 'GET' }).handler(
   async () => {
     const apolloClient = createApolloClient();
 
-    const { data } = await apolloClient.query({
-      query: GET_HOME_COLLECTIONS,
+    const { data, error } = await apolloClient.query({
+      query: GetHomeCollectionsDocument,
       variables: {
         take: 6,
       },
     });
 
-    const validationResult = homeCollectionResponseSchema.safeParse(data);
+    if (!data || error) throw new Error('getHomeCollections: Invalid response');
 
-    if (!validationResult.success)
-      throw new Error(
-        'getHomeCollections: Invalid response',
-        validationResult.error,
-      );
-
-    return validationResult.data.collections.items;
+    return data.collections.items;
   },
 );

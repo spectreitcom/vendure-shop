@@ -1,10 +1,7 @@
-import { GET_COLLECTION_VIEW_WITH_PRODUCTS } from '#/features/collection-view/api/graphql.ts';
 import { createApolloClient } from '#/apollo-client.ts';
 import { createServerFn } from '@tanstack/react-start';
-import {
-  getCollectionViewWithProductsInputSchema,
-  getCollectionViewWithProductsResponseSchema,
-} from '#/features/collection-view/schemas';
+import { getCollectionViewWithProductsInputSchema } from '#/features/collection-view/schemas';
+import { GetCollectionViewWithProductsDocument } from '#/graphql/generated.ts';
 
 export const getCollectionViewWithProducts = createServerFn({
   method: 'GET',
@@ -15,8 +12,8 @@ export const getCollectionViewWithProducts = createServerFn({
 
     const skip = (inputData.page - 1) * inputData.take;
 
-    const { data } = await apolloClient.query({
-      query: GET_COLLECTION_VIEW_WITH_PRODUCTS,
+    const { data, error } = await apolloClient.query({
+      query: GetCollectionViewWithProductsDocument,
       variables: {
         slug: inputData.slug,
         take: inputData.take,
@@ -24,15 +21,9 @@ export const getCollectionViewWithProducts = createServerFn({
       },
     });
 
-    const validationResult =
-      getCollectionViewWithProductsResponseSchema.safeParse(data);
-
-    if (!validationResult.success) {
-      throw new Error(
-        'getCollectionViewWithProducts: Invalid Response',
-        validationResult.error,
-      );
+    if (!data || error) {
+      throw new Error('getCollectionViewWithProducts: Invalid Response');
     }
 
-    return validationResult.data.collection;
+    return data.collection;
   });

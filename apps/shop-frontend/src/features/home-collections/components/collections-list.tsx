@@ -1,7 +1,7 @@
-import type { HomeCollectionItem } from '../schemas';
 import { Grid, Typography } from '@mui/material';
 import { CollectionsListItem } from './collections-list-item.tsx';
 import { cn } from '#/utils';
+import type { HomeCollectionItem } from '#/features/home-collections/types';
 
 type Props = Readonly<{
   items: ReadonlyArray<HomeCollectionItem>;

@@ -14,7 +14,9 @@
     "test:watch": "vitest",
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
-    "check": "prettier --check ."
+    "check": "prettier --check .",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -43,6 +45,10 @@
     "zod": "^4.6.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.1",
+    "@graphql-codegen/typed-document-node": "^7.1.0",
+    "@graphql-codegen/typescript": "^6.1.0",
+    "@graphql-codegen/typescript-operations": "^6.1.6",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tanstack/devtools-event-client": "latest",
     "@tanstack/devtools-vite": "latest",

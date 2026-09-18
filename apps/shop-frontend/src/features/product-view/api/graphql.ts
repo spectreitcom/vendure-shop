@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_PRODUCT_DETAILS_VIEW = gql`
-  query ($slug: String!) {
+  query GetProductDetailsView($slug: String!) {
     product(slug: $slug) {
       id
       slug
