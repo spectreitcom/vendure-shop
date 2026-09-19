@@ -10,13 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as CategorySlugIndexRouteImport } from './routes/$categorySlug/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as CategorySlugProductSlugIndexRouteImport } from './routes/$categorySlug/$productSlug/index'
+import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth/login'
+import { Route as AuthAuthRegistrationRouteImport } from './routes/_auth/auth/registration'
+import { Route as AuthAuthResetPasswordRouteImport } from './routes/_auth/auth/reset-password'
+import { Route as AuthAuthVerifyRouteImport } from './routes/_auth/auth/verify'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategorySlugIndexRoute = CategorySlugIndexRouteImport.update({
@@ -35,41 +44,96 @@ const CategorySlugProductSlugIndexRoute =
     path: '/$categorySlug/$productSlug/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthAuthLoginRoute = AuthAuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAuthRegistrationRoute = AuthAuthRegistrationRouteImport.update({
+  id: '/auth/registration',
+  path: '/auth/registration',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAuthResetPasswordRoute = AuthAuthResetPasswordRouteImport.update({
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAuthVerifyRoute = AuthAuthVerifyRouteImport.update({
+  id: '/auth/verify',
+  path: '/auth/verify',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
+  '/auth/login': typeof AuthAuthLoginRoute
+  '/auth/registration': typeof AuthAuthRegistrationRoute
+  '/auth/reset-password': typeof AuthAuthResetPasswordRoute
+  '/auth/verify': typeof AuthAuthVerifyRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$categorySlug': typeof CategorySlugIndexRoute
   '/cart': typeof CartIndexRoute
+  '/auth/login': typeof AuthAuthLoginRoute
+  '/auth/registration': typeof AuthAuthRegistrationRoute
+  '/auth/reset-password': typeof AuthAuthResetPasswordRoute
+  '/auth/verify': typeof AuthAuthVerifyRoute
   '/$categorySlug/$productSlug': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
+  '/_auth/auth/login': typeof AuthAuthLoginRoute
+  '/_auth/auth/registration': typeof AuthAuthRegistrationRoute
+  '/_auth/auth/reset-password': typeof AuthAuthResetPasswordRoute
+  '/_auth/auth/verify': typeof AuthAuthVerifyRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$categorySlug/' | '/cart/' | '/$categorySlug/$productSlug/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$categorySlug' | '/cart' | '/$categorySlug/$productSlug'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
     | '/$categorySlug/'
     | '/cart/'
+    | '/auth/login'
+    | '/auth/registration'
+    | '/auth/reset-password'
+    | '/auth/verify'
+    | '/$categorySlug/$productSlug/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/$categorySlug'
+    | '/cart'
+    | '/auth/login'
+    | '/auth/registration'
+    | '/auth/reset-password'
+    | '/auth/verify'
+    | '/$categorySlug/$productSlug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/$categorySlug/'
+    | '/cart/'
+    | '/_auth/auth/login'
+    | '/_auth/auth/registration'
+    | '/_auth/auth/reset-password'
+    | '/_auth/auth/verify'
     | '/$categorySlug/$productSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   CategorySlugIndexRoute: typeof CategorySlugIndexRoute
   CartIndexRoute: typeof CartIndexRoute
   CategorySlugProductSlugIndexRoute: typeof CategorySlugProductSlugIndexRoute
@@ -82,6 +146,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$categorySlug/': {
@@ -105,11 +176,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugProductSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/auth/login': {
+      id: '/_auth/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthAuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/auth/registration': {
+      id: '/_auth/auth/registration'
+      path: '/auth/registration'
+      fullPath: '/auth/registration'
+      preLoaderRoute: typeof AuthAuthRegistrationRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/auth/reset-password': {
+      id: '/_auth/auth/reset-password'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthAuthResetPasswordRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/auth/verify': {
+      id: '/_auth/auth/verify'
+      path: '/auth/verify'
+      fullPath: '/auth/verify'
+      preLoaderRoute: typeof AuthAuthVerifyRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
+interface AuthRouteRouteChildren {
+  AuthAuthLoginRoute: typeof AuthAuthLoginRoute
+  AuthAuthRegistrationRoute: typeof AuthAuthRegistrationRoute
+  AuthAuthResetPasswordRoute: typeof AuthAuthResetPasswordRoute
+  AuthAuthVerifyRoute: typeof AuthAuthVerifyRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAuthLoginRoute: AuthAuthLoginRoute,
+  AuthAuthRegistrationRoute: AuthAuthRegistrationRoute,
+  AuthAuthResetPasswordRoute: AuthAuthResetPasswordRoute,
+  AuthAuthVerifyRoute: AuthAuthVerifyRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   CategorySlugIndexRoute: CategorySlugIndexRoute,
   CartIndexRoute: CartIndexRoute,
   CategorySlugProductSlugIndexRoute: CategorySlugProductSlugIndexRoute,

@@ -1,14 +1,8 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from '@tanstack/react-router';
 import { MenuCartButton } from '#/features/cart-view';
+import { AuthButtons } from '#/features/shared/authentication';
 
 export function TopBar() {
   return (
@@ -28,7 +22,7 @@ export function TopBar() {
             <Link to={'/'}>Vendure Shop</Link>
           </Typography>
           <MenuCartButton />
-          <Button color="inherit">Login</Button>
+          <AuthButtons />
         </Toolbar>
       </AppBar>
     </Box>
