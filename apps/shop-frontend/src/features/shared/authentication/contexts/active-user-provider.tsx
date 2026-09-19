@@ -48,8 +48,8 @@ export function ActiveUserProvider({ children }: { children: ReactNode }) {
         activeUser,
         refresh,
         isFetching,
-        showLoginModal: () => setLoginModalVisible(true), // todo
-        hideLoginModal: () => setLoginModalVisible(false), // todo
+        showLoginModal: () => setLoginModalVisible(true),
+        hideLoginModal: () => setLoginModalVisible(false),
       }}
     >
       {children}
