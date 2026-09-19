@@ -13,10 +13,18 @@ export const requestResetPassword = createServerFn({ method: 'POST' })
   .validator(requestResetPasswordInputSchema)
   .handler(async ({ data: { emailAddress } }) => {
     const apolloClient = createApolloClient();
-    await apolloClient.mutate({
+    const { error, data } = await apolloClient.mutate({
       mutation: RequestPasswordResetDocument,
       variables: { emailAddress },
     });
+
+    if (
+      !data ||
+      error ||
+      data.requestPasswordReset?.__typename === 'NativeAuthStrategyError'
+    ) {
+      throw new Error('Failed to request password reset');
+    }
   });
 
 export const resetPassword = createServerFn({ method: 'POST' })
