@@ -109,7 +109,7 @@ export const config: VendureConfig = {
         // Here we are assuming a storefront running at http://localhost:8080.
         fromAddress: '"example" <noreply@example.com>',
         verifyEmailAddressUrl: "http://localhost:3001/auth/verify",
-        passwordResetUrl: "http://localhost:3001/auth/password-reset",
+        passwordResetUrl: "http://localhost:3001/auth/reset-password",
         changeEmailAddressUrl:
           "http://localhost:8080/verify-email-address-change",
       },
