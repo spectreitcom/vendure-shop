@@ -12,9 +12,15 @@ import { ProductLine } from './product-line';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { CouponCodeForm } from '#/features/cart-view/components/coupon-code-form.tsx';
 import { CouponCodesList } from '#/features/cart-view/components/coupon-codes-list.tsx';
+import { useActiveUser } from '#/features/shared/authentication';
 
 export function CartViewContent() {
   const { activeCart, fetching } = useActiveCart();
+  const { activeUser, showLoginModal, isFetching } = useActiveUser();
+
+  const handleCheckout = async () => {
+    if (!isFetching && !activeUser) showLoginModal();
+  };
 
   if (fetching) return <CircularProgress size={64} color={'primary'} />;
 
@@ -64,6 +70,7 @@ export function CartViewContent() {
                   variant={'contained'}
                   color={'primary'}
                   className={'w-full'}
+                  onClick={handleCheckout}
                 >
                   Checkout
                 </Button>
