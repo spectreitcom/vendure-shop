@@ -14,6 +14,7 @@ import { TopBar } from '#/components/top-bar.tsx';
 import type { ReactNode } from 'react';
 import type { ApolloClientIntegration } from '@apollo/client-integration-tanstack-start';
 import { ActiveCartProvider } from '#/features/shared/cart';
+import { ActiveUserProvider } from '#/features/shared/authentication';
 
 export const Route =
   createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
@@ -47,23 +48,25 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <ActiveCartProvider>
-        <body className={'bg-gray-100'}>
-          <TopBar />
-          {children}
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
-          <Scripts />
-        </body>
+        <ActiveUserProvider>
+          <body className={'bg-gray-100'}>
+            <TopBar />
+            {children}
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+                TanStackQueryDevtools,
+              ]}
+            />
+            <Scripts />
+          </body>
+        </ActiveUserProvider>
       </ActiveCartProvider>
     </html>
   );

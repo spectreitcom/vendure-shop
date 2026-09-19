@@ -12,7 +12,7 @@ import {
   RemoveOrderLineDocument,
 } from '#/graphql/generated.ts';
 
-export const removeCartLine = createServerFn()
+export const removeCartLine = createServerFn({ method: 'POST' })
   .validator(removeCartLineInputSchema)
   .handler(async ({ data: inputData }) => {
     const apolloClient = createApolloClient();
@@ -79,7 +79,7 @@ export const adjustCartLine = createServerFn({ method: 'POST' })
     return data.adjustOrderLine.id;
   });
 
-export const applyCouponCode = createServerFn()
+export const applyCouponCode = createServerFn({ method: 'POST' })
   .validator(applyOrRemoveCouponCodeInputSchema)
   .handler(async ({ data: inputData }) => {
     const apolloClient = createApolloClient();
@@ -110,7 +110,7 @@ export const applyCouponCode = createServerFn()
     return data.applyCouponCode.id;
   });
 
-export const removeCouponCode = createServerFn()
+export const removeCouponCode = createServerFn({ method: 'POST' })
   .validator(applyOrRemoveCouponCodeInputSchema)
   .handler(async ({ data: inputSchema }) => {
     const apolloClient = createApolloClient();
