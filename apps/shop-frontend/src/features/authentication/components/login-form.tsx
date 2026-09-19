@@ -5,13 +5,14 @@ import {
   CardContent,
   TextField,
   Typography,
+  Link as MuiLink,
 } from '@mui/material';
 import { z } from 'zod';
 import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { useServerFn } from '@tanstack/react-start';
 import { login } from '#/features/authentication';
-import { useRouter } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { useActiveCart } from '#/features/shared/cart';
 import { useActiveUser } from '#/features/shared/authentication';
 
@@ -126,6 +127,12 @@ export function LoginForm({
                   />
                 )}
               />
+            </div>
+
+            <div className={'mt-4 flex justify-end'}>
+              <Link to={'/auth/reset-password'}>
+                <MuiLink component={'button'}>Forgot password?</MuiLink>
+              </Link>
             </div>
 
             <div className={'mt-4'}>
