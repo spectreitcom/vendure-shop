@@ -22,14 +22,19 @@ export function ActiveUserProvider({ children }: { children: ReactNode }) {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const refresh = async () => {
-    setIsFetching(true);
-    const currentUser = await getCurrentUserFn();
-    if (currentUser) {
-      setActiveUser(currentUser);
-    } else {
+    try {
+      setIsFetching(true);
+      const currentUser = await getCurrentUserFn();
+      if (currentUser) {
+        setActiveUser(currentUser);
+      } else {
+        setActiveUser(null);
+      }
+    } catch {
       setActiveUser(null);
+    } finally {
+      setIsFetching(false);
     }
-    setIsFetching(false);
   };
 
   useEffect(() => {

@@ -29,6 +29,7 @@ export function RegistrationForm() {
     },
     onSubmit: async ({ value }) => {
       try {
+        setCreatingAccount(true);
         setError(null);
         await registerCustomerAccountFn({
           data: {
