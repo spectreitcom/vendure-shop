@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { PendingComponent } from '#/components/pending-component.tsx';
 import {
   Card,
   CardContent,
-  CircularProgress,
   Grid,
   Typography,
 } from '@mui/material';
@@ -21,7 +21,7 @@ const validateSearchSchema = z.object({
 
 export const Route = createFileRoute('/$categorySlug/')({
   component: RouteComponent,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
   validateSearch: validateSearchSchema,
   loaderDeps: ({ search }) => {
     return { page: search.page };

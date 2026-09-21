@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { PendingComponent } from '#/components/pending-component.tsx';
 import {
   ChangePasswordForm,
   ResetPasswordForm,
@@ -10,6 +11,7 @@ const searchInputSchema = z.object({
 });
 
 export const Route = createFileRoute('/_auth/auth/reset-password')({
+  pendingComponent: PendingComponent,
   component: RouteComponent,
   validateSearch: searchInputSchema,
   loaderDeps: ({ search }) => ({ token: search.token }),

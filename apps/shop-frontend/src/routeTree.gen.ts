@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as CategorySlugIndexRouteImport } from './routes/$categorySlug/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
+import { Route as CartProtectedRouteRouteImport } from './routes/cart/_protected/route'
 import { Route as CartCheckoutRouteImport } from './routes/cart/checkout'
+import { Route as CartPaymentRouteImport } from './routes/cart/payment'
 import { Route as CategorySlugProductSlugIndexRouteImport } from './routes/$categorySlug/$productSlug/index'
 import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth/login'
 import { Route as AuthAuthRegistrationRouteImport } from './routes/_auth/auth/registration'
@@ -39,9 +41,19 @@ const CartIndexRoute = CartIndexRouteImport.update({
   path: '/cart/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartProtectedRouteRoute = CartProtectedRouteRouteImport.update({
+  id: '/cart/_protected',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CartCheckoutRoute = CartCheckoutRouteImport.update({
   id: '/cart/checkout',
   path: '/cart/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartPaymentRoute = CartPaymentRouteImport.update({
+  id: '/cart/payment',
+  path: '/cart/payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategorySlugProductSlugIndexRoute =
@@ -73,7 +85,9 @@ const AuthAuthVerifyRoute = AuthAuthVerifyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cart': typeof CartProtectedRouteRoute
   '/cart/checkout': typeof CartCheckoutRoute
+  '/cart/payment': typeof CartPaymentRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
@@ -84,9 +98,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cart/checkout': typeof CartCheckoutRoute
-  '/$categorySlug': typeof CategorySlugIndexRoute
   '/cart': typeof CartIndexRoute
+  '/cart/checkout': typeof CartCheckoutRoute
+  '/cart/payment': typeof CartPaymentRoute
+  '/$categorySlug': typeof CategorySlugIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
   '/auth/registration': typeof AuthAuthRegistrationRoute
   '/auth/reset-password': typeof AuthAuthResetPasswordRoute
@@ -97,7 +112,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/cart/_protected': typeof CartProtectedRouteRoute
   '/cart/checkout': typeof CartCheckoutRoute
+  '/cart/payment': typeof CartPaymentRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/_auth/auth/login': typeof AuthAuthLoginRoute
@@ -110,7 +127,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cart'
     | '/cart/checkout'
+    | '/cart/payment'
     | '/$categorySlug/'
     | '/cart/'
     | '/auth/login'
@@ -121,9 +140,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/cart/checkout'
-    | '/$categorySlug'
     | '/cart'
+    | '/cart/checkout'
+    | '/cart/payment'
+    | '/$categorySlug'
     | '/auth/login'
     | '/auth/registration'
     | '/auth/reset-password'
@@ -133,7 +153,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/cart/_protected'
     | '/cart/checkout'
+    | '/cart/payment'
     | '/$categorySlug/'
     | '/cart/'
     | '/_auth/auth/login'
@@ -146,7 +168,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  CartProtectedRouteRoute: typeof CartProtectedRouteRoute
   CartCheckoutRoute: typeof CartCheckoutRoute
+  CartPaymentRoute: typeof CartPaymentRoute
   CategorySlugIndexRoute: typeof CategorySlugIndexRoute
   CartIndexRoute: typeof CartIndexRoute
   CategorySlugProductSlugIndexRoute: typeof CategorySlugProductSlugIndexRoute
@@ -182,11 +206,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cart/_protected': {
+      id: '/cart/_protected'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartProtectedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cart/checkout': {
       id: '/cart/checkout'
       path: '/cart/checkout'
       fullPath: '/cart/checkout'
       preLoaderRoute: typeof CartCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart/payment': {
+      id: '/cart/payment'
+      path: '/cart/payment'
+      fullPath: '/cart/payment'
+      preLoaderRoute: typeof CartPaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$categorySlug/$productSlug/': {
@@ -248,7 +286,9 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  CartProtectedRouteRoute: CartProtectedRouteRoute,
   CartCheckoutRoute: CartCheckoutRoute,
+  CartPaymentRoute: CartPaymentRoute,
   CategorySlugIndexRoute: CategorySlugIndexRoute,
   CartIndexRoute: CartIndexRoute,
   CategorySlugProductSlugIndexRoute: CategorySlugProductSlugIndexRoute,

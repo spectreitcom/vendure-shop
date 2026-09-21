@@ -56,6 +56,22 @@ export const getCurrentUser = createServerFn({ method: 'GET' }).handler(
   },
 );
 
+export const isCustomerLoggedIn = createServerFn().handler(async () => {
+  try {
+    const apolloClient = createApolloClient();
+
+    const { data, error } = await apolloClient.query({
+      query: MeDocument,
+    });
+
+    if (error) return false;
+
+    return !!data?.me?.id;
+  } catch {
+    return false;
+  }
+});
+
 export const verifyCustomerAccount = createServerFn({ method: 'POST' })
   .validator(verifyCustomerAccountInputSchema)
   .handler(async ({ data: { token } }) => {

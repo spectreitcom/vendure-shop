@@ -71,6 +71,38 @@ export const GET_ACTIVE_CART = gql`
         name
         couponCode
       }
+      shippingAddress {
+        city
+        company
+        country
+        countryCode
+        fullName
+        phoneNumber
+        streetLine1
+        streetLine2
+        postalCode
+        customFields
+      }
+      billingAddress {
+        city
+        company
+        country
+        countryCode
+        fullName
+        phoneNumber
+        streetLine1
+        streetLine2
+        postalCode
+      }
+      shipping
+      shippingLines {
+        id
+        priceWithTax
+        shippingMethod {
+          id
+          name
+        }
+      }
     }
   }
 `;

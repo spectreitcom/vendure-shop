@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { PendingComponent } from '#/components/pending-component.tsx';
 import { verifyPageSearchSchema } from '#/features/authentication/schemas';
-import { Card, CardContent, CircularProgress } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import { verifyCustomerAccount } from '#/features/authentication';
 
 type LoaderResponse = { error: true; message: string } | { error: false };
@@ -8,7 +9,7 @@ type LoaderResponse = { error: true; message: string } | { error: false };
 export const Route = createFileRoute('/_auth/auth/verify')({
   component: RouteComponent,
   validateSearch: verifyPageSearchSchema,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
   loaderDeps: ({ search }) => ({
     token: search.token,
   }),

@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { PendingComponent } from '#/components/pending-component.tsx';
 import { LoginForm } from '#/features/authentication/components/login-form.tsx';
-import { CircularProgress } from '@mui/material';
 
 export const Route = createFileRoute('/_auth/auth/login')({
   component: RouteComponent,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
 });
 
 function RouteComponent() {

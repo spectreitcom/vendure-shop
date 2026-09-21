@@ -1,10 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CircularProgress, Typography } from '@mui/material';
+import { PendingComponent } from '#/components/pending-component.tsx';
+import { Typography } from '@mui/material';
 import { CartViewContent } from '#/features/cart-view/components/cart-view-content.tsx';
 
 export const Route = createFileRoute('/cart/')({
   component: RouteComponent,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
 });
 
 function RouteComponent() {
