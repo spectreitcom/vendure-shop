@@ -16,7 +16,7 @@ type LoaderError = {
 
 type LoaderResult = LoaderSuccess | LoaderError;
 
-export const Route = createFileRoute('/cart/checkout')({
+export const Route = createFileRoute('/cart/_protected/checkout')({
   pendingComponent: PendingComponent,
   component: RouteComponent,
   loader: async () => {

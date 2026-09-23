@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export const setOrderShippingAddressInputSchema = z.object({
-  city: z.string(),
+  city: z.string().trim().min(1),
   company: z.string().optional(),
-  countryCode: z.string(),
-  fullName: z.string(),
-  phoneNumber: z.string(),
-  postalCode: z.string(),
-  streetLine1: z.string(),
+  countryCode: z.string().trim().min(1),
+  fullName: z.string().trim().min(1),
+  phoneNumber: z.string().trim().min(1),
+  postalCode: z.string().trim().min(1),
+  streetLine1: z.string().trim().min(1),
   streetLine2: z.string().optional(),
   needInvoice: z.boolean().default(false),
 });
