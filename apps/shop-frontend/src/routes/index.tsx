@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CircularProgress } from '@mui/material';
+import { PendingComponent } from '#/components/pending-component.tsx';
 import {
   CollectionsList,
   getHomeCollections,
@@ -7,7 +7,7 @@ import {
 
 export const Route = createFileRoute('/')({
   component: Home,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
   loader: async () => {
     const homeCollections = await getHomeCollections();
 

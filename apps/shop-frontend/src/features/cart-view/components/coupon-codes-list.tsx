@@ -35,6 +35,7 @@ export function CouponCodesList() {
         .filter((promotion) => promotion.couponCode)
         .map((promotion) => (
           <Chip
+            key={promotion.id}
             label={promotion.couponCode}
             variant="outlined"
             deleteIcon={<CloseIcon />}

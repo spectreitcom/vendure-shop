@@ -1,12 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CircularProgress, Grid, Typography } from '@mui/material';
+import { PendingComponent } from '#/components/pending-component.tsx';
+import { Grid, Typography } from '@mui/material';
 import { getProductDetailsView } from '#/features/product-view';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart';
 
 export const Route = createFileRoute('/$categorySlug/$productSlug/')({
   component: RouteComponent,
-  pendingComponent: () => <CircularProgress size={24} aria-label="Loading…" />,
+  pendingComponent: PendingComponent,
   loader: async ({ params: { productSlug } }) => {
     try {
       const productViewDetails = await getProductDetailsView({
