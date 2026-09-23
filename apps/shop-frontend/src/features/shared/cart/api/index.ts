@@ -58,9 +58,11 @@ export const getActiveCart = createServerFn({ method: 'GET' }).handler(
       throw new Error('getActiveCart: Error');
     }
 
+    if (!data.activeOrder) return null;
+
     return {
       ...data.activeOrder,
-      shippingAddress: !data.activeOrder?.shippingAddress
+      shippingAddress: !data.activeOrder.shippingAddress
         ? null
         : {
             ...data.activeOrder.shippingAddress,

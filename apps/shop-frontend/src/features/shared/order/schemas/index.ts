@@ -80,6 +80,7 @@ import { z } from 'zod';
 
 export const orderStates = {
   ArrangingPayment: 'ArrangingPayment',
+  AddingItems: 'AddingItems',
 };
 
 export const transitionOrderToStateInputSchema = z.object({

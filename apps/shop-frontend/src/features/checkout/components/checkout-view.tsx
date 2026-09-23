@@ -26,7 +26,7 @@ import { useServerFn } from '@tanstack/react-start';
 import { ShippingMethodsFormControl } from './shipping-methods-form-control.tsx';
 import { checkoutFormSchema } from '../schemas';
 import type { EligibleShippingMethodsQuery } from '#/graphql/generated.ts';
-import { transitionOrderToState } from '#/features/shared/order';
+import { orderStates, transitionOrderToState } from '#/features/shared/order';
 
 type Props = Readonly<{
   shippingMethods: EligibleShippingMethodsQuery['eligibleShippingMethods'];
@@ -119,7 +119,12 @@ export function CheckoutView({ shippingMethods }: Props) {
             },
           });
         }
-        await transitionOrderToStateFn({ data: { state: 'ArrangingPayment' } });
+        if (activeCart?.state === orderStates.AddingItems) {
+          await transitionOrderToStateFn({
+            data: { state: 'ArrangingPayment' },
+          });
+        }
+
         await refreshActiveCart();
         await router.navigate({ to: '/cart/payment' });
       } catch (e) {

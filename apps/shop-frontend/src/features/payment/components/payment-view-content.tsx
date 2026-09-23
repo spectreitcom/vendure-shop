@@ -53,6 +53,8 @@ export function PaymentViewContent({ paymentMethods }: Props) {
           return;
         }
         setError('An unexpected error occurred');
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });

@@ -45,7 +45,13 @@ function RouteComponent() {
           Payment
         </Typography>
         <div className={'mt-4'}>
-          <PaymentViewContent paymentMethods={paymentMethods ?? []} />
+          {paymentMethods?.length ? (
+            <PaymentViewContent paymentMethods={paymentMethods} />
+          ) : (
+            <Typography color={'error'}>
+              Failed to load payment methods
+            </Typography>
+          )}
         </div>
       </div>
     </div>

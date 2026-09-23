@@ -106,6 +106,7 @@ export const GET_ACTIVE_CART = gql`
       customer {
         id
       }
+      state
     }
   }
 `;
