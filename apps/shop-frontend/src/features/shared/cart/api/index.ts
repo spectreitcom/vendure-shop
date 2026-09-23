@@ -58,6 +58,19 @@ export const getActiveCart = createServerFn({ method: 'GET' }).handler(
       throw new Error('getActiveCart: Error');
     }
 
-    return data.activeOrder;
+    return {
+      ...data.activeOrder,
+      shippingAddress: !data.activeOrder?.shippingAddress
+        ? null
+        : {
+            ...data.activeOrder.shippingAddress,
+            customFields: {
+              ...(data.activeOrder.shippingAddress.customFields as Record<
+                string,
+                string | number | boolean | undefined
+              >),
+            },
+          },
+    };
   },
 );

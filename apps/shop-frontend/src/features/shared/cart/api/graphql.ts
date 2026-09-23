@@ -103,6 +103,9 @@ export const GET_ACTIVE_CART = gql`
           name
         }
       }
+      customer {
+        id
+      }
     }
   }
 `;
