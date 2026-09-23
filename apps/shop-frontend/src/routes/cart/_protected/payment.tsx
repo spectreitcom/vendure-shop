@@ -1,7 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
 import type { EligiblePaymentMethodsQuery } from '#/graphql/generated.ts';
-import { getEligiblePaymentMethods } from '#/features/payment';
+import {
+  getEligiblePaymentMethods,
+  PaymentViewContent,
+} from '#/features/payment';
 import { Typography } from '@mui/material';
 
 type LoaderSuccess = {
@@ -33,13 +36,17 @@ export const Route = createFileRoute('/cart/_protected/payment')({
 });
 
 function RouteComponent() {
+  const { paymentMethods } = Route.useLoaderData();
+
   return (
     <div className={'mt-8'}>
       <div className={'container'}>
         <Typography variant={'h4'} component={'h1'}>
           Payment
         </Typography>
-        <div className={'mt-4'}>form goes here</div>
+        <div className={'mt-4'}>
+          <PaymentViewContent paymentMethods={paymentMethods ?? []} />
+        </div>
       </div>
     </div>
   );

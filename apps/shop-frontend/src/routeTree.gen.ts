@@ -21,6 +21,7 @@ import { Route as AuthAuthResetPasswordRouteImport } from './routes/_auth/auth/r
 import { Route as AuthAuthVerifyRouteImport } from './routes/_auth/auth/verify'
 import { Route as CartProtectedCheckoutRouteImport } from './routes/cart/_protected/checkout'
 import { Route as CartProtectedPaymentRouteImport } from './routes/cart/_protected/payment'
+import { Route as CartProtectedPaymentResultRouteImport } from './routes/cart/_protected/payment-result'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +83,12 @@ const CartProtectedPaymentRoute = CartProtectedPaymentRouteImport.update({
   path: '/payment',
   getParentRoute: () => CartProtectedRouteRoute,
 } as any)
+const CartProtectedPaymentResultRoute =
+  CartProtectedPaymentResultRouteImport.update({
+    id: '/payment-result',
+    path: '/payment-result',
+    getParentRoute: () => CartProtectedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/auth/verify': typeof AuthAuthVerifyRoute
   '/cart/checkout': typeof CartProtectedCheckoutRoute
   '/cart/payment': typeof CartProtectedPaymentRoute
+  '/cart/payment-result': typeof CartProtectedPaymentResultRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRoutesByTo {
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
   '/auth/verify': typeof AuthAuthVerifyRoute
   '/cart/checkout': typeof CartProtectedCheckoutRoute
   '/cart/payment': typeof CartProtectedPaymentRoute
+  '/cart/payment-result': typeof CartProtectedPaymentResultRoute
   '/$categorySlug/$productSlug': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRoutesById {
@@ -121,6 +130,7 @@ export interface FileRoutesById {
   '/_auth/auth/verify': typeof AuthAuthVerifyRoute
   '/cart/_protected/checkout': typeof CartProtectedCheckoutRoute
   '/cart/_protected/payment': typeof CartProtectedPaymentRoute
+  '/cart/_protected/payment-result': typeof CartProtectedPaymentResultRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
 }
 export interface FileRouteTypes {
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/auth/verify'
     | '/cart/checkout'
     | '/cart/payment'
+    | '/cart/payment-result'
     | '/$categorySlug/$productSlug/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/auth/verify'
     | '/cart/checkout'
     | '/cart/payment'
+    | '/cart/payment-result'
     | '/$categorySlug/$productSlug'
   id:
     | '__root__'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
     | '/_auth/auth/verify'
     | '/cart/_protected/checkout'
     | '/cart/_protected/payment'
+    | '/cart/_protected/payment-result'
     | '/$categorySlug/$productSlug/'
   fileRoutesById: FileRoutesById
 }
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartProtectedPaymentRouteImport
       parentRoute: typeof CartProtectedRouteRoute
     }
+    '/cart/_protected/payment-result': {
+      id: '/cart/_protected/payment-result'
+      path: '/payment-result'
+      fullPath: '/cart/payment-result'
+      preLoaderRoute: typeof CartProtectedPaymentResultRouteImport
+      parentRoute: typeof CartProtectedRouteRoute
+    }
   }
 }
 
@@ -284,11 +304,13 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 interface CartProtectedRouteRouteChildren {
   CartProtectedCheckoutRoute: typeof CartProtectedCheckoutRoute
   CartProtectedPaymentRoute: typeof CartProtectedPaymentRoute
+  CartProtectedPaymentResultRoute: typeof CartProtectedPaymentResultRoute
 }
 
 const CartProtectedRouteRouteChildren: CartProtectedRouteRouteChildren = {
   CartProtectedCheckoutRoute: CartProtectedCheckoutRoute,
   CartProtectedPaymentRoute: CartProtectedPaymentRoute,
+  CartProtectedPaymentResultRoute: CartProtectedPaymentResultRoute,
 }
 
 const CartProtectedRouteRouteWithChildren =

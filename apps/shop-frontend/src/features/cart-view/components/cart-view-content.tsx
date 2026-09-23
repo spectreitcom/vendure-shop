@@ -27,7 +27,11 @@ export function CartViewContent() {
 
   if (fetching) return <CircularProgress size={64} color={'primary'} />;
 
-  if (!activeCart || !activeCart.lines.length)
+  if (
+    !activeCart ||
+    !Array.isArray(!activeCart.lines) ||
+    !activeCart.lines.length
+  )
     return <div>No items in cart</div>;
 
   return (
