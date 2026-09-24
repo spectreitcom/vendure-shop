@@ -1,19 +1,16 @@
 import { useActiveCart } from '#/features/shared/cart';
 import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-} from '@mui/material';
+  ArrowBack,
+  ArrowForward,
+  ShoppingBagOutlined,
+} from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
 import { ProductLine } from './product-line';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { CouponCodeForm } from '#/features/cart-view/components/coupon-code-form.tsx';
 import { CouponCodesList } from '#/features/cart-view/components/coupon-codes-list.tsx';
 import { useActiveUser } from '#/features/shared/authentication';
-import { useRouter } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 
 export function CartViewContent() {
   const { activeCart, fetching } = useActiveCart();
@@ -21,19 +18,44 @@ export function CartViewContent() {
   const router = useRouter();
 
   const handleCheckout = async () => {
-    if (!isFetching && !activeUser) showLoginModal();
+    if (isFetching) return;
+    if (!activeUser) showLoginModal();
     else await router.navigate({ to: '/cart/checkout' });
   };
 
-  if (fetching) return <CircularProgress size={64} color={'primary'} />;
+  if (fetching) {
+    return (
+      <div className="collection-state cart-state" role="status">
+        <CircularProgress size={32} color="inherit" aria-label="Loading cart" />
+        <p>Gathering your selection…</p>
+      </div>
+    );
+  }
 
-  if (!activeCart || !('lines' in activeCart))
-    return <div>No items in cart</div>;
+  if (!activeCart?.lines.length) {
+    return (
+      <section className="collection-state cart-state">
+        <ShoppingBagOutlined sx={{ fontSize: 44 }} />
+        <h2>Your cart is waiting</h2>
+        <p>Explore our collections and find something to make yours.</p>
+        <Link className="collection-text-link" to="/">
+          Explore the shop <ArrowForward fontSize="small" />
+        </Link>
+      </section>
+    );
+  }
 
   return (
-    <Grid container columns={12} spacing={4}>
-      <Grid size={8}>
-        <List>
+    <div className="cart-layout">
+      <section className="cart-items" aria-labelledby="cart-items-title">
+        <div className="collection-results-heading">
+          <h2 id="cart-items-title">In your cart</h2>
+          <span className="collection-count" aria-live="polite">
+            {activeCart.totalQuantity}{' '}
+            {activeCart.totalQuantity === 1 ? 'item' : 'items'}
+          </span>
+        </div>
+        <ul className="cart-lines">
           {activeCart.lines.map((line) => (
             <ProductLine
               key={line.id}
@@ -41,48 +63,65 @@ export function CartViewContent() {
               currencyCode={activeCart.currencyCode}
             />
           ))}
-        </List>
-      </Grid>
-      <Grid size={4}>
-        <Card>
-          <CardContent>
-            <List>
-              <ListItem className={'flex justify-between w-full'}>
-                <span className={'d-block mr-4 font-semibold'}>Total:</span>
+        </ul>
+        <Link to="/" className="collection-text-link">
+          <ArrowBack fontSize="small" /> Continue shopping
+        </Link>
+      </section>
+      <aside className="cart-summary" aria-labelledby="cart-summary-title">
+        <span className="collection-eyebrow">The details</span>
+        <h2 id="cart-summary-title">Order summary</h2>
+        {activeCart.discounts.length > 0 && (
+          <div className="cart-discounts">
+            <span className="collection-eyebrow">Applied savings</span>
+            {activeCart.discounts.map((discount, index) => (
+              <div
+                className="cart-summary-row"
+                key={`${discount.description}-${index}`}
+              >
+                <span>{discount.description}</span>
                 <ProductPrice
-                  price={activeCart.totalWithTax}
+                  price={discount.amountWithTax}
                   currencyCode={activeCart.currencyCode}
                 />
-              </ListItem>
-              <ListItem>
-                {activeCart.discounts.map((discount, index) => (
-                  <ProductPrice
-                    key={index}
-                    price={discount.amountWithTax}
-                    currencyCode={activeCart.currencyCode}
-                  />
-                ))}
-              </ListItem>
-              <ListItem>
-                <CouponCodesList />
-              </ListItem>
-              <ListItem>
-                <CouponCodeForm />
-              </ListItem>
-              <ListItem>
-                <Button
-                  variant={'contained'}
-                  color={'primary'}
-                  className={'w-full'}
-                  onClick={handleCheckout}
-                >
-                  Checkout
-                </Button>
-              </ListItem>
-            </List>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+              </div>
+            ))}
+            <p className="cart-note">Discounts are included in your total.</p>
+          </div>
+        )}
+        <div
+          className="cart-summary-total"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <span>Total</span>
+          <ProductPrice
+            price={activeCart.totalWithTax}
+            currencyCode={activeCart.currencyCode}
+          />
+        </div>
+        <p className="cart-note">
+          Including tax. Delivery confirmed at checkout.
+        </p>
+        <div className="cart-coupon-section">
+          <CouponCodeForm />
+          <CouponCodesList />
+        </div>
+        <Button
+          className="cart-checkout-button"
+          variant="contained"
+          disableElevation
+          fullWidth
+          disabled={isFetching}
+          onClick={handleCheckout}
+          endIcon={<ArrowForward fontSize="small" />}
+        >
+          Proceed to checkout
+        </Button>
+        {!isFetching && !activeUser && (
+          <p className="cart-checkout-note">Sign in to complete your order.</p>
+        )}
+      </aside>
+    </div>
   );
 }

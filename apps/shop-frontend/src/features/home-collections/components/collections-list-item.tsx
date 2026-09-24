@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { ArrowForward, CollectionsOutlined } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 
 type Props = Readonly<{
@@ -15,26 +15,29 @@ export function CollectionsListItem({
   slug,
 }: Props) {
   return (
-    <Link to={`/$categorySlug`} params={{ categorySlug: slug }}>
-      <Card>
-        <CardActionArea>
-          {imageUrl && (
-            <div className={'h-[120px] overflow-hidden'}>
-              <img
-                className={'w-full aspect-[4/3] object-cover'}
-                src={imageUrl}
-                alt={imageAlt}
-                loading={'lazy'}
-              />
+    <article className="home-collection">
+      <Link to="/$categorySlug" params={{ categorySlug: slug }}>
+        <div className="home-collection-image">
+          {imageUrl ? (
+            <img src={imageUrl} alt={imageAlt ?? title} loading="lazy" />
+          ) : (
+            <div className="collection-image-placeholder">
+              <CollectionsOutlined />
+              <span>Explore the collection</span>
             </div>
           )}
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="p">
-              {title}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Link>
+          <span className="home-collection-browse">
+            Explore collection <ArrowForward fontSize="small" />
+          </span>
+        </div>
+        <div className="home-collection-caption">
+          <div>
+            <span className="collection-eyebrow">The collection</span>
+            <h3>{title}</h3>
+          </div>
+          <ArrowForward fontSize="small" />
+        </div>
+      </Link>
+    </article>
   );
 }

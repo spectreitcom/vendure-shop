@@ -1,11 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
 import type { EligiblePaymentMethodsQuery } from '#/graphql/generated.ts';
 import {
   getEligiblePaymentMethods,
   PaymentViewContent,
 } from '#/features/payment';
-import { Typography } from '@mui/material';
+import { PurchaseLayout } from '#/components/purchase-layout';
 
 type LoaderSuccess = {
   error: false;
@@ -36,24 +36,24 @@ export const Route = createFileRoute('/cart/_protected/payment')({
 });
 
 function RouteComponent() {
-  const { paymentMethods } = Route.useLoaderData();
-
+  const data = Route.useLoaderData();
   return (
-    <div className={'mt-8'}>
-      <div className={'container'}>
-        <Typography variant={'h4'} component={'h1'}>
-          Payment
-        </Typography>
-        <div className={'mt-4'}>
-          {paymentMethods?.length ? (
-            <PaymentViewContent paymentMethods={paymentMethods} />
-          ) : (
-            <Typography color={'error'}>
-              Failed to load payment methods
-            </Typography>
-          )}
-        </div>
-      </div>
-    </div>
+    <PurchaseLayout
+      step={2}
+      title="Complete your order"
+      description="Review your selection and choose how you would like to pay."
+    >
+      {data.error ? (
+        <section className="collection-state" role="alert">
+          <h2>We couldn’t load this step</h2>
+          <p>{data.message}</p>
+          <Link to="/cart" className="collection-text-link">
+            Return to cart
+          </Link>
+        </section>
+      ) : (
+        <PaymentViewContent paymentMethods={data.paymentMethods} />
+      )}
+    </PurchaseLayout>
   );
 }

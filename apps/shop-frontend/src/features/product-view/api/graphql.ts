@@ -15,6 +15,14 @@ export const GET_PRODUCT_DETAILS_VIEW = gql`
         currencyCode
         priceWithTax
       }
+      facetValues {
+        id
+        name
+        facet {
+          id
+          name
+        }
+      }
     }
   }
 `;

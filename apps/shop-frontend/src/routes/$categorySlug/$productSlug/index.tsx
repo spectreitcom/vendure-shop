@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
+import { ArrowBack } from '@mui/icons-material';
 import { PendingComponent } from '#/components/pending-component.tsx';
-import { Grid, Typography } from '@mui/material';
 import { getProductDetailsView } from '#/features/product-view';
-import { ProductPrice } from '#/components/product-price.tsx';
-import { AddToCartButton } from '#/features/shared/cart';
+import { ProductDetails } from '#/features/product-view/components/product-details.tsx';
+import '#/features/collection-view/collection.css';
+import '#/features/product-view/product.css';
 
 export const Route = createFileRoute('/$categorySlug/$productSlug/')({
   component: RouteComponent,
@@ -29,54 +30,50 @@ export const Route = createFileRoute('/$categorySlug/$productSlug/')({
 
 function RouteComponent() {
   const { error, productViewDetails } = Route.useLoaderData();
-
-  if (error || !productViewDetails) return <div>error</div>;
+  const { categorySlug } = Route.useParams();
 
   return (
-    <div className={'container'}>
-      <header className={'mt-8'}>
-        <Grid container columns={12} spacing={4}>
-          <Grid size={6}>
-            {productViewDetails.featuredAsset && (
-              <img
-                src={productViewDetails.featuredAsset.preview}
-                loading={'lazy'}
-                alt={productViewDetails.name}
-              />
-            )}
-          </Grid>
-          <Grid size={6}>
-            <div>
-              <Typography variant={'h4'} component={'h1'}>
-                {productViewDetails.name}
-              </Typography>
-
-              {productViewDetails.variants.length && (
-                <>
-                  <ProductPrice
-                    className={'font-semibold text-2xl mt-4'}
-                    price={productViewDetails.variants[0].priceWithTax}
-                    currencyCode={productViewDetails.variants[0].currencyCode}
-                  />
-                  <div className={'mt-4'}>
-                    <AddToCartButton
-                      variant={'large'}
-                      quantity={1}
-                      productVariantId={productViewDetails.variants[0].id}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </Grid>
-        </Grid>
-      </header>
-      <div>
-        <div
-          className={'prose prose-neutral mt-8 max-w-none'}
-          dangerouslySetInnerHTML={{ __html: productViewDetails.description }}
-        />
+    <main className="collection-page product-page">
+      <div className="collection-shell">
+        <nav className="collection-breadcrumbs" aria-label="Breadcrumb">
+          <Link to="/">Home</Link>
+          <span aria-hidden="true">/</span>
+          <Link
+            to="/$categorySlug"
+            params={{ categorySlug }}
+            search={{ page: 1 }}
+          >
+            Collection
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">
+            {productViewDetails?.name ?? 'Product'}
+          </span>
+        </nav>
+        {error || !productViewDetails ? (
+          <div className="collection-state" role="alert">
+            <span className="collection-eyebrow">A little interruption</span>
+            <h1>We couldn’t load this product.</h1>
+            <p>
+              Please try again in a moment, or explore the rest of the
+              collection.
+            </p>
+            <Link
+              className="collection-text-link"
+              to="/$categorySlug"
+              params={{ categorySlug }}
+              search={{ page: 1 }}
+            >
+              <ArrowBack fontSize="small" /> Back to collection
+            </Link>
+          </div>
+        ) : (
+          <ProductDetails
+            key={productViewDetails.id}
+            product={productViewDetails}
+          />
+        )}
       </div>
-    </div>
+    </main>
   );
 }

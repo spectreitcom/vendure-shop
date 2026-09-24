@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from '@mui/material';
 import { Link } from '@tanstack/react-router';
-import { ProductPrice } from '#/components/product-price.tsx';
+import { ImageNotSupportedOutlined } from '@mui/icons-material';
 import { AddToCartButton } from '#/features/shared/cart/components/add-to-cart-button.tsx';
 import type { CollectionProductsQuery } from '#/graphql/generated.ts';
 
@@ -16,42 +9,59 @@ type Props = Readonly<{
 }>;
 
 export function CollectionProductsItem({ item, categorySlug }: Props) {
+  const price =
+    item.priceWithTax.__typename === 'SinglePrice'
+      ? new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: item.currencyCode,
+        }).format(item.priceWithTax.value / 100)
+      : null;
+
   return (
-    <Card>
+    <article className="collection-product">
       <Link
-        to={`/$categorySlug/$productSlug`}
-        params={{
-          categorySlug,
-          productSlug: item.slug,
-        }}
+        className="collection-product-image"
+        to="/$categorySlug/$productSlug"
+        params={{ categorySlug, productSlug: item.slug }}
       >
-        <CardMedia
-          component={'img'}
-          alt={''}
-          image={item.productAsset?.preview}
-          className={'h-[250px]'}
-        />
+        {item.productAsset?.preview ? (
+          <img
+            src={item.productAsset.preview}
+            alt={item.productName}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <span className="collection-image-placeholder">
+            <ImageNotSupportedOutlined />
+            <span>Image coming soon</span>
+          </span>
+        )}
+        <span className="collection-product-discover">
+          View product <span aria-hidden="true">↗</span>
+        </span>
       </Link>
-      <CardContent>
-        <ProductPrice
-          price={
-            item.priceWithTax.__typename === 'SinglePrice'
-              ? item.priceWithTax.value
-              : 0
-          }
-          currencyCode={item.currencyCode}
-        />
-        <Typography component={'h4'} variant={'h5'}>
-          {item.productName}
-        </Typography>
-      </CardContent>
-      <CardActions>
+      <div className="collection-product-info">
+        <div>
+          <h3>
+            <Link
+              to="/$categorySlug/$productSlug"
+              params={{ categorySlug, productSlug: item.slug }}
+            >
+              {item.productName}
+            </Link>
+          </h3>
+          <p className="collection-product-price">
+            {price ?? 'See product for pricing'}
+          </p>
+        </div>
         <AddToCartButton
-          variant={'small'}
+          className="collection-cart-button"
+          variant="small"
           productVariantId={item.productVariantId}
           quantity={1}
         />
-      </CardActions>
-    </Card>
+      </div>
+    </article>
   );
 }

@@ -28,18 +28,25 @@ export function AuthButtons() {
     return (
       <>
         <Link to={'/auth/login'}>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" component="span">
+            Login
+          </Button>
         </Link>
         <Link to={'/auth/registration'}>
-          <Button color="inherit">Register</Button>
+          <Button color="inherit" component="span">
+            Register
+          </Button>
         </Link>
       </>
     );
   }
 
   return (
-    <Button color="inherit" onClick={handleLogout}>
-      Logout
-    </Button>
+    <>
+      <Button color="inherit">Orders</Button>
+      <Button color="inherit" onClick={handleLogout}>
+        Logout
+      </Button>
+    </>
   );
 }

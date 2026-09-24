@@ -58,6 +58,7 @@ export function AddToCartButton({
         loading={addingToCart}
         className={className}
         size={'medium'}
+        aria-label="Add to cart"
         color={'primary'}
         onClick={handleAddToCart}
       >
@@ -70,7 +71,7 @@ export function AddToCartButton({
     component = (
       <Button
         loading={addingToCart}
-        className={'w-full'}
+        className={['w-full', className].filter(Boolean).join(' ')}
         variant={'contained'}
         size={'large'}
         onClick={handleAddToCart}

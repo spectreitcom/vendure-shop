@@ -1,0 +1,248 @@
+.purchase-steps {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  padding: 20px 0;
+  margin: 0;
+  border-bottom: 1px solid var(--collection-line);
+}
+.purchase-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--collection-muted);
+  font-size: 12px;
+}
+.purchase-steps li > span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--collection-line);
+  border-radius: 50%;
+  font-size: 10px;
+}
+.purchase-steps .is-active {
+  color: var(--collection-accent);
+}
+.purchase-steps .is-active > span {
+  background: var(--collection-accent);
+  border-color: var(--collection-accent);
+  color: white;
+}
+.purchase-heading {
+  padding: 38px 0;
+}
+.purchase-heading h1 {
+  font:
+    400 clamp(36px, 4.6vw, 56px)/1.12 Georgia,
+    serif;
+  letter-spacing: -1.5px;
+  margin: 12px 0 16px;
+}
+.purchase-heading p,
+.purchase-panel > p {
+  color: var(--collection-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+.purchase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
+  align-items: start;
+  gap: clamp(28px, 5vw, 64px);
+}
+.purchase-page h2 {
+  font:
+    400 26px/1.25 Georgia,
+    serif;
+  margin: 0 0 24px;
+}
+.purchase-page .MuiCard-root,
+.purchase-panel {
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid var(--collection-line);
+  border-radius: 6px;
+}
+.purchase-page .MuiCardContent-root,
+.purchase-panel {
+  padding: 28px;
+}
+.purchase-page .MuiCardContent-root:last-child {
+  padding-bottom: 28px;
+}
+.purchase-page .MuiInputBase-root {
+  background: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.purchase-page .MuiOutlinedInput-notchedOutline {
+  border-color: #d5d9ce;
+}
+.purchase-page .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--collection-accent);
+}
+.purchase-page .MuiInputLabel-root.Mui-focused,
+.purchase-page .Mui-checked {
+  color: var(--collection-accent);
+}
+.purchase-page .MuiFormControlLabel-label {
+  font-size: 13px;
+}
+.purchase-page .MuiButton-contained {
+  background: var(--collection-accent);
+  color: white;
+  box-shadow: none;
+  min-height: 50px;
+  text-transform: none;
+  border-radius: 4px;
+}
+.purchase-page .MuiButton-contained:hover {
+  background: #354230;
+  box-shadow: none;
+}
+.purchase-page .MuiButton-contained.Mui-disabled {
+  background: #e1e3db;
+  color: #71766e;
+}
+.purchase-summary {
+  position: sticky;
+  top: 24px;
+  padding: 28px;
+  background: #eeeee6;
+  border: 1px solid var(--collection-line);
+  border-radius: 6px;
+}
+.purchase-summary h2 {
+  margin-top: 10px;
+}
+.purchase-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+.purchase-items li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #dce0d4;
+  font-size: 12px;
+}
+.purchase-items img {
+  width: 48px;
+  height: 56px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.purchase-items li > div:first-of-type {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.purchase-items small {
+  display: block;
+  color: var(--collection-muted);
+  margin-top: 6px;
+}
+.purchase-summary-row,
+.purchase-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  margin: 16px 0;
+}
+.purchase-total {
+  border-top: 1px solid #d3d8c9;
+  padding-top: 22px;
+  font-size: 21px;
+}
+.purchase-note {
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--collection-muted);
+  margin: 16px 0 24px;
+}
+.purchase-methods {
+  width: 100%;
+}
+.purchase-methods .MuiFormControlLabel-root {
+  margin: 0 0 12px;
+  border: 1px solid var(--collection-line);
+  border-radius: 4px;
+  padding: 12px;
+  min-height: 64px;
+  background: #fff;
+}
+.purchase-methods .MuiFormControlLabel-root:has(.Mui-checked) {
+  border-color: var(--collection-accent);
+  background: #edf0e8;
+}
+.purchase-methods .MuiFormControlLabel-label {
+  flex: 1;
+}
+.purchase-result {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 48px 32px;
+  background: #eeeee6;
+  border: 1px solid var(--collection-line);
+  border-radius: 6px;
+}
+.purchase-result > svg {
+  width: 52px;
+  height: 52px;
+  color: var(--collection-accent);
+  margin-bottom: 24px;
+}
+.purchase-result p {
+  color: var(--collection-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.purchase-result-details {
+  border-block: 1px solid #d3d8c9;
+  padding: 20px 0;
+  margin: 24px 0;
+  overflow-wrap: anywhere;
+}
+.purchase-result-details > div {
+  justify-content: center;
+}
+.purchase-result .collection-text-link {
+  margin: 12px;
+}
+@media (max-width: 800px) {
+  .purchase-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .purchase-summary {
+    position: static;
+  }
+}
+@media (max-width: 480px) {
+  .purchase-steps {
+    gap: 16px;
+    justify-content: space-between;
+  }
+  .purchase-steps li {
+    gap: 6px;
+    font-size: 10px;
+  }
+  .purchase-steps li > span {
+    width: 24px;
+    height: 24px;
+  }
+  .purchase-page .MuiCardContent-root,
+  .purchase-panel,
+  .purchase-summary {
+    padding: 20px;
+  }
+  .purchase-result {
+    padding: 32px 20px;
+  }
+}

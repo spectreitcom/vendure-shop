@@ -7,8 +7,11 @@ export function MenuCartButton() {
   const { activeCart } = useActiveCart();
 
   return (
-    <Link to={'/cart'}>
-      <IconButton color="inherit">
+    <Link
+      to={'/cart'}
+      aria-label={`Cart, ${activeCart?.totalQuantity ?? 0} items`}
+    >
+      <IconButton color="inherit" component="span">
         <Badge
           badgeContent={activeCart ? activeCart.totalQuantity : undefined}
           color={'error'}

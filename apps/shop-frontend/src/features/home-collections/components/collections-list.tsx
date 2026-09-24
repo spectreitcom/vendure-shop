@@ -1,4 +1,3 @@
-import { Grid, Typography } from '@mui/material';
 import { CollectionsListItem } from './collections-list-item.tsx';
 import { cn } from '#/utils';
 import type { HomeCollectionItem } from '#/features/home-collections/types';
@@ -9,25 +8,42 @@ type Props = Readonly<{
 }>;
 
 export function CollectionsList({ items, className }: Props) {
-  if (!items.length) return null;
-
   return (
-    <div className={cn('bg-white p-8', className)}>
-      <Typography variant={'h5'} component={'h3'}>
-        Lorem ipsum dolor sit amet.
-      </Typography>
-      <Grid className={'mt-8'} container spacing={2}>
-        {items.map((item) => (
-          <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
+    <section
+      id="collections"
+      className={cn('home-collections', className)}
+      aria-labelledby="home-collections-title"
+    >
+      <div className="home-section-heading">
+        <div>
+          <span className="collection-eyebrow">Find your inspiration</span>
+          <h2 id="home-collections-title">Explore our collections</h2>
+        </div>
+        <span className="collection-count">
+          {items.length} {items.length === 1 ? 'collection' : 'collections'}
+        </span>
+      </div>
+      {items.length ? (
+        <div className="home-collections-grid">
+          {items.map((item) => (
             <CollectionsListItem
+              key={item.id}
               slug={item.slug}
               title={item.name}
               imageUrl={item.featuredAsset?.source}
-              imageAlt={'now empty'}
+              imageAlt={item.name}
             />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+          ))}
+        </div>
+      ) : (
+        <div className="collection-state">
+          <h3>Something new is on its way</h3>
+          <p>
+            Our collections will appear here when they’re available. Come back
+            soon.
+          </p>
+        </div>
+      )}
+    </section>
   );
 }

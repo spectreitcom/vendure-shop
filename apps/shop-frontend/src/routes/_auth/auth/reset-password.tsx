@@ -1,3 +1,4 @@
+import { AuthLayout } from '#/components/auth-layout';
 import { createFileRoute } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
 import {
@@ -21,10 +22,16 @@ function RouteComponent() {
   const { token } = Route.useLoaderDeps();
 
   return (
-    <div className={'flex  justify-center'}>
-      <div className={'mt-64 w-[500px]'}>
-        {token ? <ChangePasswordForm token={token} /> : <ResetPasswordForm />}
-      </div>
-    </div>
+    <AuthLayout
+      breadcrumb={token ? 'New password' : 'Reset password'}
+      introTitle={'A fresh start,\njust for you.'}
+      introDescription="Let’s get you back to your account and the things you love."
+    >
+      {token ? (
+        <ChangePasswordForm key={token} token={token} />
+      ) : (
+        <ResetPasswordForm />
+      )}
+    </AuthLayout>
   );
 }

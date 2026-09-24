@@ -9,9 +9,10 @@ import { useActiveCart } from '#/features/shared/cart';
 type Props = Readonly<{
   quantity: number;
   orderLineId: string;
+  productName: string;
 }>;
 
-export function ProductLineQty({ quantity, orderLineId }: Props) {
+export function ProductLineQty({ quantity, orderLineId, productName }: Props) {
   const { refresh } = useActiveCart();
   const adjustCartLineFn = useServerFn(adjustCartLine);
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,7 @@ export function ProductLineQty({ quantity, orderLineId }: Props) {
 
   const decreaseQuantity = async () => {
     const nextQty = quantity - 1;
-    if (nextQty < 0) return;
+    if (nextQty < 1) return;
     setLoading(true);
 
     try {
@@ -59,15 +60,33 @@ export function ProductLineQty({ quantity, orderLineId }: Props) {
   };
 
   return (
-    <div className={'flex items-center gap-2'}>
-      <IconButton disabled={loading} onClick={decreaseQuantity}>
+    <div
+      className="cart-quantity"
+      role="group"
+      aria-label={`Quantity for ${productName}`}
+      aria-busy={loading}
+    >
+      <IconButton
+        aria-label={`Decrease quantity of ${productName}`}
+        disabled={loading || quantity <= 1}
+        onClick={decreaseQuantity}
+      >
         <RemoveIcon />
       </IconButton>
-      <span>{quantity}</span>
-      <IconButton disabled={loading} onClick={increaseQuantity}>
+      <span aria-live="polite">{quantity}</span>
+      <IconButton
+        aria-label={`Increase quantity of ${productName}`}
+        disabled={loading || quantity >= 100}
+        onClick={increaseQuantity}
+      >
         <AddIcon />
       </IconButton>
-      <Snackbar open={!!error} message={error} autoHideDuration={6000} />
+      <Snackbar
+        open={!!error}
+        message={error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+      />
     </div>
   );
 }

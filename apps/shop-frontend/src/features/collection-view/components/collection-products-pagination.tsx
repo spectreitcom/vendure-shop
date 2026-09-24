@@ -17,7 +17,8 @@ export function CollectionProductsPagination({
   return (
     <NativePagination
       count={totalItems}
-      defaultPage={1}
+      shape="rounded"
+      siblingCount={0}
       page={page}
       renderItem={(item) => {
         if (item.disabled) {
@@ -26,14 +27,17 @@ export function CollectionProductsPagination({
 
         return (
           <Link
-            to={'/$categorySlug'}
+            aria-label={
+              item.type === 'page'
+                ? `Page ${item.page}`
+                : `Go to ${item.type} page`
+            }
+            aria-current={item.selected ? 'page' : undefined}
+            to="/$categorySlug"
             params={{ categorySlug }}
-            search={{
-              ...searchParamsToCopy,
-              page: item.page === null ? undefined : item.page,
-            }}
+            search={{ ...searchParamsToCopy, page: item.page ?? undefined }}
           >
-            <PaginationItem {...item} />
+            <PaginationItem {...item} component="span" />
           </Link>
         );
       }}

@@ -1,17 +1,14 @@
 import { useActiveCart } from '#/features/shared/cart';
-import { ProductPrice } from '#/components/product-price.tsx';
+import { PurchaseSummary } from '#/components/purchase-layout';
 import {
   Button,
   Card,
   CardContent,
   Checkbox,
   FormControlLabel,
-  Grid,
   MenuItem,
-  Select,
   Snackbar,
   TextField,
-  Typography,
 } from '@mui/material';
 import { useForm, useSelector } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
@@ -35,8 +32,9 @@ type Props = Readonly<{
 export function CheckoutView({ shippingMethods }: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUpdatingShipping, setIsUpdatingShipping] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { refresh: refreshActiveCart, activeCart } = useActiveCart();
+  const { refresh: refreshActiveCart, activeCart, fetching } = useActiveCart();
   const setOrderShippingAddressFn = useServerFn(setOrderShippingAddress);
   const setOrderBillingAddressFn = useServerFn(setOrderBillingAddress);
   const setOrderShippingMethodFn = useServerFn(setOrderShippingMethod);
@@ -146,18 +144,36 @@ export function CheckoutView({ shippingMethods }: Props) {
 
   const handleShippingMethodChange = async (shippingMethodId: string) => {
     try {
+      setError(null);
+      setIsUpdatingShipping(true);
       await setOrderShippingMethodFn({ data: { shippingMethodId } });
       await refreshActiveCart();
+      return true;
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
         return;
       }
       setError('An unexpected error occurred');
+      return false;
+    } finally {
+      setIsUpdatingShipping(false);
     }
   };
 
-  if (!activeCart) return null;
+  if (fetching && !activeCart)
+    return (
+      <p className="purchase-note" role="status">
+        Loading your order…
+      </p>
+    );
+
+  if (!activeCart?.lines.length)
+    return (
+      <p className="purchase-note">
+        Your cart is empty. Add something from the shop to continue.
+      </p>
+    );
 
   return (
     <form
@@ -167,23 +183,12 @@ export function CheckoutView({ shippingMethods }: Props) {
         await form.handleSubmit();
       }}
     >
-      <Grid container columns={12} spacing={4}>
-        <Grid size={8}>
-          <div className={'flex items-center gap-4'}>
-            <span className={'text-2xl font-semibold'}>Total:</span>
-            <ProductPrice
-              className={'text-2xl font-semibold'}
-              price={activeCart.totalWithTax}
-              currencyCode={activeCart.currencyCode}
-            />
-          </div>
-
-          <div className={'mt-4'}>
+      <div className="purchase-grid">
+        <div>
+          <div>
             <Card>
               <CardContent>
-                <Typography variant={'h6'} component={'h6'}>
-                  Shipping address
-                </Typography>
+                <h2>Shipping address</h2>
                 <div className={'mt-4'}>
                   <div>
                     <form.Field
@@ -192,7 +197,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Full name'}
+                          label={'Full name'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -212,7 +217,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Company name'}
+                          label={'Company name'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -233,7 +238,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           type={'tel'}
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Phone number'}
+                          label={'Phone number'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -256,7 +261,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           <TextField
                             size={'small'}
                             className={'w-full'}
-                            placeholder={'Postal code'}
+                            label={'Postal code'}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
@@ -276,7 +281,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           <TextField
                             size={'small'}
                             className={'w-full'}
-                            placeholder={'City'}
+                            label={'City'}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
@@ -297,7 +302,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Address'}
+                          label={'Address'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -317,7 +322,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Address line 2'}
+                          label={'Address line 2'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -334,7 +339,9 @@ export function CheckoutView({ shippingMethods }: Props) {
                     <form.Field
                       name={'shippingCountryCode'}
                       children={(field) => (
-                        <Select
+                        <TextField
+                          select
+                          label="Country"
                           variant={'outlined'}
                           size={'small'}
                           className={'w-full'}
@@ -344,7 +351,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           onChange={(e) => field.handleChange(e.target.value)}
                         >
                           <MenuItem value={'PL'}>Poland</MenuItem>
-                        </Select>
+                        </TextField>
                       )}
                     />
                   </div>
@@ -375,9 +382,7 @@ export function CheckoutView({ shippingMethods }: Props) {
           <div className={cn('mt-4', !needInvoice && 'hidden')}>
             <Card>
               <CardContent>
-                <Typography variant={'h6'} component={'h6'}>
-                  Billing address
-                </Typography>
+                <h2>Billing address</h2>
                 <div className={'mt-4'}>
                   <div>
                     <form.Field
@@ -386,7 +391,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Full name'}
+                          label={'Full name'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -406,7 +411,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Company name'}
+                          label={'Company name'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -427,7 +432,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           type={'tel'}
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Phone number'}
+                          label={'Phone number'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -450,7 +455,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           <TextField
                             size={'small'}
                             className={'w-full'}
-                            placeholder={'Postal code'}
+                            label={'Postal code'}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
@@ -470,7 +475,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           <TextField
                             size={'small'}
                             className={'w-full'}
-                            placeholder={'City'}
+                            label={'City'}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
@@ -491,7 +496,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Address'}
+                          label={'Address'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -511,7 +516,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                         <TextField
                           size={'small'}
                           className={'w-full'}
-                          placeholder={'Address line 2'}
+                          label={'Address line 2'}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
                           value={field.state.value}
@@ -528,7 +533,9 @@ export function CheckoutView({ shippingMethods }: Props) {
                     <form.Field
                       name={'billingCountryCode'}
                       children={(field) => (
-                        <Select
+                        <TextField
+                          select
+                          label="Country"
                           variant={'outlined'}
                           size={'small'}
                           className={'w-full'}
@@ -538,7 +545,7 @@ export function CheckoutView({ shippingMethods }: Props) {
                           onChange={(e) => field.handleChange(e.target.value)}
                         >
                           <MenuItem value={'PL'}>Poland</MenuItem>
-                        </Select>
+                        </TextField>
                       )}
                     />
                   </div>
@@ -550,18 +557,18 @@ export function CheckoutView({ shippingMethods }: Props) {
           <div className={'mt-4'}>
             <Card>
               <CardContent>
-                <Typography variant={'h6'} component={'h6'}>
-                  Shipping method
-                </Typography>
+                <h2>Shipping method</h2>
                 <div className={'mt-4'}>
                   <form.Field
                     name={'shippingMethodId'}
                     children={(field) => (
                       <ShippingMethodsFormControl
                         onChange={async (value) => {
-                          await handleShippingMethodChange(value ?? '');
-                          field.handleChange(value ?? '');
+                          if (await handleShippingMethodChange(value ?? '')) {
+                            field.handleChange(value ?? '');
+                          }
                         }}
+                        disabled={isUpdatingShipping || isSubmitting}
                         shippingMethods={shippingMethods}
                         currencyCode={activeCart.currencyCode}
                         error={field.state.meta.errors.length > 0}
@@ -576,24 +583,27 @@ export function CheckoutView({ shippingMethods }: Props) {
               </CardContent>
             </Card>
           </div>
-        </Grid>
-        <Grid size={4}>
-          <Card>
-            <CardContent>
-              <Button
-                type={'submit'}
-                variant={'contained'}
-                className={'w-full'}
-                loading={isSubmitting}
-                disabled={isSubmitting}
-              >
-                Go to payment
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      <Snackbar open={!!error} message={error} autoHideDuration={6000} />
+        </div>
+        <PurchaseSummary>
+          <Button
+            type={'submit'}
+            variant={'contained'}
+            className={'w-full'}
+            loading={isSubmitting}
+            disabled={
+              isSubmitting || isUpdatingShipping || !shippingMethods.length
+            }
+          >
+            Go to payment
+          </Button>
+        </PurchaseSummary>
+      </div>
+      <Snackbar
+        open={!!error}
+        message={error}
+        onClose={() => setError(null)}
+        autoHideDuration={6000}
+      />
     </form>
   );
 }
