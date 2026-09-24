@@ -65,6 +65,13 @@ function RouteComponent() {
                       productVariantId={productViewDetails.variants[0].id}
                     />
                   </div>
+                  <div>
+                    {productViewDetails.facetValues.map((facetValue) => (
+                      <div>
+                        {facetValue.facet.name} - {facetValue.name}
+                      </div>
+                    ))}
+                  </div>
                 </>
               )}
             </div>
