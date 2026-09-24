@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const GET_COLLECTION_VIEW_WITH_PRODUCTS = gql`
-  query GetCollectionViewWithProducts($slug: String!, $take: Int!, $skip: Int!) {
+export const GET_COLLECTION = gql`
+  query GetCollection($slug: String!) {
     collection(slug: $slug) {
       id
       name
@@ -10,22 +10,58 @@ export const GET_COLLECTION_VIEW_WITH_PRODUCTS = gql`
       featuredAsset {
         preview
       }
-      productVariants(options: { take: $take, skip: $skip }) {
-        items {
+    }
+  }
+`;
+
+export const FACETS = gql`
+  query Facets {
+    facets {
+      items {
+        id
+        name
+        values {
           id
-          priceWithTax
           name
-          currencyCode
-          product {
-            id
-            slug
-            featuredAsset {
-              preview
-            }
+          code
+        }
+      }
+    }
+  }
+`;
+
+export const COLLECTION_PRODUCTS = gql`
+  query CollectionProducts(
+    $collectionSlug: String!
+    $take: Int!
+    $skip: Int!
+    $facetValueFilters: [FacetValueFilterInput!]
+  ) {
+    search(
+      input: {
+        collectionSlug: $collectionSlug
+        take: $take
+        skip: $skip
+        facetValueFilters: $facetValueFilters
+      }
+    ) {
+      items {
+        productName
+        sku
+        slug
+        productId
+        productVariantId
+        currencyCode
+        productAsset {
+          preview
+        }
+        priceWithTax {
+          ... on SinglePrice {
+            value
           }
         }
-        totalItems
       }
+      totalItems
     }
   }
 `;

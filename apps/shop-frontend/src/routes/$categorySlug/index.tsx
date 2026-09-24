@@ -1,54 +1,86 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import {
   CollectionProductsGrid,
-  getCollectionViewWithProducts,
+  Filters,
+  getCollection,
+  getCollectionProducts,
+  getFacets,
 } from '#/features/collection-view';
+import type { CollectionViewLoaderDeps } from '#/features/collection-view';
 import { CollectionProductsPagination } from '../../features/collection-view/components/collection-products-pagination.tsx';
-import { z } from 'zod';
+import type {
+  CollectionProductsQuery,
+  FacetsQuery,
+  GetCollectionQuery,
+} from '#/graphql/generated.ts';
+import { validateSearchSchema } from '#/features/collection-view/schemas';
 
 const TAKE = 9;
 
-const validateSearchSchema = z.object({
-  page: z.number().positive().optional().default(1),
-});
+type LoaderSuccess = {
+  error: false;
+  collection: GetCollectionQuery['collection'];
+  facets: FacetsQuery['facets']['items'];
+  products?: CollectionProductsQuery['search'];
+};
+
+type LoaderError = {
+  error: true;
+};
+
+type LoaderData = LoaderSuccess | LoaderError;
 
 export const Route = createFileRoute('/$categorySlug/')({
   component: RouteComponent,
   pendingComponent: PendingComponent,
   validateSearch: validateSearchSchema,
   loaderDeps: ({ search }) => {
-    return { page: search.page };
+    return {
+      page: search.page,
+      facetValues: search.facetValues?.split(',').filter(Boolean) ?? [],
+    } satisfies CollectionViewLoaderDeps;
   },
-  loader: async ({ deps: { page }, params: { categorySlug } }) => {
+  loader: async ({ deps: { page, facetValues }, params: { categorySlug } }) => {
     try {
-      const response = await getCollectionViewWithProducts({
-        data: { slug: categorySlug, page, take: TAKE },
+      const collection = await getCollection({
+        data: { slug: categorySlug },
       });
+
+      const products = await getCollectionProducts({
+        data: {
+          collectionSlug: categorySlug,
+          take: TAKE,
+          page,
+          facetValueFilters: facetValues.map((fValue) => ({
+            and: fValue,
+            or: [],
+          })),
+        },
+      });
+
+      const facets = await getFacets();
+
       return {
         error: false,
-        collectionViewWithProducts: response,
-      };
+        collection,
+        facets,
+        products,
+      } satisfies LoaderData;
     } catch {
       return {
         error: true,
-        collectionViewWithProducts: null,
-      };
+      } satisfies LoaderData;
     }
   },
 });
 
 function RouteComponent() {
-  const { error, collectionViewWithProducts } = Route.useLoaderData();
-  const { page } = Route.useLoaderDeps();
+  const { error, collection, facets, products } = Route.useLoaderData();
+  const { page, facetValues } = Route.useLoaderDeps();
 
-  if (error || !collectionViewWithProducts)
+  if (error || !collection)
     return (
       <Card>
         <CardContent>
@@ -63,21 +95,18 @@ function RouteComponent() {
         <header>
           <Typography variant={'h5'} component={'h1'}>
             <Grid container columns={12} spacing={4}>
-              {collectionViewWithProducts.featuredAsset && (
+              {collection.featuredAsset && (
                 <Grid size={3}>
-                  <img
-                    src={collectionViewWithProducts.featuredAsset.preview}
-                    alt="any alt"
-                  />
+                  <img src={collection.featuredAsset.preview} alt="any alt" />
                 </Grid>
               )}
               <Grid size={9}>
                 <Typography variant={'h4'} component={'h1'}>
-                  {collectionViewWithProducts.name}
+                  {collection.name}
                 </Typography>
-                {collectionViewWithProducts.description && (
+                {collection.description && (
                   <Typography variant={'body1'}>
-                    {collectionViewWithProducts.description}
+                    {collection.description}
                   </Typography>
                 )}
               </Grid>
@@ -85,26 +114,27 @@ function RouteComponent() {
           </Typography>
         </header>
 
-        <Grid className={'mt-8'} container spacing={2} columns={12}>
+        <Grid className={'mt-8'} container spacing={4} columns={12}>
           {/* Filters */}
           <Grid size={3}>
-            <div>Filters</div>
+            <Filters
+              facets={facets}
+              collectionSlug={collection.slug}
+              searchParamsToCopy={{ facetValues }}
+            />
           </Grid>
           {/* Products grid */}
           <Grid size={9}>
-            {collectionViewWithProducts.productVariants.items.length ? (
+            {products?.items.length ? (
               <>
                 <CollectionProductsGrid
-                  items={collectionViewWithProducts.productVariants.items}
-                  categorySlug={collectionViewWithProducts.slug}
+                  items={products.items}
+                  categorySlug={collection.slug}
                 />
                 <div className={'flex justify-center p-8'}>
                   <CollectionProductsPagination
-                    totalItems={calcTotalPageNumbers(
-                      collectionViewWithProducts.productVariants.totalItems,
-                      TAKE,
-                    )}
-                    categorySlug={collectionViewWithProducts.slug}
+                    totalItems={calcTotalPageNumbers(products.totalItems, TAKE)}
+                    categorySlug={collection.slug}
                     page={page}
                   />
                 </div>
