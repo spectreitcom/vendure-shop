@@ -71,7 +71,7 @@ export function AddToCartButton({
     component = (
       <Button
         loading={addingToCart}
-        className={'w-full'}
+        className={['w-full', className].filter(Boolean).join(' ')}
         variant={'contained'}
         size={'large'}
         onClick={handleAddToCart}
