@@ -7,7 +7,10 @@ import { z } from 'zod';
 import { useActiveCart } from '#/features/shared/cart';
 
 const formValidationSchema = z.object({
-  couponCode: z.string().min(3, 'Coupon code is required'),
+  couponCode: z
+    .string()
+    .trim()
+    .min(3, 'Enter a coupon code of at least 3 characters'),
 });
 
 export function CouponCodeForm() {
@@ -27,7 +30,9 @@ export function CouponCodeForm() {
     onSubmit: async ({ value }) => {
       try {
         setSubmitting(true);
-        await applyCouponCodeFn({ data: { couponCode: value.couponCode } });
+        await applyCouponCodeFn({
+          data: { couponCode: value.couponCode.trim() },
+        });
         setShowSuccessSnackbar(true);
         form.reset();
         await refresh();
@@ -39,21 +44,29 @@ export function CouponCodeForm() {
         }
       } finally {
         setSubmitting(false);
-        setShowSuccessSnackbar(false);
       }
     },
   });
 
   return (
     <>
-      <div className={'flex items-center gap-4'}>
+      <form
+        className="cart-coupon-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!submitting) void form.handleSubmit();
+        }}
+      >
         <form.Field
           name={'couponCode'}
           children={(field) => (
             <>
               <TextField
                 value={field.state.value}
-                placeholder={'Enter coupon code'}
+                label="Coupon code"
+                placeholder="Enter your code"
+                disabled={submitting}
+                fullWidth
                 variant={'outlined'}
                 size={'small'}
                 onBlur={field.handleBlur}
@@ -67,13 +80,14 @@ export function CouponCodeForm() {
           )}
         />
         <Button
-          onClick={() => form.handleSubmit()}
+          type="submit"
+          variant="outlined"
           loading={submitting}
           disabled={submitting}
         >
           Apply
         </Button>
-      </div>
+      </form>
       <Snackbar
         open={showSuccessSnackbar}
         autoHideDuration={6000}

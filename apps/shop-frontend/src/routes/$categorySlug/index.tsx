@@ -123,7 +123,7 @@ function RouteComponent() {
                   .trim()}
               </p>
             )}
-            <a className="collection-text-link" href="#collection-products">
+            <a className="collection-text-link" href="#">
               Discover the collection <ArrowForward fontSize="small" />
             </a>
           </div>

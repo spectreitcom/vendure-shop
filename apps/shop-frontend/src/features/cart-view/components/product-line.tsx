@@ -1,10 +1,9 @@
-import { ListItem, Typography } from '@mui/material';
+import { ImageNotSupportedOutlined } from '@mui/icons-material';
 import { DeleteCartLineButton } from '#/features/cart-view/components/delete-cart-line-button.tsx';
 import type { ActiveCartLine } from '#/features/shared/cart';
 import { ProductLineQty } from '#/features/cart-view/components/product-line-qty.tsx';
 import { ProductPrice } from '#/components/product-price.tsx';
 import type { CurrencyCode } from '#/graphql/generated.ts';
-import { cn } from '#/utils';
 
 type Props = Readonly<{
   line: ActiveCartLine;
@@ -12,41 +11,54 @@ type Props = Readonly<{
 }>;
 
 export function ProductLine({ line, currencyCode }: Props) {
+  const discounted = line.proratedLinePriceWithTax !== line.linePriceWithTax;
+
   return (
-    <ListItem>
-      <div className={'flex gap-4'}>
-        <div className={'w-[250px] h-[150px] overflow-hidden'}>
-          {line.featuredAsset && (
-            <img
-              className={'aspect-4/3 object-cover'}
-              src={line.featuredAsset.preview}
-              alt={'image'}
-              loading={'lazy'}
-            />
+    <li className="cart-line">
+      <div className="cart-line-image">
+        {line.featuredAsset ? (
+          <img
+            src={line.featuredAsset.preview}
+            alt={line.productVariant.name}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <div className="collection-image-placeholder">
+            <ImageNotSupportedOutlined />
+            <span>No image</span>
+          </div>
+        )}
+      </div>
+      <div className="cart-line-details">
+        <h3>{line.productVariant.name}</h3>
+        <div className="cart-line-prices">
+          {discounted && (
+            <del aria-label="Original line total">
+              <ProductPrice
+                price={line.linePriceWithTax}
+                currencyCode={currencyCode}
+              />
+            </del>
           )}
-        </div>
-        <div>
-          <Typography variant={'h5'} component={'h3'}>
-            {line.productVariant.name}
-          </Typography>
           <ProductPrice
-            className={cn(
-              line.proratedLinePriceWithTax !== line.linePriceWithTax &&
-                'line-through',
-            )}
-            price={line.linePriceWithTax}
+            price={line.proratedLinePriceWithTax}
             currencyCode={currencyCode}
           />
-          {line.proratedLinePriceWithTax !== line.linePriceWithTax && (
-            <ProductPrice
-              price={line.proratedLinePriceWithTax}
-              currencyCode={currencyCode}
-            />
-          )}
-          <ProductLineQty quantity={line.quantity} orderLineId={line.id} />
-          <DeleteCartLineButton orderLineId={line.id} />
+        </div>
+        <span className="cart-note">Line total · including tax</span>
+        <div className="cart-line-actions">
+          <ProductLineQty
+            quantity={line.quantity}
+            orderLineId={line.id}
+            productName={line.productVariant.name}
+          />
+          <DeleteCartLineButton
+            orderLineId={line.id}
+            productName={line.productVariant.name}
+          />
         </div>
       </div>
-    </ListItem>
+    </li>
   );
 }

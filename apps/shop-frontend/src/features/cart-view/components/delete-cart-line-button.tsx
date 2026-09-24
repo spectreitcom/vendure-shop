@@ -6,9 +6,9 @@ import { removeCartLine } from '#/features/cart-view';
 import { useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 
-type Props = Readonly<{ orderLineId: string }>;
+type Props = Readonly<{ orderLineId: string; productName: string }>;
 
-export function DeleteCartLineButton({ orderLineId }: Props) {
+export function DeleteCartLineButton({ orderLineId, productName }: Props) {
   const { refresh } = useActiveCart();
   const deleteCartLineFn = useServerFn(removeCartLine);
   const [error, setError] = useState<string | null>(null);
@@ -35,14 +35,21 @@ export function DeleteCartLineButton({ orderLineId }: Props) {
   return (
     <>
       <IconButton
-        size={'large'}
+        className="cart-remove-button"
+        aria-label={`Remove ${productName} from cart`}
+        title="Remove item"
         onClick={handleDeleteCartLine}
         loading={isDeleting}
         disabled={isDeleting}
       >
-        <DeleteSweepOutlinedIcon color={'error'} />
+        <DeleteSweepOutlinedIcon fontSize="small" />
       </IconButton>
-      <Snackbar open={!!error} message={error} autoHideDuration={6000} />
+      <Snackbar
+        open={!!error}
+        message={error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+      />
     </>
   );
 }

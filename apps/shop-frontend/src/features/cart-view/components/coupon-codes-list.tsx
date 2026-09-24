@@ -11,10 +11,13 @@ export function CouponCodesList() {
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  if (!activeCart) return;
+  const [removing, setRemoving] = useState(false);
+
+  if (!activeCart) return null;
 
   const handleRemoveCouponCode = async (couponCode: string) => {
     try {
+      setRemoving(true);
       await removeCouponCodeFn({ data: { couponCode } });
       setShowSuccess(true);
       await refresh();
@@ -26,30 +29,43 @@ export function CouponCodesList() {
       } else {
         setError('An unknown error occurred');
       }
+    } finally {
+      setRemoving(false);
     }
   };
 
   return (
     <>
-      {activeCart.promotions
-        .filter((promotion) => promotion.couponCode)
-        .map((promotion) => (
-          <Chip
-            key={promotion.id}
-            label={promotion.couponCode}
-            variant="outlined"
-            deleteIcon={<CloseIcon />}
-            onDelete={() => handleRemoveCouponCode(promotion.couponCode ?? '')}
-          />
-        ))}
+      <div className="cart-coupons">
+        {activeCart.promotions
+          .filter((promotion) => promotion.couponCode)
+          .map((promotion) => (
+            <Chip
+              key={promotion.id}
+              label={promotion.couponCode}
+              variant="outlined"
+              disabled={removing}
+              deleteIcon={<CloseIcon />}
+              onDelete={() =>
+                handleRemoveCouponCode(promotion.couponCode ?? '')
+              }
+            />
+          ))}
+      </div>
 
       <Snackbar
         open={showSuccess}
         message="Coupon code removed successfully"
         autoHideDuration={6000}
+        onClose={() => setShowSuccess(false)}
       />
 
-      <Snackbar open={!!error} message={error} autoHideDuration={6000} />
+      <Snackbar
+        open={!!error}
+        message={error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+      />
     </>
   );
 }
