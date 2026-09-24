@@ -1,3 +1,4 @@
+import { AuthLayout } from '#/components/auth-layout';
 import { createFileRoute } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
 import { RegistrationForm } from '#/features/registration';
@@ -9,10 +10,8 @@ export const Route = createFileRoute('/_auth/auth/registration')({
 
 function RouteComponent() {
   return (
-    <div className={'flex  justify-center'}>
-      <div className={'mt-64 w-[500px]'}>
-        <RegistrationForm />
-      </div>
-    </div>
+    <AuthLayout registration>
+      <RegistrationForm />
+    </AuthLayout>
   );
 }

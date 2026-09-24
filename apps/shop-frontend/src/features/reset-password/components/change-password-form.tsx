@@ -3,15 +3,10 @@ import { resetPassword } from '#/features/reset-password';
 import { useForm } from '@tanstack/react-form';
 import { resetPasswordInputSchema } from '#/features/reset-password/schemas';
 import { useState } from 'react';
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { useRouter } from '@tanstack/react-router';
+import { Alert, Button, TextField } from '@mui/material';
+import { Link } from '@tanstack/react-router';
+import { CheckCircleOutlined } from '@mui/icons-material';
+import { z } from 'zod';
 import { useActiveCart } from '#/features/shared/cart';
 import { useActiveUser } from '#/features/shared/authentication';
 
@@ -23,16 +18,23 @@ export function ChangePasswordForm({ token }: Props) {
   const changePasswordFn = useServerFn(resetPassword);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter();
+  const [success, setSuccess] = useState(false);
   const { refresh: refreshActiveCart } = useActiveCart();
   const { refresh: refreshActiveUser } = useActiveUser();
 
   const form = useForm({
     validators: {
-      onSubmit: resetPasswordInputSchema.pick({ password: true }),
+      onSubmit: resetPasswordInputSchema
+        .pick({ password: true })
+        .extend({ confirmPassword: z.string() })
+        .refine((values) => values.password === values.confirmPassword, {
+          message: 'Passwords must match',
+          path: ['confirmPassword'],
+        }),
     },
     defaultValues: {
       password: '',
+      confirmPassword: '',
     },
     onSubmit: async ({ value: { password } }) => {
       try {
@@ -41,7 +43,7 @@ export function ChangePasswordForm({ token }: Props) {
         await changePasswordFn({ data: { token, password } });
         await refreshActiveCart();
         await refreshActiveUser();
-        await router.navigate({ to: '/auth/login' });
+        setSuccess(true);
       } catch (e) {
         if (e instanceof Error) {
           setError(e.message);
@@ -54,51 +56,84 @@ export function ChangePasswordForm({ token }: Props) {
     },
   });
 
+  if (success)
+    return (
+      <div>
+        <header className="auth-form-heading">
+          <span className="auth-eyebrow">A fresh start</span>
+          <h1>Password updated</h1>
+        </header>
+        <div className="auth-status" role="status">
+          <CheckCircleOutlined />
+          <p>Your new password is ready to use. You can return to the shop.</p>
+        </div>
+        <div className="auth-switch">
+          <Link to="/">Continue shopping</Link>
+        </div>
+      </div>
+    );
+
   return (
-    <Card>
-      <CardContent>
-        <Typography variant={'h5'} component={'h1'}>
-          Change Password
-        </Typography>
-
-        {error && (
-          <div className={'mt-4'}>
-            <Alert severity="error">{error}</Alert>
-          </div>
-        )}
-
-        <div className={'mt-4'}>
+    <form
+      className="auth-form"
+      noValidate
+      onSubmit={async (event) => {
+        event.preventDefault();
+        await form.handleSubmit();
+      }}
+    >
+      <header className="auth-form-heading">
+        <span className="auth-eyebrow">Account recovery</span>
+        <h1>Set a new password</h1>
+        <p>Choose a new password to get back to your account.</p>
+      </header>
+      {error && <Alert severity="error">{error}</Alert>}
+      <div className="auth-fields">
+        {(['password', 'confirmPassword'] as const).map((name) => (
           <form.Field
-            name={'password'}
+            key={name}
+            name={name}
             children={(field) => (
               <TextField
-                size="small"
-                type={'password'}
-                className={'w-full'}
+                fullWidth
+                type="password"
+                label={
+                  name === 'password' ? 'New password' : 'Confirm new password'
+                }
+                autoComplete="new-password"
+                name={name}
                 onBlur={field.handleBlur}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 error={field.state.meta.errors.length > 0}
-                helperText={field.state.meta.errors.map(
-                  (errorField) => errorField?.message,
-                )}
+                helperText={
+                  field.state.meta.errors.length
+                    ? field.state.meta.errors.map((e) => e?.message).join(' ')
+                    : name === 'password'
+                      ? 'Use at least 6 characters.'
+                      : undefined
+                }
               />
             )}
           />
-        </div>
-
-        <div className={'mt-4'}>
-          <Button
-            variant={'outlined'}
-            className="w-full"
-            onClick={form.handleSubmit}
-            loading={submitting}
-            disabled={submitting}
-          >
-            Change password
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        ))}
+        <Button
+          type="submit"
+          variant="contained"
+          className="auth-submit"
+          fullWidth
+          loading={submitting}
+          disabled={submitting}
+        >
+          Save new password
+        </Button>
+      </div>
+      <div className="auth-switch">
+        <Link to="/auth/reset-password" search={{ token: undefined }}>
+          Request a new reset link
+        </Link>
+        <Link to="/auth/login">Back to sign in</Link>
+      </div>
+    </form>
   );
 }
