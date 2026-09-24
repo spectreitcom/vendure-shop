@@ -8,10 +8,10 @@ import {
 import { Link } from '@tanstack/react-router';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart/components/add-to-cart-button.tsx';
-import type { CollectionProduct } from '#/features/collection-view/types';
+import type { CollectionProductsQuery } from '#/graphql/generated.ts';
 
 type Props = Readonly<{
-  item: CollectionProduct;
+  item: CollectionProductsQuery['search']['items'][number];
   categorySlug: string;
 }>;
 
@@ -22,29 +22,33 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
         to={`/$categorySlug/$productSlug`}
         params={{
           categorySlug,
-          productSlug: item.product.slug,
+          productSlug: item.slug,
         }}
       >
         <CardMedia
           component={'img'}
           alt={''}
-          image={item.product.featuredAsset?.preview}
+          image={item.productAsset?.preview}
           className={'h-[250px]'}
         />
       </Link>
       <CardContent>
         <ProductPrice
-          price={item.priceWithTax}
+          price={
+            item.priceWithTax.__typename === 'SinglePrice'
+              ? item.priceWithTax.value
+              : 0
+          }
           currencyCode={item.currencyCode}
         />
         <Typography component={'h4'} variant={'h5'}>
-          {item.name}
+          {item.productName}
         </Typography>
       </CardContent>
       <CardActions>
         <AddToCartButton
           variant={'small'}
-          productVariantId={item.id}
+          productVariantId={item.productVariantId}
           quantity={1}
         />
       </CardActions>
