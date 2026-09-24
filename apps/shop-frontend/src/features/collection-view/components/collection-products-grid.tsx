@@ -11,7 +11,7 @@ export function CollectionProductsGrid({ items, categorySlug }: Props) {
   return (
     <Grid container columns={12}>
       {items.map((item) => (
-        <Grid key={item.productId} size={4}>
+        <Grid key={item.productVariantId} size={4}>
           <CollectionProductsItem item={item} categorySlug={categorySlug} />
         </Grid>
       ))}

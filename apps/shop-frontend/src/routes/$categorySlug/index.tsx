@@ -120,7 +120,7 @@ function RouteComponent() {
             <Filters
               facets={facets}
               collectionSlug={collection.slug}
-              searchParams={{ page, facetValues }}
+              searchParamsToCopy={{ facetValues }}
             />
           </Grid>
           {/* Products grid */}

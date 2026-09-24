@@ -19,6 +19,6 @@ export const getCollectionProductsInputSchema = z.object({
 });
 
 export const validateSearchSchema = z.object({
-  page: z.number().positive().optional().default(1),
+  page: z.int().positive().optional().default(1),
   facetValues: z.string().optional(),
 });

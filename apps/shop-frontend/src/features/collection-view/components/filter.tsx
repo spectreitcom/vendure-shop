@@ -5,12 +5,12 @@ import type { CollectionViewLoaderDeps } from '#/features/collection-view';
 
 type Props = Readonly<{
   filter: FacetsQuery['facets']['items'][number];
-  searchParams: CollectionViewLoaderDeps;
+  searchParamsToCopy: Omit<CollectionViewLoaderDeps, 'page'>;
   collectionSlug: string;
 }>;
 
-export function Filter({ filter, searchParams, collectionSlug }: Props) {
-  const { facetValues } = searchParams;
+export function Filter({ filter, searchParamsToCopy, collectionSlug }: Props) {
+  const { facetValues } = searchParamsToCopy;
 
   const filterValuesMap = new Map<string, boolean>();
 
@@ -26,6 +26,7 @@ export function Filter({ filter, searchParams, collectionSlug }: Props) {
       <div className={'flex flex-col'}>
         {filter.values.map((fValue) => (
           <Link
+            key={fValue.id}
             to={'/$categorySlug'}
             params={{ categorySlug: collectionSlug }}
             search={{
@@ -40,7 +41,6 @@ export function Filter({ filter, searchParams, collectionSlug }: Props) {
             }}
           >
             <FormControlLabel
-              key={fValue.id}
               control={<Checkbox checked={filterValuesMap.get(fValue.id)} />}
               label={fValue.name}
             />

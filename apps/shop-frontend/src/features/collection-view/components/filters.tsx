@@ -5,11 +5,11 @@ import type { CollectionViewLoaderDeps } from '#/features/collection-view';
 
 type Props = Readonly<{
   facets: FacetsQuery['facets']['items'];
-  searchParams: CollectionViewLoaderDeps;
+  searchParamsToCopy: Omit<CollectionViewLoaderDeps, 'page'>;
   collectionSlug: string;
 }>;
 
-export function Filters({ facets, collectionSlug, searchParams }: Props) {
+export function Filters({ facets, collectionSlug, searchParamsToCopy }: Props) {
   return (
     <Card>
       <CardContent>
@@ -18,7 +18,7 @@ export function Filters({ facets, collectionSlug, searchParams }: Props) {
             key={facet.id}
             filter={facet}
             collectionSlug={collectionSlug}
-            searchParams={searchParams}
+            searchParamsToCopy={searchParamsToCopy}
           />
         ))}
       </CardContent>
