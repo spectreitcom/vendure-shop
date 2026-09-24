@@ -42,8 +42,11 @@ export function AuthButtons() {
   }
 
   return (
-    <Button color="inherit" onClick={handleLogout}>
-      Logout
-    </Button>
+    <>
+      <Button color="inherit">Orders</Button>
+      <Button color="inherit" onClick={handleLogout}>
+        Logout
+      </Button>
+    </>
   );
 }
