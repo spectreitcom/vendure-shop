@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { ArrowForward, SearchOff } from '@mui/icons-material';
+import '#/features/collection-view/collection.css';
 import {
   CollectionProductsGrid,
   Filters,
@@ -80,80 +81,160 @@ function RouteComponent() {
   const { error, collection, facets, products } = Route.useLoaderData();
   const { page, facetValues } = Route.useLoaderDeps();
 
-  if (error || !collection)
+  if (error || !collection) {
     return (
-      <Card>
-        <CardContent>
-          <Typography variant={'body1'}>Something went wrong</Typography>
-        </CardContent>
-      </Card>
+      <main className="collection-page">
+        <div className="collection-state collection-shell" role="alert">
+          <span className="collection-eyebrow">A little interruption</span>
+          <h1>We couldn’t load this collection.</h1>
+          <p>Please try again in a moment, or explore our other collections.</p>
+          <Link to="/" className="collection-text-link">
+            Back to shop <ArrowForward fontSize="small" />
+          </Link>
+        </div>
+      </main>
     );
+  }
+
+  const totalItems = products?.totalItems ?? 0;
+  const activeFilters = facets.flatMap((facet) =>
+    facet.values.filter((value) => facetValues.includes(value.id)),
+  );
 
   return (
-    <div className={'mt-8'}>
-      <div className={'container'}>
-        <header>
-          <Typography variant={'h5'} component={'h1'}>
-            <Grid container columns={12} spacing={4}>
-              {collection.featuredAsset && (
-                <Grid size={3}>
-                  <img src={collection.featuredAsset.preview} alt="any alt" />
-                </Grid>
-              )}
-              <Grid size={9}>
-                <Typography variant={'h4'} component={'h1'}>
-                  {collection.name}
-                </Typography>
-                {collection.description && (
-                  <Typography variant={'body1'}>
-                    {collection.description}
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
-          </Typography>
+    <main className="collection-page">
+      <div className="collection-shell">
+        <nav className="collection-breadcrumbs" aria-label="Breadcrumb">
+          <Link to="/">Home</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{collection.name}</span>
+        </nav>
+        <header
+          className={`collection-hero${collection.featuredAsset ? '' : ' collection-hero-text'}`}
+        >
+          <div className="collection-hero-copy">
+            <span className="collection-eyebrow">Explore the collection</span>
+            <h1>{collection.name}</h1>
+            {collection.description && (
+              <p className="collection-description">
+                {collection.description
+                  .replace(/<[^>]*>/g, ' ')
+                  .replace(/\s+/g, ' ')
+                  .trim()}
+              </p>
+            )}
+            <a className="collection-text-link" href="#collection-products">
+              Discover the collection <ArrowForward fontSize="small" />
+            </a>
+          </div>
+          {collection.featuredAsset && (
+            <div className="collection-hero-image">
+              <img
+                src={collection.featuredAsset.preview}
+                alt={collection.name}
+                fetchPriority="high"
+              />
+            </div>
+          )}
         </header>
 
-        <Grid className={'mt-8'} container spacing={4} columns={12}>
-          {/* Filters */}
-          <Grid size={3}>
+        <div className="collection-layout" id="collection-products">
+          <aside aria-label="Product filters">
             <Filters
               facets={facets}
               collectionSlug={collection.slug}
               searchParamsToCopy={{ facetValues }}
             />
-          </Grid>
-          {/* Products grid */}
-          <Grid size={9}>
+          </aside>
+          <section
+            aria-label="Collection products"
+            className="collection-results"
+          >
+            <div className="collection-results-heading">
+              <div>
+                <span className="collection-eyebrow">The selection</span>
+                <h2>Explore {collection.name}</h2>
+              </div>
+              <span className="collection-count">
+                {totalItems} {totalItems === 1 ? 'product' : 'products'}
+              </span>
+            </div>
+            {activeFilters.length > 0 && (
+              <div
+                className="collection-active-filters"
+                aria-label="Active filters"
+              >
+                {activeFilters.map((value) => (
+                  <Link
+                    key={value.id}
+                    to="/$categorySlug"
+                    params={{ categorySlug: collection.slug }}
+                    search={{
+                      page: 1,
+                      facetValues: facetValues
+                        .filter((id) => id !== value.id)
+                        .join(','),
+                    }}
+                    aria-label={`Remove filter: ${value.name}`}
+                  >
+                    {value.name}
+                    <span aria-hidden="true">×</span>
+                  </Link>
+                ))}
+              </div>
+            )}
             {products?.items.length ? (
               <>
                 <CollectionProductsGrid
                   items={products.items}
                   categorySlug={collection.slug}
                 />
-                <div className={'flex justify-center p-8'}>
+                <div className="collection-pagination">
+                  <span>
+                    Showing {(page - 1) * TAKE + 1}–
+                    {Math.min(page * TAKE, totalItems)} of {totalItems}
+                  </span>
                   <CollectionProductsPagination
-                    totalItems={calcTotalPageNumbers(products.totalItems, TAKE)}
+                    totalItems={calcTotalPageNumbers(totalItems, TAKE)}
                     categorySlug={collection.slug}
                     page={page}
+                    searchParamsToCopy={{ facetValues: facetValues.join(',') }}
                   />
                 </div>
               </>
             ) : (
-              <NoProductsFound />
+              <div className="collection-state">
+                <SearchOff sx={{ fontSize: 40 }} />
+                <h2>No products found</h2>
+                <p>
+                  {facetValues.length
+                    ? 'Try removing a filter to discover more from this collection.'
+                    : 'There are no products in this collection yet. Explore the rest of the shop.'}
+                </p>
+                {facetValues.length ? (
+                  <Link
+                    className="collection-text-link"
+                    to="/$categorySlug"
+                    params={{ categorySlug: collection.slug }}
+                    search={{ page: 1 }}
+                  >
+                    Clear all filters <ArrowForward fontSize="small" />
+                  </Link>
+                ) : (
+                  <Link className="collection-text-link" to="/">
+                    Explore the shop <ArrowForward fontSize="small" />
+                  </Link>
+                )}
+              </div>
             )}
-          </Grid>
-        </Grid>
+          </section>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
 
 function calcTotalPageNumbers(totalItems: number, take: number) {
   if (take <= 0) throw new Error('Take must be greater than 0');
   return Math.ceil(totalItems / take);
-}
-
-function NoProductsFound() {
-  return <Typography>No products found</Typography>;
 }

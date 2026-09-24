@@ -58,6 +58,7 @@ export function AddToCartButton({
         loading={addingToCart}
         className={className}
         size={'medium'}
+        aria-label="Add to cart"
         color={'primary'}
         onClick={handleAddToCart}
       >

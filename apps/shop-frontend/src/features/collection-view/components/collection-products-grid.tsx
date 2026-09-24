@@ -1,4 +1,3 @@
-import { Grid } from '@mui/material';
 import { CollectionProductsItem } from '#/features/collection-view/components/collection-products-item.tsx';
 import type { CollectionProductsQuery } from '#/graphql/generated.ts';
 
@@ -9,12 +8,12 @@ type Props = Readonly<{
 
 export function CollectionProductsGrid({ items, categorySlug }: Props) {
   return (
-    <Grid container columns={12}>
+    <div className="collection-product-grid">
       {items.map((item) => (
-        <Grid key={item.productVariantId} size={4}>
+        <div key={item.productVariantId}>
           <CollectionProductsItem item={item} categorySlug={categorySlug} />
-        </Grid>
+        </div>
       ))}
-    </Grid>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { FacetsQuery } from '#/graphql/generated.ts';
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { Link } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import type { CollectionViewLoaderDeps } from '#/features/collection-view';
 
 type Props = Readonly<{
@@ -11,6 +11,7 @@ type Props = Readonly<{
 
 export function Filter({ filter, searchParamsToCopy, collectionSlug }: Props) {
   const { facetValues } = searchParamsToCopy;
+  const navigate = useNavigate();
 
   const filterValuesMap = new Map<string, boolean>();
 
@@ -19,34 +20,35 @@ export function Filter({ filter, searchParamsToCopy, collectionSlug }: Props) {
   }
 
   return (
-    <div className={'mb-4'}>
-      <div>
-        <h4 className={'text-xl'}>{filter.name}</h4>
-      </div>
-      <div className={'flex flex-col'}>
-        {filter.values.map((fValue) => (
-          <Link
-            key={fValue.id}
-            to={'/$categorySlug'}
-            params={{ categorySlug: collectionSlug }}
-            search={{
-              page: 1,
-              facetValues: filterValuesMap.get(fValue.id)
-                ? [
-                    ...facetValues.filter(
-                      (facetValueId) => facetValueId !== fValue.id,
-                    ),
-                  ].join(',')
-                : [...facetValues, fValue.id].join(','),
-            }}
-          >
-            <FormControlLabel
-              control={<Checkbox checked={filterValuesMap.get(fValue.id)} />}
-              label={fValue.name}
-            />
-          </Link>
+    <fieldset className="collection-filter-group">
+      <legend>{filter.name}</legend>
+      <div className="collection-filter-options">
+        {filter.values.map((value) => (
+          <FormControlLabel
+            key={value.id}
+            label={value.name}
+            control={
+              <Checkbox
+                size="small"
+                checked={filterValuesMap.get(value.id) ?? false}
+                onChange={() => {
+                  void navigate({
+                    to: '/$categorySlug',
+                    params: { categorySlug: collectionSlug },
+                    search: {
+                      page: 1,
+                      facetValues: (facetValues.includes(value.id)
+                        ? facetValues.filter((id) => id !== value.id)
+                        : [...facetValues, value.id]
+                      ).join(','),
+                    },
+                  });
+                }}
+              />
+            }
+          />
         ))}
       </div>
-    </div>
+    </fieldset>
   );
 }
