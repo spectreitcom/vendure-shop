@@ -2,10 +2,12 @@ import { createServerFn } from '@tanstack/react-start';
 import { getOrderInputSchema } from '../schema';
 import { createApolloClient } from '#/apollo-client.ts';
 import { OrderDocument } from '#/graphql/generated.ts';
+import { setResponseHeader } from '@tanstack/react-start/server';
 
 export const getOrder = createServerFn({ method: 'GET' })
   .validator(getOrderInputSchema)
   .handler(async ({ data: inputData }) => {
+    setResponseHeader('Cache-Control', 'private, no-store');
     const apolloClient = createApolloClient();
 
     const { data, error } = await apolloClient.query({
