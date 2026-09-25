@@ -30,7 +30,7 @@ const statuses: Record<string, { label: string; tone: string }> = {
   Cancelled: { label: 'Cancelled', tone: 'cancelled' },
 };
 
-export const Route = createFileRoute('/s/orders')({
+export const Route = createFileRoute('/s/orders/')({
   component: RouteComponent,
   pendingComponent: PendingComponent,
   validateSearch: ordersViewSearchParamsSchema,
