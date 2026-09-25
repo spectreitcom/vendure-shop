@@ -15,7 +15,6 @@ import { Route as SRouteRouteImport } from './routes/s/route'
 import { Route as CategorySlugIndexRouteImport } from './routes/$categorySlug/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as CartProtectedRouteRouteImport } from './routes/cart/_protected/route'
-import { Route as SOrdersRouteImport } from './routes/s/orders'
 import { Route as CategorySlugProductSlugIndexRouteImport } from './routes/$categorySlug/$productSlug/index'
 import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth/login'
 import { Route as AuthAuthRegistrationRouteImport } from './routes/_auth/auth/registration'
@@ -24,6 +23,8 @@ import { Route as AuthAuthVerifyRouteImport } from './routes/_auth/auth/verify'
 import { Route as CartProtectedCheckoutRouteImport } from './routes/cart/_protected/checkout'
 import { Route as CartProtectedPaymentRouteImport } from './routes/cart/_protected/payment'
 import { Route as CartProtectedPaymentResultRouteImport } from './routes/cart/_protected/payment-result'
+import { Route as SOrdersIndexRouteImport } from './routes/s/orders/index'
+import { Route as SOrdersOrderIdRouteImport } from './routes/s/orders/$orderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,11 +54,6 @@ const CartProtectedRouteRoute = CartProtectedRouteRouteImport.update({
   id: '/cart/_protected',
   path: '/cart',
   getParentRoute: () => rootRouteImport,
-} as any)
-const SOrdersRoute = SOrdersRouteImport.update({
-  id: '/orders',
-  path: '/orders',
-  getParentRoute: () => SRouteRoute,
 } as any)
 const CategorySlugProductSlugIndexRoute =
   CategorySlugProductSlugIndexRouteImport.update({
@@ -101,12 +97,21 @@ const CartProtectedPaymentResultRoute =
     path: '/payment-result',
     getParentRoute: () => CartProtectedRouteRoute,
   } as any)
+const SOrdersIndexRoute = SOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => SRouteRoute,
+} as any)
+const SOrdersOrderIdRoute = SOrdersOrderIdRouteImport.update({
+  id: '/orders/$orderId',
+  path: '/orders/$orderId',
+  getParentRoute: () => SRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/s': typeof SRouteRouteWithChildren
   '/cart': typeof CartProtectedRouteRouteWithChildren
-  '/s/orders': typeof SOrdersRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
@@ -116,13 +121,14 @@ export interface FileRoutesByFullPath {
   '/cart/checkout': typeof CartProtectedCheckoutRoute
   '/cart/payment': typeof CartProtectedPaymentRoute
   '/cart/payment-result': typeof CartProtectedPaymentResultRoute
+  '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
+  '/s/orders/': typeof SOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/s': typeof SRouteRouteWithChildren
   '/cart': typeof CartIndexRoute
-  '/s/orders': typeof SOrdersRoute
   '/$categorySlug': typeof CategorySlugIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
   '/auth/registration': typeof AuthAuthRegistrationRoute
@@ -131,7 +137,9 @@ export interface FileRoutesByTo {
   '/cart/checkout': typeof CartProtectedCheckoutRoute
   '/cart/payment': typeof CartProtectedPaymentRoute
   '/cart/payment-result': typeof CartProtectedPaymentResultRoute
+  '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug': typeof CategorySlugProductSlugIndexRoute
+  '/s/orders': typeof SOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,7 +147,6 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/s': typeof SRouteRouteWithChildren
   '/cart/_protected': typeof CartProtectedRouteRouteWithChildren
-  '/s/orders': typeof SOrdersRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/_auth/auth/login': typeof AuthAuthLoginRoute
@@ -149,7 +156,9 @@ export interface FileRoutesById {
   '/cart/_protected/checkout': typeof CartProtectedCheckoutRoute
   '/cart/_protected/payment': typeof CartProtectedPaymentRoute
   '/cart/_protected/payment-result': typeof CartProtectedPaymentResultRoute
+  '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
+  '/s/orders/': typeof SOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,7 +166,6 @@ export interface FileRouteTypes {
     | '/'
     | '/s'
     | '/cart'
-    | '/s/orders'
     | '/$categorySlug/'
     | '/cart/'
     | '/auth/login'
@@ -167,13 +175,14 @@ export interface FileRouteTypes {
     | '/cart/checkout'
     | '/cart/payment'
     | '/cart/payment-result'
+    | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug/'
+    | '/s/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/s'
     | '/cart'
-    | '/s/orders'
     | '/$categorySlug'
     | '/auth/login'
     | '/auth/registration'
@@ -182,14 +191,15 @@ export interface FileRouteTypes {
     | '/cart/checkout'
     | '/cart/payment'
     | '/cart/payment-result'
+    | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug'
+    | '/s/orders'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/s'
     | '/cart/_protected'
-    | '/s/orders'
     | '/$categorySlug/'
     | '/cart/'
     | '/_auth/auth/login'
@@ -199,7 +209,9 @@ export interface FileRouteTypes {
     | '/cart/_protected/checkout'
     | '/cart/_protected/payment'
     | '/cart/_protected/payment-result'
+    | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug/'
+    | '/s/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -255,13 +267,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/cart'
       preLoaderRoute: typeof CartProtectedRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/s/orders': {
-      id: '/s/orders'
-      path: '/orders'
-      fullPath: '/s/orders'
-      preLoaderRoute: typeof SOrdersRouteImport
-      parentRoute: typeof SRouteRoute
     }
     '/$categorySlug/$productSlug/': {
       id: '/$categorySlug/$productSlug/'
@@ -319,6 +324,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartProtectedPaymentResultRouteImport
       parentRoute: typeof CartProtectedRouteRoute
     }
+    '/s/orders/': {
+      id: '/s/orders/'
+      path: '/orders'
+      fullPath: '/s/orders/'
+      preLoaderRoute: typeof SOrdersIndexRouteImport
+      parentRoute: typeof SRouteRoute
+    }
+    '/s/orders/$orderId': {
+      id: '/s/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/s/orders/$orderId'
+      preLoaderRoute: typeof SOrdersOrderIdRouteImport
+      parentRoute: typeof SRouteRoute
+    }
   }
 }
 
@@ -341,11 +360,13 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface SRouteRouteChildren {
-  SOrdersRoute: typeof SOrdersRoute
+  SOrdersOrderIdRoute: typeof SOrdersOrderIdRoute
+  SOrdersIndexRoute: typeof SOrdersIndexRoute
 }
 
 const SRouteRouteChildren: SRouteRouteChildren = {
-  SOrdersRoute: SOrdersRoute,
+  SOrdersOrderIdRoute: SOrdersOrderIdRoute,
+  SOrdersIndexRoute: SOrdersIndexRoute,
 }
 
 const SRouteRouteWithChildren =

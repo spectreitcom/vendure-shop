@@ -7,30 +7,12 @@ import {
   getOrders,
   ordersViewSearchParamsSchema,
 } from '#/features/orders-view';
+import { dateFormatter, statuses } from '#/features/orders-view/presentation';
 import '#/features/collection-view/collection.css';
 import '#/features/orders-view/orders.css';
 
 const TAKE = 10;
-const dateFormatter = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
-
-const statuses: Record<string, { label: string; tone: string }> = {
-  AddingItems: { label: 'In progress', tone: 'neutral' },
-  ArrangingPayment: { label: 'Awaiting payment', tone: 'pending' },
-  PaymentAuthorized: { label: 'Payment authorized', tone: 'pending' },
-  PaymentSettled: { label: 'Paid', tone: 'success' },
-  PartiallyShipped: { label: 'Partially shipped', tone: 'pending' },
-  Shipped: { label: 'Shipped', tone: 'success' },
-  PartiallyDelivered: { label: 'Partially delivered', tone: 'pending' },
-  Delivered: { label: 'Delivered', tone: 'success' },
-  Cancelled: { label: 'Cancelled', tone: 'cancelled' },
-};
-
-export const Route = createFileRoute('/s/orders')({
+export const Route = createFileRoute('/s/orders/')({
   component: RouteComponent,
   pendingComponent: PendingComponent,
   validateSearch: ordersViewSearchParamsSchema,
@@ -114,7 +96,22 @@ function RouteComponent() {
                   <li className="orders-item" key={order.id}>
                     <div className="orders-number">
                       <span className="collection-eyebrow">Order number</span>
-                      <h3>#{order.code}</h3>
+                      <h3>
+                        <Link
+                          to="/s/orders/$orderId"
+                          params={{ orderId: order.id }}
+                        >
+                          #{order.code}
+                        </Link>
+                      </h3>
+                      <Link
+                        className="collection-text-link"
+                        to="/s/orders/$orderId"
+                        params={{ orderId: order.id }}
+                        aria-label={`View order ${order.code}`}
+                      >
+                        View details <ArrowForward fontSize="small" />
+                      </Link>
                     </div>
                     <dl className="orders-details">
                       <div>
