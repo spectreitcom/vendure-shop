@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as SRouteRouteImport } from './routes/s/route'
 import { Route as CategorySlugIndexRouteImport } from './routes/$categorySlug/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as CartProtectedRouteRouteImport } from './routes/cart/_protected/route'
+import { Route as SOrdersRouteImport } from './routes/s/orders'
 import { Route as CategorySlugProductSlugIndexRouteImport } from './routes/$categorySlug/$productSlug/index'
 import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth/login'
 import { Route as AuthAuthRegistrationRouteImport } from './routes/_auth/auth/registration'
@@ -32,6 +34,11 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SRouteRoute = SRouteRouteImport.update({
+  id: '/s',
+  path: '/s',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugIndexRoute = CategorySlugIndexRouteImport.update({
   id: '/$categorySlug/',
   path: '/$categorySlug/',
@@ -46,6 +53,11 @@ const CartProtectedRouteRoute = CartProtectedRouteRouteImport.update({
   id: '/cart/_protected',
   path: '/cart',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SOrdersRoute = SOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => SRouteRoute,
 } as any)
 const CategorySlugProductSlugIndexRoute =
   CategorySlugProductSlugIndexRouteImport.update({
@@ -92,7 +104,9 @@ const CartProtectedPaymentResultRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/s': typeof SRouteRouteWithChildren
   '/cart': typeof CartProtectedRouteRouteWithChildren
+  '/s/orders': typeof SOrdersRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
@@ -106,7 +120,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/s': typeof SRouteRouteWithChildren
   '/cart': typeof CartIndexRoute
+  '/s/orders': typeof SOrdersRoute
   '/$categorySlug': typeof CategorySlugIndexRoute
   '/auth/login': typeof AuthAuthLoginRoute
   '/auth/registration': typeof AuthAuthRegistrationRoute
@@ -121,7 +137,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/s': typeof SRouteRouteWithChildren
   '/cart/_protected': typeof CartProtectedRouteRouteWithChildren
+  '/s/orders': typeof SOrdersRoute
   '/$categorySlug/': typeof CategorySlugIndexRoute
   '/cart/': typeof CartIndexRoute
   '/_auth/auth/login': typeof AuthAuthLoginRoute
@@ -137,7 +155,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/s'
     | '/cart'
+    | '/s/orders'
     | '/$categorySlug/'
     | '/cart/'
     | '/auth/login'
@@ -151,7 +171,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/s'
     | '/cart'
+    | '/s/orders'
     | '/$categorySlug'
     | '/auth/login'
     | '/auth/registration'
@@ -165,7 +187,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/s'
     | '/cart/_protected'
+    | '/s/orders'
     | '/$categorySlug/'
     | '/cart/'
     | '/_auth/auth/login'
@@ -181,6 +205,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  SRouteRoute: typeof SRouteRouteWithChildren
   CartProtectedRouteRoute: typeof CartProtectedRouteRouteWithChildren
   CategorySlugIndexRoute: typeof CategorySlugIndexRoute
   CartIndexRoute: typeof CartIndexRoute
@@ -203,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/s': {
+      id: '/s'
+      path: '/s'
+      fullPath: '/s'
+      preLoaderRoute: typeof SRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$categorySlug/': {
       id: '/$categorySlug/'
       path: '/$categorySlug'
@@ -223,6 +255,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/cart'
       preLoaderRoute: typeof CartProtectedRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/s/orders': {
+      id: '/s/orders'
+      path: '/orders'
+      fullPath: '/s/orders'
+      preLoaderRoute: typeof SOrdersRouteImport
+      parentRoute: typeof SRouteRoute
     }
     '/$categorySlug/$productSlug/': {
       id: '/$categorySlug/$productSlug/'
@@ -301,6 +340,17 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface SRouteRouteChildren {
+  SOrdersRoute: typeof SOrdersRoute
+}
+
+const SRouteRouteChildren: SRouteRouteChildren = {
+  SOrdersRoute: SOrdersRoute,
+}
+
+const SRouteRouteWithChildren =
+  SRouteRoute._addFileChildren(SRouteRouteChildren)
+
 interface CartProtectedRouteRouteChildren {
   CartProtectedCheckoutRoute: typeof CartProtectedCheckoutRoute
   CartProtectedPaymentRoute: typeof CartProtectedPaymentRoute
@@ -319,6 +369,7 @@ const CartProtectedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  SRouteRoute: SRouteRouteWithChildren,
   CartProtectedRouteRoute: CartProtectedRouteRouteWithChildren,
   CategorySlugIndexRoute: CategorySlugIndexRoute,
   CartIndexRoute: CartIndexRoute,
