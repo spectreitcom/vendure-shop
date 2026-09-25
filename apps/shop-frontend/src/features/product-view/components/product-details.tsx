@@ -1,14 +1,65 @@
 import { ImageNotSupportedOutlined, ArrowDownward } from '@mui/icons-material';
+import { Link } from '@tanstack/react-router';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart';
 import type { GetProductDetailsViewQuery } from '#/graphql/generated.ts';
 
+type Product = NonNullable<GetProductDetailsViewQuery['product']>;
+type ProductVariant = NonNullable<
+  GetProductDetailsViewQuery['product']
+>['variants'][number];
+
 type Props = Readonly<{
-  product: NonNullable<GetProductDetailsViewQuery['product']>;
+  categorySlug: string;
+  product: Product;
+  productVariant: ProductVariant;
+  otherVariants: ProductVariant[];
 }>;
 
-export function ProductDetails({ product }: Props) {
-  const variant = product.variants.length ? product.variants[0] : undefined;
+const displayImage = (product: Product, productVariant: ProductVariant) => {
+  if (productVariant.featuredAsset?.preview)
+    return (
+      <img
+        src={productVariant.featuredAsset.preview}
+        alt={product.name}
+        fetchPriority="high"
+        decoding="async"
+      />
+    );
+
+  if (product.featuredAsset?.preview)
+    return (
+      <img
+        src={product.featuredAsset.preview}
+        alt={product.name}
+        fetchPriority="high"
+        decoding="async"
+      />
+    );
+
+  return (
+    <div className="collection-image-placeholder">
+      <ImageNotSupportedOutlined sx={{ fontSize: 40 }} />
+      <span>Image coming soon</span>
+    </div>
+  );
+};
+
+const displayProductName = (
+  product: Product,
+  productVariant: ProductVariant,
+) => {
+  if (productVariant.name) return productVariant.name;
+  return product.name;
+};
+
+export function ProductDetails({
+  categorySlug,
+  product,
+  productVariant,
+  otherVariants,
+}: Props) {
+  const variant = productVariant;
   const features = Object.values(
     product.facetValues.reduce<
       Record<string, { name: string; values: Array<string> }>
@@ -26,43 +77,55 @@ export function ProductDetails({ product }: Props) {
     <>
       <div className="product-layout">
         <div className="product-image">
-          {product.featuredAsset ? (
-            <img
-              src={product.featuredAsset.preview}
-              alt={product.name}
-              fetchPriority="high"
-              decoding="async"
-            />
-          ) : (
-            <div className="collection-image-placeholder">
-              <ImageNotSupportedOutlined sx={{ fontSize: 40 }} />
-              <span>Image coming soon</span>
-            </div>
-          )}
+          {displayImage(product, productVariant)}
         </div>
 
         <section className="product-summary" aria-labelledby="product-title">
           <span className="collection-eyebrow">From the collection</span>
-          <h1 id="product-title">{product.name}</h1>
-          {variant ? (
-            <div className="product-purchase">
-              <ProductPrice
-                className="product-price"
-                price={variant.priceWithTax}
-                currencyCode={variant.currencyCode}
-              />
-              <p className="product-price-note">Including tax</p>
-              <AddToCartButton
-                className="product-cart-button"
-                variant="large"
-                quantity={1}
-                productVariantId={variant.id}
-              />
-            </div>
-          ) : (
-            <p className="product-unavailable" role="status">
-              This product is currently unavailable for purchase.
-            </p>
+          <h1 id="product-title">
+            {displayProductName(product, productVariant)}
+          </h1>
+          <div className="product-purchase">
+            <ProductPrice
+              className="product-price"
+              price={variant.priceWithTax}
+              currencyCode={variant.currencyCode}
+            />
+            <p className="product-price-note">Including tax</p>
+            <AddToCartButton
+              className="product-cart-button"
+              variant="large"
+              quantity={1}
+              productVariantId={variant.id}
+            />
+          </div>
+
+          {otherVariants.length > 0 && (
+            <section
+              className="product-variants"
+              aria-labelledby="product-variants-title"
+            >
+              <h2 id="product-variants-title" className="collection-eyebrow">
+                Other variants
+              </h2>
+              <ul>
+                {otherVariants.map((otherVariant) => (
+                  <li key={otherVariant.id}>
+                    <Link
+                      to="/$categorySlug/$productSlug"
+                      params={{ categorySlug, productSlug: product.slug }}
+                      search={{ productVariantId: otherVariant.id }}
+                    >
+                      <span>{otherVariant.name}</span>
+                      <ProductPrice
+                        price={otherVariant.priceWithTax}
+                        currencyCode={otherVariant.currencyCode}
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
 
           {features.length > 0 && (

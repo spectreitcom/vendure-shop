@@ -12,8 +12,12 @@ export const GET_PRODUCT_DETAILS_VIEW = gql`
       description
       variants {
         id
+        name
         currencyCode
         priceWithTax
+        featuredAsset {
+          preview
+        }
       }
       facetValues {
         id

@@ -55,6 +55,10 @@ export const COLLECTION_PRODUCTS = gql`
         productAsset {
           preview
         }
+        productVariantName
+        productVariantAsset {
+          preview
+        }
         priceWithTax {
           ... on SinglePrice {
             value

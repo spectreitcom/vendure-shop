@@ -1,7 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { ArrowBack } from '@mui/icons-material';
 import { PendingComponent } from '#/components/pending-component.tsx';
-import { getProductDetailsView } from '#/features/product-view';
+import {
+  getProductDetailsView,
+  productDetailsViewSearchSchema,
+} from '#/features/product-view';
 import { ProductDetails } from '#/features/product-view/components/product-details.tsx';
 import '#/features/collection-view/collection.css';
 import '#/features/product-view/product.css';
@@ -9,27 +12,51 @@ import '#/features/product-view/product.css';
 export const Route = createFileRoute('/$categorySlug/$productSlug/')({
   component: RouteComponent,
   pendingComponent: PendingComponent,
-  loader: async ({ params: { productSlug } }) => {
+  validateSearch: productDetailsViewSearchSchema,
+  loaderDeps: ({ search }) => ({ productVariantId: search.productVariantId }),
+  loader: async ({ params: { productSlug }, deps: { productVariantId } }) => {
     try {
       const productViewDetails = await getProductDetailsView({
         data: { slug: productSlug },
       });
 
+      const productVariant = productViewDetails?.variants.find(
+        (v) => v.id === productVariantId,
+      );
+
+      const otherVariants = productViewDetails?.variants.filter(
+        (v) => v.id !== productVariantId,
+      );
+
+      if (!productVariant) {
+        return {
+          error: true,
+          productViewDetails: null,
+          productVariant: null,
+          otherVariants: null,
+        };
+      }
+
       return {
         error: false,
         productViewDetails,
+        productVariant,
+        otherVariants,
       };
     } catch {
       return {
         error: true,
         productViewDetails: null,
+        productVariant: null,
+        otherVariants: null,
       };
     }
   },
 });
 
 function RouteComponent() {
-  const { error, productViewDetails } = Route.useLoaderData();
+  const { error, productViewDetails, productVariant, otherVariants } =
+    Route.useLoaderData();
   const { categorySlug } = Route.useParams();
 
   return (
@@ -70,7 +97,10 @@ function RouteComponent() {
         ) : (
           <ProductDetails
             key={productViewDetails.id}
+            categorySlug={categorySlug}
             product={productViewDetails}
+            productVariant={productVariant}
+            otherVariants={otherVariants ?? []}
           />
         )}
       </div>
