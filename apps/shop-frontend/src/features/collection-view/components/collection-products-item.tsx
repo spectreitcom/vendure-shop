@@ -62,6 +62,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
         className="collection-product-image"
         to="/$categorySlug/$productSlug"
         params={{ categorySlug, productSlug: item.slug }}
+        search={{ productVariantId: item.productVariantId }}
       >
         {displayProductImage(item)}
         <span className="collection-product-discover">
@@ -74,6 +75,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
             <Link
               to="/$categorySlug/$productSlug"
               params={{ categorySlug, productSlug: item.slug }}
+              search={{ productVariantId: item.productVariantId }}
             >
               {displayProductName(item)}
             </Link>

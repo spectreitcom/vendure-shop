@@ -68,6 +68,41 @@
   outline: 2px solid var(--collection-accent);
   outline-offset: 4px;
 }
+.product-variants {
+  margin-top: 32px;
+}
+.product-variants h2 {
+  margin: 0 0 14px;
+}
+.product-variants ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.product-variants a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--collection-line);
+  border-radius: 4px;
+  color: var(--collection-accent);
+  font-size: 14px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.product-variants a:hover {
+  background: #f0f1eb;
+  border-color: var(--collection-accent);
+}
+.product-variants a:focus-visible {
+  outline: 2px solid var(--collection-accent);
+  outline-offset: 3px;
+}
 .product-features {
   margin-top: 32px;
   padding-top: 24px;
