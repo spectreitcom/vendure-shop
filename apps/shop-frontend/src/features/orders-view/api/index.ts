@@ -3,7 +3,7 @@ import { getOrdersInputSchema } from '#/features/orders-view/schema';
 import { createApolloClient } from '#/apollo-client.ts';
 import { OrdersDocument } from '#/graphql/generated.ts';
 
-export const getOrders = createServerFn()
+export const getOrders = createServerFn({ method: 'GET' })
   .validator(getOrdersInputSchema)
   .handler(async ({ data: inputData }) => {
     const apolloClient = createApolloClient();
