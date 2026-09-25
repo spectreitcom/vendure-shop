@@ -23,6 +23,7 @@ import { Route as AuthAuthVerifyRouteImport } from './routes/_auth/auth/verify'
 import { Route as CartProtectedCheckoutRouteImport } from './routes/cart/_protected/checkout'
 import { Route as CartProtectedPaymentRouteImport } from './routes/cart/_protected/payment'
 import { Route as CartProtectedPaymentResultRouteImport } from './routes/cart/_protected/payment-result'
+import { Route as SAddressesIndexRouteImport } from './routes/s/addresses/index'
 import { Route as SOrdersIndexRouteImport } from './routes/s/orders/index'
 import { Route as SOrdersOrderIdRouteImport } from './routes/s/orders/$orderId'
 
@@ -97,6 +98,11 @@ const CartProtectedPaymentResultRoute =
     path: '/payment-result',
     getParentRoute: () => CartProtectedRouteRoute,
   } as any)
+const SAddressesIndexRoute = SAddressesIndexRouteImport.update({
+  id: '/addresses/',
+  path: '/addresses/',
+  getParentRoute: () => SRouteRoute,
+} as any)
 const SOrdersIndexRoute = SOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/cart/payment-result': typeof CartProtectedPaymentResultRoute
   '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
+  '/s/addresses/': typeof SAddressesIndexRoute
   '/s/orders/': typeof SOrdersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/cart/payment-result': typeof CartProtectedPaymentResultRoute
   '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug': typeof CategorySlugProductSlugIndexRoute
+  '/s/addresses': typeof SAddressesIndexRoute
   '/s/orders': typeof SOrdersIndexRoute
 }
 export interface FileRoutesById {
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/cart/_protected/payment-result': typeof CartProtectedPaymentResultRoute
   '/s/orders/$orderId': typeof SOrdersOrderIdRoute
   '/$categorySlug/$productSlug/': typeof CategorySlugProductSlugIndexRoute
+  '/s/addresses/': typeof SAddressesIndexRoute
   '/s/orders/': typeof SOrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/cart/payment-result'
     | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug/'
+    | '/s/addresses/'
     | '/s/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/cart/payment-result'
     | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug'
+    | '/s/addresses'
     | '/s/orders'
   id:
     | '__root__'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/cart/_protected/payment-result'
     | '/s/orders/$orderId'
     | '/$categorySlug/$productSlug/'
+    | '/s/addresses/'
     | '/s/orders/'
   fileRoutesById: FileRoutesById
 }
@@ -324,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartProtectedPaymentResultRouteImport
       parentRoute: typeof CartProtectedRouteRoute
     }
+    '/s/addresses/': {
+      id: '/s/addresses/'
+      path: '/addresses'
+      fullPath: '/s/addresses/'
+      preLoaderRoute: typeof SAddressesIndexRouteImport
+      parentRoute: typeof SRouteRoute
+    }
     '/s/orders/': {
       id: '/s/orders/'
       path: '/orders'
@@ -361,11 +380,13 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface SRouteRouteChildren {
   SOrdersOrderIdRoute: typeof SOrdersOrderIdRoute
+  SAddressesIndexRoute: typeof SAddressesIndexRoute
   SOrdersIndexRoute: typeof SOrdersIndexRoute
 }
 
 const SRouteRouteChildren: SRouteRouteChildren = {
   SOrdersOrderIdRoute: SOrdersOrderIdRoute,
+  SAddressesIndexRoute: SAddressesIndexRoute,
   SOrdersIndexRoute: SOrdersIndexRoute,
 }
 
