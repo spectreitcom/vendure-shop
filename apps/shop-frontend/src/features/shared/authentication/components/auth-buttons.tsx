@@ -1,5 +1,7 @@
 import { Link, useRouter } from '@tanstack/react-router';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useId, useState } from 'react';
 import { logout, useActiveUser } from '#/features/shared/authentication';
 import { useServerFn } from '@tanstack/react-start';
 import { useActiveCart } from '#/features/shared/cart';
@@ -12,10 +14,15 @@ export function AuthButtons() {
   } = useActiveUser();
   const { refresh: refreshActiveCart } = useActiveCart();
   const router = useRouter();
+  const profileId = useId();
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const isMenuOpen = Boolean(menuAnchor);
+  const closeMenu = () => setMenuAnchor(null);
 
   const logoutFn = useServerFn(logout);
 
   const handleLogout = async () => {
+    closeMenu();
     await logoutFn();
     await refreshActiveUser();
     await refreshActiveCart();
@@ -43,12 +50,31 @@ export function AuthButtons() {
 
   return (
     <>
-      <Link to={'/s/orders'}>
-        <Button color="inherit">Orders</Button>
-      </Link>
-      <Button color="inherit" onClick={handleLogout}>
-        Logout
+      <Button
+        id={`${profileId}-button`}
+        color="inherit"
+        aria-controls={isMenuOpen ? `${profileId}-menu` : undefined}
+        aria-haspopup="menu"
+        aria-expanded={isMenuOpen ? 'true' : undefined}
+        endIcon={<KeyboardArrowDownIcon />}
+        onClick={(event) => setMenuAnchor(event.currentTarget)}
+      >
+        Profile
       </Button>
+      <Menu
+        id={`${profileId}-menu`}
+        anchorEl={menuAnchor}
+        open={isMenuOpen}
+        onClose={closeMenu}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        slotProps={{ list: { 'aria-labelledby': `${profileId}-button` } }}
+      >
+        <MenuItem component={Link} to="/s/orders" onClick={closeMenu}>
+          Orders
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
     </>
   );
 }
