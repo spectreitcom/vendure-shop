@@ -73,6 +73,9 @@ export function AuthButtons() {
         <MenuItem component={Link} to="/s/orders" onClick={closeMenu}>
           Orders
         </MenuItem>
+        <MenuItem component={Link} to="/s/addresses" onClick={closeMenu}>
+          Addresses
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

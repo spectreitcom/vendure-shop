@@ -1,0 +1,192 @@
+.addresses-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.addresses-page .MuiButton-root {
+  text-transform: none;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 9px 16px;
+}
+.addresses-page .MuiButton-contained {
+  background: var(--collection-accent);
+  flex-shrink: 0;
+}
+.addresses-page .MuiButton-contained:hover {
+  background: #354230;
+}
+.addresses-page .MuiButton-outlined {
+  border-color: #b3b9ac;
+  color: var(--collection-accent);
+}
+.addresses-page .MuiButton-outlined:hover {
+  background: #e7ebdf;
+  border-color: var(--collection-accent);
+}
+.addresses-page button:focus-visible {
+  outline: 2px solid var(--collection-accent);
+  outline-offset: 4px;
+}
+.addresses-page .collection-state .MuiButton-root {
+  margin-top: 16px;
+}
+.addresses-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.addresses-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--collection-line);
+  border-radius: 6px;
+  background: #f0f1eb;
+  overflow-wrap: anywhere;
+}
+.addresses-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--collection-accent);
+}
+.addresses-card h3 {
+  margin: 22px 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.addresses-details {
+  color: var(--collection-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.addresses-details p {
+  margin: 0;
+}
+.addresses-details .addresses-phone {
+  margin-top: 16px;
+}
+.addresses-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.addresses-card-actions {
+  margin-top: auto;
+  padding-top: 24px;
+}
+@media (max-width: 1050px) {
+  .addresses-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .addresses-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .addresses-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .addresses-card {
+    padding: 24px;
+  }
+}
+
+.address-dialog .MuiDialog-paper {
+  max-width: 640px;
+}
+.address-form-note {
+  margin: 0 0 24px;
+  color: #71766e;
+  font-size: 12px;
+}
+.address-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 20px;
+}
+.address-field-wide {
+  grid-column: 1 / -1;
+}
+.address-form .MuiInputLabel-root.Mui-error {
+  color: #d32f2f;
+}
+.address-form
+  .MuiOutlinedInput-root.Mui-error
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #d32f2f;
+}
+.address-defaults {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 28px 0 0;
+  padding: 16px 20px;
+  border: 1px solid #e1e3db;
+  border-radius: 4px;
+  background: #f0f1eb;
+}
+.address-defaults legend {
+  padding: 0 8px;
+  color: #465542;
+  font-size: 12px;
+  font-weight: 500;
+}
+.address-defaults .MuiFormControlLabel-label {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.address-defaults .MuiCheckbox-root {
+  color: #71766e;
+}
+.address-defaults .MuiCheckbox-root.Mui-checked {
+  color: #465542;
+}
+.address-defaults .MuiCheckbox-root.Mui-disabled {
+  color: #b3b9ac;
+}
+.address-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e1e3db;
+}
+.address-form-actions .MuiButton-root {
+  padding: 12px 24px;
+  text-transform: none;
+  border-radius: 4px;
+}
+.address-form-actions .address-cancel {
+  border-color: #b3b9ac;
+  color: #465542;
+}
+.address-form-actions .address-cancel:hover {
+  border-color: #465542;
+  background: #e7ebdf;
+}
+.address-form-actions .address-cancel.Mui-disabled {
+  color: #b3b9ac;
+}
+@media (max-width: 600px) {
+  .address-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .address-form-actions {
+    flex-direction: column-reverse;
+  }
+  .address-form-actions .MuiButton-root {
+    width: 100%;
+  }
+}
