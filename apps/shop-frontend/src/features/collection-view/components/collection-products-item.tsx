@@ -8,6 +8,45 @@ type Props = Readonly<{
   categorySlug: string;
 }>;
 
+const displayProductImage = (
+  item: CollectionProductsQuery['search']['items'][number],
+) => {
+  if (item.productVariantAsset?.preview)
+    return (
+      <img
+        src={item.productVariantAsset.preview}
+        alt={item.productName}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+
+  if (item.productAsset?.preview) {
+    return (
+      <img
+        src={item.productAsset.preview}
+        alt={item.productName}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  return (
+    <span className="collection-image-placeholder">
+      <ImageNotSupportedOutlined />
+      <span>Image coming soon</span>
+    </span>
+  );
+};
+
+const displayProductName = (
+  item: CollectionProductsQuery['search']['items'][number],
+) => {
+  if (item.productVariantName) return item.productVariantName;
+  return item.productName;
+};
+
 export function CollectionProductsItem({ item, categorySlug }: Props) {
   const price =
     item.priceWithTax.__typename === 'SinglePrice'
@@ -24,19 +63,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
         to="/$categorySlug/$productSlug"
         params={{ categorySlug, productSlug: item.slug }}
       >
-        {item.productAsset?.preview ? (
-          <img
-            src={item.productAsset.preview}
-            alt={item.productName}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <span className="collection-image-placeholder">
-            <ImageNotSupportedOutlined />
-            <span>Image coming soon</span>
-          </span>
-        )}
+        {displayProductImage(item)}
         <span className="collection-product-discover">
           View product <span aria-hidden="true">↗</span>
         </span>
@@ -48,7 +75,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
               to="/$categorySlug/$productSlug"
               params={{ categorySlug, productSlug: item.slug }}
             >
-              {item.productName}
+              {displayProductName(item)}
             </Link>
           </h3>
           <p className="collection-product-price">
