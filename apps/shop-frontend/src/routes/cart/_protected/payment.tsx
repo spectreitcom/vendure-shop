@@ -6,6 +6,7 @@ import {
   PaymentViewContent,
 } from '#/features/payment';
 import { PurchaseLayout } from '#/components/purchase-layout';
+import { m } from '#/paraglide/messages';
 
 type LoaderSuccess = {
   error: false;
@@ -29,7 +30,7 @@ export const Route = createFileRoute('/cart/_protected/payment')({
     } catch (error) {
       return {
         error: true,
-        message: 'Failed to load payment methods',
+        message: m.payment_load_error(),
       } satisfies LoaderResponse;
     }
   },
@@ -40,15 +41,15 @@ function RouteComponent() {
   return (
     <PurchaseLayout
       step={2}
-      title="Complete your order"
-      description="Review your selection and choose how you would like to pay."
+      title={m.payment_title()}
+      description={m.payment_description()}
     >
       {data.error ? (
         <section className="collection-state" role="alert">
-          <h2>We couldn’t load this step</h2>
+          <h2>{m.common_step_error_title()}</h2>
           <p>{data.message}</p>
           <Link to="/cart" className="collection-text-link">
-            Return to cart
+            {m.common_return_to_cart()}
           </Link>
         </section>
       ) : (

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "collection_error_title": "We couldn’t load this collection.",
+  "collection_error_description": "Please try again in a moment, or explore our other collections.",
+  "collection_back_to_shop": "Back to shop",
+  "collection_hero_eyebrow": "Explore the collection",
+  "collection_discover_link": "Discover the collection",
+  "collection_filters_label": "Product filters",
+  "collection_products_label": "Collection products",
+  "collection_selection_eyebrow": "The selection",
+  "collection_results_title": "Explore {name}",
+  "collection_products_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} product",
+        "countPlural=*": "{count} products"
+      }
+    }
+  ],
+  "collection_active_filters_label": "Active filters",
+  "collection_remove_filter_label": "Remove filter: {name}",
+  "collection_showing": "Showing {from}–{to} of {total}",
+  "collection_empty_title": "No products found",
+  "collection_empty_filtered_description": "Try removing a filter to discover more from this collection.",
+  "collection_empty_description": "There are no products in this collection yet. Explore the rest of the shop.",
+  "collection_clear_all_filters": "Clear all filters",
+  "collection_filters_title": "Filters",
+  "collection_filters_caption": "Refine your selection",
+  "collection_filters_clear_all": "Clear all",
+  "collection_product_view": "View product",
+  "collection_product_pricing_fallback": "See product for pricing"
+}

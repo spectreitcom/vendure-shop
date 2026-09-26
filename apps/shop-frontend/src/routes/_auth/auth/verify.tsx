@@ -7,6 +7,7 @@ import {
   MarkEmailUnreadOutlined,
 } from '@mui/icons-material';
 import { verifyCustomerAccount } from '#/features/authentication';
+import { m } from '#/paraglide/messages';
 
 type LoaderResponse = { error: true; message: string } | { error: false };
 
@@ -23,8 +24,7 @@ export const Route = createFileRoute('/_auth/auth/verify')({
     if (!token)
       return {
         error: true,
-        message:
-          'Open the verification link from your email to activate your account.',
+        message: m.verify_missing_token(),
       } satisfies LoaderResponse;
     try {
       await verifyCustomerAccount({ data: { token } });
@@ -38,7 +38,7 @@ export const Route = createFileRoute('/_auth/auth/verify')({
       if (e instanceof Error) {
         message = e.message;
       } else {
-        message = 'Invalid token';
+        message = m.verify_invalid_token();
       }
 
       return {
@@ -54,19 +54,19 @@ function RouteComponent() {
 
   return (
     <AuthLayout
-      breadcrumb="Account verification"
-      introTitle={'One last step.\nThen you’re home.'}
-      introDescription="Verify your email address to finish setting up your account."
+      breadcrumb={m.verify_title()}
+      introTitle={m.verify_intro_title()}
+      introDescription={m.verify_intro_description()}
     >
       <header className="auth-form-heading">
-        <span className="auth-eyebrow">Account verification</span>
+        <span className="auth-eyebrow">{m.verify_title()}</span>
         <h1>
-          {loaderData.error ? 'Check your verification link' : 'You’re all set'}
+          {loaderData.error ? m.verify_error_title() : m.verify_success_title()}
         </h1>
         <p>
           {loaderData.error
-            ? 'We couldn’t verify your account with this link.'
-            : 'Your email address has been verified.'}
+            ? m.verify_error_description()
+            : m.verify_success_description()}
         </p>
       </header>
       <div className="auth-status" role={loaderData.error ? 'alert' : 'status'}>
@@ -76,14 +76,12 @@ function RouteComponent() {
           <CheckCircleOutlined />
         )}
         <p>
-          {loaderData.error
-            ? loaderData.message
-            : 'Your account is ready. Continue to sign in or explore the shop.'}
+          {loaderData.error ? loaderData.message : m.verify_success_message()}
         </p>
       </div>
       <div className="auth-switch">
-        <Link to="/auth/login">Continue to sign in</Link>
-        <Link to="/">Explore the shop</Link>
+        <Link to="/auth/login">{m.verify_continue_sign_in()}</Link>
+        <Link to="/">{m.common_explore_shop()}</Link>
       </div>
     </AuthLayout>
   );

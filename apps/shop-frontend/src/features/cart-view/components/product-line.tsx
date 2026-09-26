@@ -4,6 +4,7 @@ import type { ActiveCartLine } from '#/features/shared/cart';
 import { ProductLineQty } from '#/features/cart-view/components/product-line-qty.tsx';
 import { ProductPrice } from '#/components/product-price.tsx';
 import type { CurrencyCode } from '#/graphql/generated.ts';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   line: ActiveCartLine;
@@ -26,7 +27,7 @@ export function ProductLine({ line, currencyCode }: Props) {
         ) : (
           <div className="collection-image-placeholder">
             <ImageNotSupportedOutlined />
-            <span>No image</span>
+            <span>{m.cart_line_no_image()}</span>
           </div>
         )}
       </div>
@@ -34,7 +35,7 @@ export function ProductLine({ line, currencyCode }: Props) {
         <h3>{line.productVariant.name}</h3>
         <div className="cart-line-prices">
           {discounted && (
-            <del aria-label="Original line total">
+            <del aria-label={m.cart_line_original_total_label()}>
               <ProductPrice
                 price={line.linePriceWithTax}
                 currencyCode={currencyCode}
@@ -46,7 +47,7 @@ export function ProductLine({ line, currencyCode }: Props) {
             currencyCode={currencyCode}
           />
         </div>
-        <span className="cart-note">Line total · including tax</span>
+        <span className="cart-note">{m.cart_line_total_note()}</span>
         <div className="cart-line-actions">
           <ProductLineQty
             quantity={line.quantity}

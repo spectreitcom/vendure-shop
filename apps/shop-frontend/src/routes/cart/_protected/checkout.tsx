@@ -3,6 +3,7 @@ import { PendingComponent } from '#/components/pending-component.tsx';
 import { CheckoutView, getEligibleShippingMethods } from '#/features/checkout';
 import { PurchaseLayout } from '#/components/purchase-layout';
 import type { EligibleShippingMethodsQuery } from '#/graphql/generated.ts';
+import { m } from '#/paraglide/messages';
 
 type LoaderSuccess = {
   error: false;
@@ -35,7 +36,7 @@ export const Route = createFileRoute('/cart/_protected/checkout')({
       }
       return {
         error: true,
-        message: 'Unknown error',
+        message: m.common_unknown_error(),
       } satisfies LoaderResult;
     }
   },
@@ -46,15 +47,15 @@ function RouteComponent() {
   return (
     <PurchaseLayout
       step={1}
-      title="Delivery details"
-      description="A few details, and your selection will be on its way."
+      title={m.checkout_title()}
+      description={m.checkout_description()}
     >
       {data.error ? (
         <section className="collection-state" role="alert">
-          <h2>We couldn’t load this step</h2>
+          <h2>{m.common_step_error_title()}</h2>
           <p>{data.message}</p>
           <Link to="/cart" className="collection-text-link">
-            Return to cart
+            {m.common_return_to_cart()}
           </Link>
         </section>
       ) : (

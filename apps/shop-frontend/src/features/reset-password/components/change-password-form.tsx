@@ -9,6 +9,7 @@ import { CheckCircleOutlined } from '@mui/icons-material';
 import { z } from 'zod';
 import { useActiveCart } from '#/features/shared/cart';
 import { useActiveUser } from '#/features/shared/authentication';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   token: string;
@@ -28,7 +29,7 @@ export function ChangePasswordForm({ token }: Props) {
         .pick({ password: true })
         .extend({ confirmPassword: z.string() })
         .refine((values) => values.password === values.confirmPassword, {
-          message: 'Passwords must match',
+          message: m.change_password_mismatch(),
           path: ['confirmPassword'],
         }),
     },
@@ -49,7 +50,7 @@ export function ChangePasswordForm({ token }: Props) {
           setError(e.message);
           return;
         }
-        setError('Error during password reset');
+        setError(m.change_password_error());
       } finally {
         setSubmitting(false);
       }
@@ -60,15 +61,17 @@ export function ChangePasswordForm({ token }: Props) {
     return (
       <div>
         <header className="auth-form-heading">
-          <span className="auth-eyebrow">A fresh start</span>
-          <h1>Password updated</h1>
+          <span className="auth-eyebrow">
+            {m.change_password_success_eyebrow()}
+          </span>
+          <h1>{m.change_password_success_title()}</h1>
         </header>
         <div className="auth-status" role="status">
           <CheckCircleOutlined />
-          <p>Your new password is ready to use. You can return to the shop.</p>
+          <p>{m.change_password_success_message()}</p>
         </div>
         <div className="auth-switch">
-          <Link to="/">Continue shopping</Link>
+          <Link to="/">{m.common_continue_shopping()}</Link>
         </div>
       </div>
     );
@@ -83,9 +86,9 @@ export function ChangePasswordForm({ token }: Props) {
       }}
     >
       <header className="auth-form-heading">
-        <span className="auth-eyebrow">Account recovery</span>
-        <h1>Set a new password</h1>
-        <p>Choose a new password to get back to your account.</p>
+        <span className="auth-eyebrow">{m.reset_password_eyebrow()}</span>
+        <h1>{m.change_password_title()}</h1>
+        <p>{m.change_password_description()}</p>
       </header>
       {error && <Alert severity="error">{error}</Alert>}
       <div className="auth-fields">
@@ -98,7 +101,9 @@ export function ChangePasswordForm({ token }: Props) {
                 fullWidth
                 type="password"
                 label={
-                  name === 'password' ? 'New password' : 'Confirm new password'
+                  name === 'password'
+                    ? m.change_password_new()
+                    : m.change_password_confirm()
                 }
                 autoComplete="new-password"
                 name={name}
@@ -110,7 +115,7 @@ export function ChangePasswordForm({ token }: Props) {
                   field.state.meta.errors.length
                     ? field.state.meta.errors.map((e) => e?.message).join(' ')
                     : name === 'password'
-                      ? 'Use at least 6 characters.'
+                      ? m.common_password_hint()
                       : undefined
                 }
               />
@@ -125,14 +130,14 @@ export function ChangePasswordForm({ token }: Props) {
           loading={submitting}
           disabled={submitting}
         >
-          Save new password
+          {m.change_password_submit()}
         </Button>
       </div>
       <div className="auth-switch">
         <Link to="/auth/reset-password" search={{ token: undefined }}>
-          Request a new reset link
+          {m.change_password_request_new_link()}
         </Link>
-        <Link to="/auth/login">Back to sign in</Link>
+        <Link to="/auth/login">{m.common_back_to_sign_in()}</Link>
       </div>
     </form>
   );

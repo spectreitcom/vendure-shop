@@ -6,6 +6,7 @@ import { useRouter } from '@tanstack/react-router';
 import { createCustomerAddress } from '../api';
 import { useServerFn } from '@tanstack/react-start';
 import type { AddNewAddressFormSchema } from '../schema';
+import { m } from '#/paraglide/messages';
 
 export function AddNewAddressBtn() {
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +27,7 @@ export function AddNewAddressBtn() {
         setError(e.message);
         return;
       }
-      setError('Something went wrong');
+      setError(m.addresses_generic_error());
     } finally {
       setSubmitting(false);
     }
@@ -44,7 +45,7 @@ export function AddNewAddressBtn() {
           setShowModal(true);
         }}
       >
-        Add new address
+        {m.addresses_add_button()}
       </Button>
 
       <AddressDialog

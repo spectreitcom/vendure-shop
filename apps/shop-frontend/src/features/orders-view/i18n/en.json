@@ -1,0 +1,41 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "orders_label": "Orders",
+  "orders_title": "Your orders",
+  "orders_description": "Your purchases, all in one place. Keep track of every order.",
+  "orders_error_title": "We couldn’t load your orders",
+  "orders_empty_title": "Your story starts here",
+  "orders_empty_description": "Once you place an order, you’ll find it here.",
+  "orders_page_empty_title": "No orders on this page",
+  "orders_page_empty_description": "Return to the first page to see your latest purchases.",
+  "orders_back": "Back to your orders",
+  "orders_history_title": "Order history",
+  "orders_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} order",
+        "countPlural=*": "{count} orders"
+      }
+    }
+  ],
+  "orders_number": "Order number",
+  "orders_view_label": "View order {code}",
+  "orders_view_details": "View details",
+  "orders_date_placed": "Date placed",
+  "orders_date_created": "Date created",
+  "orders_status": "Status",
+  "orders_total": "Total incl. tax",
+  "orders_showing": "Showing {from}–{to} of {total} orders",
+  "orders_pagination_label": "Order history pages",
+  "order_status_adding_items": "In progress",
+  "order_status_arranging_payment": "Awaiting payment",
+  "order_status_payment_authorized": "Payment authorized",
+  "order_status_payment_settled": "Paid",
+  "order_status_partially_shipped": "Partially shipped",
+  "order_status_shipped": "Shipped",
+  "order_status_partially_delivered": "Partially delivered",
+  "order_status_delivered": "Delivered",
+  "order_status_cancelled": "Cancelled"
+}

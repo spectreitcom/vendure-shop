@@ -1,0 +1,40 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "order_details_fallback_title": "Order details",
+  "order_details_title": "Order #{code}",
+  "order_details_placed_on": "Placed on",
+  "order_details_created_on": "Created on",
+  "order_details_fetch_error": "Failed to fetch order",
+  "order_details_error_title": "We couldn’t load your order",
+  "order_details_not_found_title": "Order not found",
+  "order_details_not_found_description": "This order is unavailable or does not belong to your account.",
+  "order_details_items_title": "Order items",
+  "order_details_items_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} item",
+        "countPlural=*": "{count} items"
+      }
+    }
+  ],
+  "order_details_no_items": "No items in this order.",
+  "order_details_sku": "SKU: {sku}",
+  "order_details_quantity": "Quantity: {quantity}",
+  "order_details_incl_tax": "incl. tax",
+  "order_details_summary_eyebrow": "At a glance",
+  "order_details_summary_title": "Order summary",
+  "order_details_subtotal": "Subtotal incl. tax",
+  "order_details_shipping": "Shipping incl. tax",
+  "order_details_total": "Total incl. tax",
+  "order_details_discounts_note": "Item totals include applicable discounts.",
+  "order_details_shipping_address": "Shipping address",
+  "order_details_billing_address": "Billing address",
+  "order_details_shipment_title": "Shipment details",
+  "order_details_shipment_status": "Status: {status}",
+  "order_details_tracking_number": "Tracking number: {trackingCode}",
+  "order_details_not_available": "Not available",
+  "order_details_no_shipment": "No shipment information available yet.",
+  "order_details_no_address": "No address provided."
+}

@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { ImageNotSupportedOutlined } from '@mui/icons-material';
 import { AddToCartButton } from '#/features/shared/cart/components/add-to-cart-button.tsx';
 import type { CollectionProductsQuery } from '#/graphql/generated.ts';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   item: CollectionProductsQuery['search']['items'][number];
@@ -35,7 +36,7 @@ const displayProductImage = (
   return (
     <span className="collection-image-placeholder">
       <ImageNotSupportedOutlined />
-      <span>Image coming soon</span>
+      <span>{m.common_image_coming_soon()}</span>
     </span>
   );
 };
@@ -66,7 +67,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
       >
         {displayProductImage(item)}
         <span className="collection-product-discover">
-          View product <span aria-hidden="true">↗</span>
+          {m.collection_product_view()} <span aria-hidden="true">↗</span>
         </span>
       </Link>
       <div className="collection-product-info">
@@ -81,7 +82,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
             </Link>
           </h3>
           <p className="collection-product-price">
-            {price ?? 'See product for pricing'}
+            {price ?? m.collection_product_pricing_fallback()}
           </p>
         </div>
         <AddToCartButton

@@ -7,6 +7,7 @@ import { AddressDialog } from './address-dialog';
 import type { AddNewAddressFormSchema } from '#/features/addresses-view/schema';
 import { useServerFn } from '@tanstack/react-start';
 import { useRouter } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   address: NonNullable<
@@ -35,7 +36,7 @@ export function EditAddressBtn({ address }: Props) {
         setError(e.message);
         return;
       }
-      setError('An error occurred');
+      setError(m.common_error_occurred());
     } finally {
       setSubmitting(false);
     }
@@ -52,7 +53,7 @@ export function EditAddressBtn({ address }: Props) {
           setShowModal(true);
         }}
       >
-        Edit address
+        {m.addresses_edit_button()}
       </Button>
 
       <AddressDialog

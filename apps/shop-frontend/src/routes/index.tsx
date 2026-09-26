@@ -8,6 +8,7 @@ import {
 } from '#/features/home-collections';
 import '#/features/collection-view/collection.css';
 import '#/features/home-collections/home.css';
+import { m } from '#/paraglide/messages';
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -36,18 +37,15 @@ function Home() {
           aria-labelledby="home-title"
         >
           <div className="home-hero-copy">
-            <span className="collection-eyebrow">Welcome to Vendure Shop</span>
+            <span className="collection-eyebrow">{m.home_eyebrow()}</span>
             <h1 id="home-title">
-              Find something
+              {m.home_title_line1()}
               <br />
-              to make yours.
+              {m.home_title_line2()}
             </h1>
-            <p>
-              A little inspiration. A new favourite. Explore our collections and
-              discover what speaks to you.
-            </p>
+            <p>{m.home_description()}</p>
             <a href="#collections" className="home-primary-link">
-              Explore the collections <ArrowDownward fontSize="small" />
+              {m.home_explore_collections()} <ArrowDownward fontSize="small" />
             </a>
           </div>
           {featured && (
@@ -55,7 +53,7 @@ function Home() {
               to="/$categorySlug"
               params={{ categorySlug: featured.slug }}
               className="home-featured"
-              aria-label={`Explore ${featured.name}`}
+              aria-label={m.home_featured_label({ name: featured.name })}
             >
               <img
                 src={featured.featuredAsset?.source}
@@ -64,7 +62,7 @@ function Home() {
               />
               <div className="home-featured-caption">
                 <div>
-                  <span>In the spotlight</span>
+                  <span>{m.home_spotlight()}</span>
                   <h2>{featured.name}</h2>
                 </div>
                 <ArrowForward />
@@ -73,23 +71,20 @@ function Home() {
           )}
         </section>
         <div className="home-introduction">
-          <span className="collection-eyebrow">Take a closer look</span>
+          <span className="collection-eyebrow">{m.home_intro_eyebrow()}</span>
           <p>
-            Different collections.
+            {m.home_intro_line1()}
             <br />
-            Your own way to explore.
+            {m.home_intro_line2()}
           </p>
-          <span>
-            Start with a collection that catches your eye, then find the details
-            that make it yours.
-          </span>
+          <span>{m.home_intro_description()}</span>
         </div>
         {error ? (
           <section id="collections" className="collection-state" role="alert">
-            <h2>Our collections couldn’t load</h2>
-            <p>Please try again in a moment.</p>
+            <h2>{m.home_error_title()}</h2>
+            <p>{m.common_try_again_in_moment()}</p>
             <Button className="home-retry" onClick={() => router.invalidate()}>
-              Try again
+              {m.common_try_again()}
             </Button>
           </section>
         ) : (
@@ -97,8 +92,8 @@ function Home() {
         )}
         <footer className="home-footer">
           <span className="home-wordmark">vendure</span>
-          <span>A little inspiration for your everyday.</span>
-          <a href="#home-title">Back to top ↑</a>
+          <span>{m.home_footer_tagline()}</span>
+          <a href="#home-title">{m.home_back_to_top()}</a>
         </footer>
       </div>
     </main>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://inlang.com/schema/project-settings",
+  "baseLocale": "en",
+  "locales": ["en"],
+  "modules": [
+    "https://cdn.jsdelivr.net/npm/@inlang/plugin-message-format@4.4.0/dist/index.js",
+    "https://cdn.jsdelivr.net/npm/@inlang/plugin-m-function-matcher@2.2.6/dist/index.js"
+  ],
+  "plugin.inlang.messageFormat": {
+    "pathPattern": [
+      "./src/features/addresses-view/i18n/{locale}.json",
+      "./src/features/authentication/i18n/{locale}.json",
+      "./src/features/cart-view/i18n/{locale}.json",
+      "./src/features/checkout/i18n/{locale}.json",
+      "./src/features/collection-view/i18n/{locale}.json",
+      "./src/features/home-collections/i18n/{locale}.json",
+      "./src/features/order-detials/i18n/{locale}.json",
+      "./src/features/orders-view/i18n/{locale}.json",
+      "./src/features/payment/i18n/{locale}.json",
+      "./src/features/product-view/i18n/{locale}.json",
+      "./src/features/registration/i18n/{locale}.json",
+      "./src/features/reset-password/i18n/{locale}.json",
+      "./src/features/shared/active-customer/i18n/{locale}.json",
+      "./src/features/shared/authentication/i18n/{locale}.json",
+      "./src/features/shared/cart/i18n/{locale}.json",
+      "./src/features/shared/i18n/{locale}.json",
+      "./src/features/shared/order/i18n/{locale}.json"
+    ]
+  }
+}

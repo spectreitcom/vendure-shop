@@ -1,0 +1,20 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "login_title": "Welcome back",
+  "login_description": "Sign in to pick up where you left off.",
+  "login_password_required": "Enter your password",
+  "login_wrong_credentials": "Wrong credentials",
+  "login_forgot_password": "Forgot password?",
+  "login_new_here": "New here?",
+  "verify_title": "Account verification",
+  "verify_intro_title": "One last step.\nThen you’re home.",
+  "verify_intro_description": "Verify your email address to finish setting up your account.",
+  "verify_error_title": "Check your verification link",
+  "verify_success_title": "You’re all set",
+  "verify_error_description": "We couldn’t verify your account with this link.",
+  "verify_success_description": "Your email address has been verified.",
+  "verify_success_message": "Your account is ready. Continue to sign in or explore the shop.",
+  "verify_missing_token": "Open the verification link from your email to activate your account.",
+  "verify_invalid_token": "Invalid token",
+  "verify_continue_sign_in": "Continue to sign in"
+}

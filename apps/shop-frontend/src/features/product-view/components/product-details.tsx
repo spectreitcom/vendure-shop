@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart';
 import type { GetProductDetailsViewQuery } from '#/graphql/generated.ts';
+import { m } from '#/paraglide/messages';
 
 type Product = NonNullable<GetProductDetailsViewQuery['product']>;
 type ProductVariant = NonNullable<
@@ -40,7 +41,7 @@ const displayImage = (product: Product, productVariant: ProductVariant) => {
   return (
     <div className="collection-image-placeholder">
       <ImageNotSupportedOutlined sx={{ fontSize: 40 }} />
-      <span>Image coming soon</span>
+      <span>{m.common_image_coming_soon()}</span>
     </div>
   );
 };
@@ -81,7 +82,7 @@ export function ProductDetails({
         </div>
 
         <section className="product-summary" aria-labelledby="product-title">
-          <span className="collection-eyebrow">From the collection</span>
+          <span className="collection-eyebrow">{m.product_eyebrow()}</span>
           <h1 id="product-title">
             {displayProductName(product, productVariant)}
           </h1>
@@ -91,7 +92,7 @@ export function ProductDetails({
               price={variant.priceWithTax}
               currencyCode={variant.currencyCode}
             />
-            <p className="product-price-note">Including tax</p>
+            <p className="product-price-note">{m.product_price_note()}</p>
             <AddToCartButton
               className="product-cart-button"
               variant="large"
@@ -106,7 +107,7 @@ export function ProductDetails({
               aria-labelledby="product-variants-title"
             >
               <h2 id="product-variants-title" className="collection-eyebrow">
-                Other variants
+                {m.product_other_variants()}
               </h2>
               <ul>
                 {otherVariants.map((otherVariant) => (
@@ -134,7 +135,7 @@ export function ProductDetails({
               aria-labelledby="product-features-title"
             >
               <h2 id="product-features-title" className="collection-eyebrow">
-                At a glance
+                {m.product_at_a_glance()}
               </h2>
               <dl>
                 {features.map((feature) => (
@@ -148,7 +149,7 @@ export function ProductDetails({
           )}
           {product.description && (
             <a href="#product-description" className="collection-text-link">
-              Explore the details <ArrowDownward fontSize="small" />
+              {m.product_explore_details()} <ArrowDownward fontSize="small" />
             </a>
           )}
         </section>
@@ -161,8 +162,12 @@ export function ProductDetails({
           aria-labelledby="product-description-title"
         >
           <header>
-            <span className="collection-eyebrow">A closer look</span>
-            <h2 id="product-description-title">About this product</h2>
+            <span className="collection-eyebrow">
+              {m.product_description_eyebrow()}
+            </span>
+            <h2 id="product-description-title">
+              {m.product_description_title()}
+            </h2>
           </header>
           <div
             className="prose prose-neutral product-description-content"

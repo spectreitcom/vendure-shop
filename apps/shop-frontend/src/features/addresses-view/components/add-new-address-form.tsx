@@ -13,6 +13,7 @@ import {
 import { getAddressCountries } from '../api';
 import { addNewAddressFormSchema } from '../schema';
 import type { AddNewAddressFormSchema } from '../schema';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   onSubmit: (value: AddNewAddressFormSchema) => void | Promise<void>;
@@ -25,43 +26,43 @@ type Props = Readonly<{
 const textFields = [
   {
     name: 'fullName',
-    label: 'Full name',
+    label: m.address_form_full_name,
     autoComplete: 'name',
     required: true,
   },
   {
     name: 'company',
-    label: 'Company (optional)',
+    label: m.address_form_company,
     autoComplete: 'organization',
   },
   {
     name: 'streetLine1',
-    label: 'Street address',
+    label: m.address_form_street_line1,
     autoComplete: 'address-line1',
     required: true,
     wide: true,
   },
   {
     name: 'streetLine2',
-    label: 'Apartment, suite, etc. (optional)',
+    label: m.address_form_street_line2,
     autoComplete: 'address-line2',
     wide: true,
   },
   {
     name: 'postalCode',
-    label: 'Postal code',
+    label: m.address_form_postal_code,
     autoComplete: 'postal-code',
     required: true,
   },
   {
     name: 'city',
-    label: 'City',
+    label: m.address_form_city,
     autoComplete: 'address-level2',
     required: true,
   },
   {
     name: 'phoneNumber',
-    label: 'Phone number (optional)',
+    label: m.address_form_phone_number,
     autoComplete: 'tel',
   },
 ] as const;
@@ -110,7 +111,7 @@ export function AddNewAddressForm({
       }}
     >
       {error && <Alert severity="error">{error}</Alert>}
-      <p className="address-form-note">Fields marked * are required.</p>
+      <p className="address-form-note">{m.address_form_required_note()}</p>
       <div className="address-fields">
         {textFields.map((input) => (
           <form.Field key={input.name} name={input.name}>
@@ -119,7 +120,7 @@ export function AddNewAddressForm({
                 id={`${id}-${input.name}`}
                 className={'wide' in input ? 'address-field-wide' : undefined}
                 fullWidth
-                label={input.label}
+                label={input.label()}
                 required={'required' in input}
                 autoComplete={input.autoComplete}
                 autoFocus={input.name === 'fullName'}
@@ -144,7 +145,7 @@ export function AddNewAddressForm({
               select
               fullWidth
               required
-              label="Country"
+              label={m.address_form_country()}
               name="countryCode"
               autoComplete="country"
               value={field.state.value}
@@ -156,7 +157,9 @@ export function AddNewAddressForm({
                 field.state.meta.errors
                   .map((issue) => issue?.message)
                   .join(' ') ||
-                (countries.isPending ? 'Loading countries…' : undefined)
+                (countries.isPending
+                  ? m.address_form_loading_countries()
+                  : undefined)
               }
             >
               {field.state.value &&
@@ -185,25 +188,25 @@ export function AddNewAddressForm({
               onClick={() => countries.refetch()}
               disabled={countries.isFetching}
             >
-              Retry
+              {m.address_form_retry()}
             </Button>
           }
         >
-          We couldn’t load the available countries. Please try again.
+          {m.address_form_countries_error()}
         </Alert>
       )}
       <fieldset className="address-defaults" disabled={submitting}>
-        <legend>Address preferences</legend>
+        <legend>{m.address_form_preferences()}</legend>
         {(
           [
-            ['defaultShippingAddress', 'Use as my default shipping address'],
-            ['defaultBillingAddress', 'Use as my default billing address'],
+            ['defaultShippingAddress', m.address_form_default_shipping],
+            ['defaultBillingAddress', m.address_form_default_billing],
           ] as const
         ).map(([name, label]) => (
           <form.Field key={name} name={name}>
             {(field) => (
               <FormControlLabel
-                label={label}
+                label={label()}
                 control={
                   <Checkbox
                     name={name}
@@ -224,7 +227,7 @@ export function AddNewAddressForm({
           onClick={onCancel}
           disabled={submitting}
         >
-          Cancel
+          {m.address_form_cancel()}
         </Button>
         <Button
           className="auth-submit"
@@ -233,7 +236,7 @@ export function AddNewAddressForm({
           loading={submitting}
           disabled={submitting || !countries.data?.length}
         >
-          {values ? 'Save changes' : 'Add address'}
+          {values ? m.address_form_save() : m.address_form_add()}
         </Button>
       </div>
     </form>

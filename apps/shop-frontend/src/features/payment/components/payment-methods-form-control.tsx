@@ -8,6 +8,7 @@ import {
   RadioGroup,
 } from '@mui/material';
 import { cn } from '#/utils';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   paymentMethods: EligiblePaymentMethodsQuery['eligiblePaymentMethods'];
@@ -30,7 +31,7 @@ export function PaymentMethodsFormControl({
     <div>
       <FormControl error={error} className="purchase-methods">
         <RadioGroup
-          aria-label="Payment method"
+          aria-label={m.payment_method_title()}
           name="paymentMethod"
           value={value ?? ''}
         >
@@ -46,9 +47,7 @@ export function PaymentMethodsFormControl({
           ))}
         </RadioGroup>
         {!paymentMethods.length && (
-          <p className="purchase-note">
-            No payment methods are available right now. Please try again later.
-          </p>
+          <p className="purchase-note">{m.payment_no_methods()}</p>
         )}
         {error && helperText && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>

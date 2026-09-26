@@ -1,0 +1,14 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "auth_buttons_login": "Login",
+  "auth_buttons_register": "Register",
+  "auth_buttons_profile": "Profile",
+  "auth_buttons_orders": "Orders",
+  "auth_buttons_addresses": "Addresses",
+  "auth_buttons_logout": "Logout",
+  "login_modal_join_eyebrow": "Join the shop",
+  "login_modal_close_label": "Close account dialog",
+  "login_modal_welcome_back": "Welcome back",
+  "login_modal_registration_description": "A simple start to your next favourite find.",
+  "login_modal_login_description": "Sign in to continue with your order."
+}

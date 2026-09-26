@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "add_to_cart_label": "Add to cart",
+  "add_to_cart_button": "Add to Cart",
+  "add_to_cart_error": "Add to Cart Error",
+  "add_to_cart_success": "Product has been added to your cart"
+}

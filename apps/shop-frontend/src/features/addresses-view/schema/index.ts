@@ -1,13 +1,29 @@
 import { z } from 'zod';
+import { m } from '#/paraglide/messages';
 
 export const addNewAddressFormSchema = z.object({
-  fullName: z.string().trim().min(1, 'Full name is required'),
+  fullName: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.address_form_full_name_required() }),
   company: z.string().trim(),
-  streetLine1: z.string().trim().min(1, 'Street line 1 is required'),
+  streetLine1: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.address_form_street_line1_required() }),
   streetLine2: z.string().trim(),
-  city: z.string().trim().min(1, 'City is required'),
-  postalCode: z.string().trim().min(1, 'Postal code is required'),
-  countryCode: z.string().trim().min(1, 'Country code is required'),
+  city: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.address_form_city_required() }),
+  postalCode: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.address_form_postal_code_required() }),
+  countryCode: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.address_form_country_required() }),
   phoneNumber: z.string().trim(),
   defaultShippingAddress: z.boolean(),
   defaultBillingAddress: z.boolean(),
@@ -16,5 +32,5 @@ export const addNewAddressFormSchema = z.object({
 export type AddNewAddressFormSchema = z.infer<typeof addNewAddressFormSchema>;
 
 export const updateCustomerAddressInput = addNewAddressFormSchema.extend({
-  id: z.string().min(1, 'Address id is required'),
+  id: z.string().min(1, { error: () => m.address_form_id_required() }),
 });

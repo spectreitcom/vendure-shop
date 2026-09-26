@@ -6,6 +6,7 @@ import { requestResetPassword } from '#/features/reset-password';
 import { useForm } from '@tanstack/react-form';
 import { requestResetPasswordInputSchema } from '#/features/reset-password/schemas';
 import { useState } from 'react';
+import { m } from '#/paraglide/messages';
 
 export function ResetPasswordForm() {
   const requestResetPasswordFn = useServerFn(requestResetPassword);
@@ -32,7 +33,7 @@ export function ResetPasswordForm() {
           setError(e.message);
           return;
         }
-        setError('An error occurred while resetting your password.');
+        setError(m.reset_password_request_error());
       } finally {
         setSending(false);
       }
@@ -49,27 +50,28 @@ export function ResetPasswordForm() {
       }}
     >
       <header className="auth-form-heading">
-        <span className="auth-eyebrow">Account recovery</span>
-        <h1>{success ? 'Check your inbox' : 'Forgot your password?'}</h1>
+        <span className="auth-eyebrow">{m.reset_password_eyebrow()}</span>
+        <h1>
+          {success
+            ? m.reset_password_success_title()
+            : m.reset_password_title()}
+        </h1>
         <p>
           {success
-            ? 'Your next step is in your email.'
-            : 'Enter your email address and we’ll help you reset your password.'}
+            ? m.reset_password_success_description()
+            : m.reset_password_description()}
         </p>
       </header>
       {error && <Alert severity="error">{error}</Alert>}
       {success ? (
         <div className="auth-status" role="status">
           <MailOutlined />
-          <p>
-            If an account exists for this email address, you’ll receive a
-            password reset link. Check your spam folder too.
-          </p>
+          <p>{m.reset_password_success_message()}</p>
           <Button
             className="auth-switch-button"
             onClick={() => setSuccess(false)}
           >
-            Try another email address
+            {m.reset_password_try_another()}
           </Button>
         </div>
       ) : (
@@ -78,7 +80,7 @@ export function ResetPasswordForm() {
             name="emailAddress"
             children={(field) => (
               <TextField
-                label="Email address"
+                label={m.common_email_address()}
                 type="email"
                 autoComplete="email"
                 name="email"
@@ -101,12 +103,12 @@ export function ResetPasswordForm() {
             loading={sending}
             disabled={sending}
           >
-            Send reset link
+            {m.reset_password_submit()}
           </Button>
         </div>
       )}
       <div className="auth-switch">
-        <Link to="/auth/login">Back to sign in</Link>
+        <Link to="/auth/login">{m.common_back_to_sign_in()}</Link>
       </div>
     </form>
   );

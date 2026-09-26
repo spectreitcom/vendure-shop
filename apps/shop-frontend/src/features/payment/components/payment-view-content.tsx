@@ -11,13 +11,14 @@ import { useServerFn } from '@tanstack/react-start';
 import { useActiveCart } from '#/features/shared/cart';
 import { PurchaseSummary } from '#/components/purchase-layout';
 import { useRouter } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   paymentMethods: EligiblePaymentMethodsQuery['eligiblePaymentMethods'];
 }>;
 
 const formSchema = z.object({
-  method: z.string().min(1),
+  method: z.string().min(1, { error: () => m.payment_method_required() }),
 });
 
 export function PaymentViewContent({ paymentMethods }: Props) {
@@ -53,7 +54,7 @@ export function PaymentViewContent({ paymentMethods }: Props) {
           setError(e.message);
           return;
         }
-        setError('An unexpected error occurred');
+        setError(m.common_unexpected_error());
       } finally {
         setIsSubmitting(false);
       }
@@ -63,16 +64,12 @@ export function PaymentViewContent({ paymentMethods }: Props) {
   if (fetching && !activeCart)
     return (
       <p className="purchase-note" role="status">
-        Loading your order…
+        {m.common_loading_order()}
       </p>
     );
 
   if (!activeCart?.lines.length)
-    return (
-      <p className="purchase-note">
-        No active order to pay for. Return to the shop to continue.
-      </p>
-    );
+    return <p className="purchase-note">{m.payment_no_order()}</p>;
 
   return (
     <form
@@ -83,10 +80,8 @@ export function PaymentViewContent({ paymentMethods }: Props) {
     >
       <div className="purchase-grid">
         <section className="purchase-panel">
-          <h2>Payment method</h2>
-          <p className="purchase-note">
-            Select a payment method to complete your order.
-          </p>
+          <h2>{m.payment_method_title()}</h2>
+          <p className="purchase-note">{m.payment_method_hint()}</p>
           <form.Field
             name={'method'}
             children={(field) => (
@@ -112,7 +107,7 @@ export function PaymentViewContent({ paymentMethods }: Props) {
             loading={isSubmitting}
             className={'w-full'}
           >
-            Confirm and pay
+            {m.payment_submit()}
           </Button>
         </PurchaseSummary>
       </div>

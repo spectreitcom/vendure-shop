@@ -5,12 +5,13 @@ import { useForm } from '@tanstack/react-form';
 import { useState } from 'react';
 import { z } from 'zod';
 import { useActiveCart } from '#/features/shared/cart';
+import { m } from '#/paraglide/messages';
 
 const formValidationSchema = z.object({
   couponCode: z
     .string()
     .trim()
-    .min(3, 'Enter a coupon code of at least 3 characters'),
+    .min(3, { error: () => m.cart_coupon_code_min_length() }),
 });
 
 export function CouponCodeForm() {
@@ -40,7 +41,7 @@ export function CouponCodeForm() {
         if (e instanceof Error) {
           setError(e.message);
         } else {
-          setError('Error during applying a coupon code');
+          setError(m.cart_coupon_code_apply_error());
         }
       } finally {
         setSubmitting(false);
@@ -63,8 +64,8 @@ export function CouponCodeForm() {
             <>
               <TextField
                 value={field.state.value}
-                label="Coupon code"
-                placeholder="Enter your code"
+                label={m.cart_coupon_code_label()}
+                placeholder={m.cart_coupon_code_placeholder()}
                 disabled={submitting}
                 fullWidth
                 variant={'outlined'}
@@ -85,13 +86,13 @@ export function CouponCodeForm() {
           loading={submitting}
           disabled={submitting}
         >
-          Apply
+          {m.cart_coupon_code_apply()}
         </Button>
       </form>
       <Snackbar
         open={showSuccessSnackbar}
         autoHideDuration={6000}
-        message={'Coupon code applied successfully'}
+        message={m.cart_coupon_code_applied()}
         onClose={() => setShowSuccessSnackbar(false)}
       />
 

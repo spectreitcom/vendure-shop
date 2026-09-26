@@ -5,6 +5,7 @@ import { useId, useState } from 'react';
 import { logout, useActiveUser } from '#/features/shared/authentication';
 import { useServerFn } from '@tanstack/react-start';
 import { useActiveCart } from '#/features/shared/cart';
+import { m } from '#/paraglide/messages';
 
 export function AuthButtons() {
   const {
@@ -36,12 +37,12 @@ export function AuthButtons() {
       <>
         <Link to={'/auth/login'}>
           <Button color="inherit" component="span">
-            Login
+            {m.auth_buttons_login()}
           </Button>
         </Link>
         <Link to={'/auth/registration'}>
           <Button color="inherit" component="span">
-            Register
+            {m.auth_buttons_register()}
           </Button>
         </Link>
       </>
@@ -59,7 +60,7 @@ export function AuthButtons() {
         endIcon={<KeyboardArrowDownIcon />}
         onClick={(event) => setMenuAnchor(event.currentTarget)}
       >
-        Profile
+        {m.auth_buttons_profile()}
       </Button>
       <Menu
         id={`${profileId}-menu`}
@@ -71,12 +72,12 @@ export function AuthButtons() {
         slotProps={{ list: { 'aria-labelledby': `${profileId}-button` } }}
       >
         <MenuItem component={Link} to="/s/orders" onClick={closeMenu}>
-          Orders
+          {m.auth_buttons_orders()}
         </MenuItem>
         <MenuItem component={Link} to="/s/addresses" onClick={closeMenu}>
-          Addresses
+          {m.auth_buttons_addresses()}
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>{m.auth_buttons_logout()}</MenuItem>
       </Menu>
     </>
   );

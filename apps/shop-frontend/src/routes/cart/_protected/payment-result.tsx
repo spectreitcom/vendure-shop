@@ -10,6 +10,7 @@ import { PurchaseLayout } from '#/components/purchase-layout';
 import { ProductPrice } from '#/components/product-price';
 import { getPaymentOrderResult } from '#/features/payment/api/order-result';
 import { PendingComponent } from '#/components/pending-component';
+import { m } from '#/paraglide/messages';
 
 export const Route = createFileRoute('/cart/_protected/payment-result')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -46,20 +47,20 @@ function RouteComponent() {
     ].includes(order.state);
   const cancelled = order?.state === 'Cancelled';
   const title = confirmed
-    ? 'Thank you for your order'
+    ? m.payment_result_title_confirmed()
     : cancelled
-      ? 'Order cancelled'
+      ? m.payment_result_title_cancelled()
       : order
-        ? 'Payment in progress'
-        : 'Check your order status';
+        ? m.payment_result_title_pending()
+        : m.payment_result_title_unknown();
   return (
     <PurchaseLayout
       step={confirmed ? 3 : 2}
       title={title}
       description={
         confirmed
-          ? 'Your selection has found a new home.'
-          : 'The latest information about your order.'
+          ? m.payment_result_description_confirmed()
+          : m.payment_result_description()
       }
     >
       <section className="purchase-result" aria-live="polite">
@@ -72,27 +73,29 @@ function RouteComponent() {
         )}
         <h2>
           {confirmed
-            ? 'Your order is confirmed'
+            ? m.payment_result_heading_confirmed()
             : cancelled
-              ? 'This order has been cancelled'
+              ? m.payment_result_heading_cancelled()
               : order
-                ? 'Awaiting payment confirmation'
-                : 'We couldn’t confirm your order'}
+                ? m.payment_result_heading_pending()
+                : m.payment_result_heading_unknown()}
         </h2>
         <p>
           {confirmed
-            ? 'Your payment has been accepted. Keep your order reference for your records.'
+            ? m.payment_result_message_confirmed()
             : cancelled
-              ? 'You can return to the shop to place a new order.'
+              ? m.payment_result_message_cancelled()
               : order
-                ? 'Your payment is not confirmed yet. Refresh the status before attempting another payment.'
+                ? m.payment_result_message_pending()
                 : error
-                  ? 'Order status is temporarily unavailable. Please try again.'
-                  : 'Open the confirmation link for your order to view its status.'}
+                  ? m.payment_result_message_error()
+                  : m.payment_result_message_unknown()}
         </p>
         {order && (
           <div className="purchase-result-details">
-            <span className="collection-eyebrow">Order reference</span>
+            <span className="collection-eyebrow">
+              {m.payment_result_order_reference()}
+            </span>
             <p>{order.code}</p>
             <ProductPrice
               price={order.totalWithTax}
@@ -102,12 +105,12 @@ function RouteComponent() {
         )}
         {!confirmed && !cancelled && (
           <Button variant="contained" onClick={() => router.invalidate()}>
-            Refresh status
+            {m.payment_result_refresh()}
           </Button>
         )}
         <div>
           <Link to="/" className="collection-text-link">
-            Continue shopping <ArrowForward fontSize="small" />
+            {m.common_continue_shopping()} <ArrowForward fontSize="small" />
           </Link>
         </div>
       </section>

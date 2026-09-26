@@ -5,6 +5,7 @@ import { adjustCartLine } from '#/features/cart-view';
 import { useServerFn } from '@tanstack/react-start';
 import { useState } from 'react';
 import { useActiveCart } from '#/features/shared/cart';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   quantity: number;
@@ -28,7 +29,7 @@ export function ProductLineQty({ quantity, orderLineId, productName }: Props) {
       setError(e.message);
       return;
     }
-    setError('Error occurred during updating a cart');
+    setError(m.cart_line_update_error());
   };
 
   const increaseQuantity = async () => {
@@ -63,11 +64,11 @@ export function ProductLineQty({ quantity, orderLineId, productName }: Props) {
     <div
       className="cart-quantity"
       role="group"
-      aria-label={`Quantity for ${productName}`}
+      aria-label={m.cart_line_quantity_label({ productName })}
       aria-busy={loading}
     >
       <IconButton
-        aria-label={`Decrease quantity of ${productName}`}
+        aria-label={m.cart_line_decrease_quantity_label({ productName })}
         disabled={loading || quantity <= 1}
         onClick={decreaseQuantity}
       >
@@ -75,7 +76,7 @@ export function ProductLineQty({ quantity, orderLineId, productName }: Props) {
       </IconButton>
       <span aria-live="polite">{quantity}</span>
       <IconButton
-        aria-label={`Increase quantity of ${productName}`}
+        aria-label={m.cart_line_increase_quantity_label({ productName })}
         disabled={loading || quantity >= 100}
         onClick={increaseQuantity}
       >

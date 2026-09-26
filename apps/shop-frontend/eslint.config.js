@@ -15,6 +15,11 @@ export default [
     },
   },
   {
-    ignores: ['eslint.config.js', 'prettier.config.js', 'src/graphql/**/*'],
+    ignores: [
+      'eslint.config.js',
+      'prettier.config.js',
+      'src/graphql/**/*',
+      'src/paraglide/**/*',
+    ],
   },
 ];
