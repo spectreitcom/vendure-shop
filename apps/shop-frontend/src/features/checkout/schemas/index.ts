@@ -20,6 +20,7 @@ export const setOrderShippingMethodInputSchema = z.object({
 export const checkoutFormSchema = z
   .object({
     needInvoice: z.boolean(),
+    billingSameAsShipping: z.boolean(),
     shippingCity: z
       .string()
       .trim()
@@ -62,7 +63,7 @@ export const checkoutFormSchema = z
       .min(1, { error: () => m.checkout_shipping_method_required() }),
   })
   .superRefine((fields, ctx) => {
-    if (fields.needInvoice) {
+    if (fields.needInvoice && !fields.billingSameAsShipping) {
       if (fields.billingFullName.trim().length === 0) {
         ctx.addIssue({
           code: 'custom',

@@ -30,5 +30,11 @@
   "checkout_billing_postal_code_required": "Billing postal code is required",
   "checkout_billing_city_required": "Billing city is required",
   "checkout_billing_street_required": "Billing street line 1 is required",
-  "checkout_billing_phone_required": "Billing phone number is required"
+  "checkout_billing_phone_required": "Billing phone number is required",
+  "checkout_saved_addresses": "Choose a saved address",
+  "checkout_new_address": "Use a new or edited address",
+  "checkout_no_saved_addresses": "Enter an address for this order.",
+  "checkout_address_edit_note": "You can edit the details below for this order. Your saved addresses will stay unchanged.",
+  "checkout_billing_same": "Same as shipping address",
+  "checkout_billing_same_note": "Your current shipping details will also be used for the invoice."
 }
