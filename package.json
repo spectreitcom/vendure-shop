@@ -9,7 +9,7 @@
     "format:check": "prettier --check .",
     "check-types": "turbo run check-types",
     "test": "turbo run test",
-    "i18n:compile": "npx @inlang/paraglide-js compile --project ./apps/shop-frontend/project.inlang"
+    "i18n:compile": "npx @inlang/paraglide-js compile --project ./apps/shop-frontend/project.inlang --outdir ./apps/shop-frontend/src/paraglide"
   },
   "devDependencies": {
     "prettier": "3.9.6",

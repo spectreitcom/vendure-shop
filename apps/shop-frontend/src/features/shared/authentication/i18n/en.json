@@ -5,6 +5,7 @@
   "auth_buttons_profile": "Profile",
   "auth_buttons_orders": "Orders",
   "auth_buttons_addresses": "Addresses",
+  "auth_buttons_favorite_products": "Favorite products",
   "auth_buttons_logout": "Logout",
   "login_modal_join_eyebrow": "Join the shop",
   "login_modal_close_label": "Close account dialog",

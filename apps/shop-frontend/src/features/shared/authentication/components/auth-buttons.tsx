@@ -77,6 +77,13 @@ export function AuthButtons() {
         <MenuItem component={Link} to="/s/addresses" onClick={closeMenu}>
           {m.auth_buttons_addresses()}
         </MenuItem>
+        <MenuItem
+          component={Link}
+          to="/s/favorite-products"
+          onClick={closeMenu}
+        >
+          {m.auth_buttons_favorite_products()}
+        </MenuItem>
         <MenuItem onClick={handleLogout}>{m.auth_buttons_logout()}</MenuItem>
       </Menu>
     </>
