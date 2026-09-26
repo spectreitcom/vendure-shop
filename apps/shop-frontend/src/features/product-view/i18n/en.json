@@ -1,0 +1,15 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "product_breadcrumb_collection": "Collection",
+  "product_breadcrumb_fallback": "Product",
+  "product_error_title": "We couldn’t load this product.",
+  "product_error_description": "Please try again in a moment, or explore the rest of the collection.",
+  "product_back_to_collection": "Back to collection",
+  "product_eyebrow": "From the collection",
+  "product_price_note": "Including tax",
+  "product_other_variants": "Other variants",
+  "product_at_a_glance": "At a glance",
+  "product_explore_details": "Explore the details",
+  "product_description_eyebrow": "A closer look",
+  "product_description_title": "About this product"
+}

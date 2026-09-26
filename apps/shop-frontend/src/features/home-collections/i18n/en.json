@@ -1,0 +1,34 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "home_eyebrow": "Welcome to Vendure Shop",
+  "home_title_line1": "Find something",
+  "home_title_line2": "to make yours.",
+  "home_description": "A little inspiration. A new favourite. Explore our collections and discover what speaks to you.",
+  "home_explore_collections": "Explore the collections",
+  "home_featured_label": "Explore {name}",
+  "home_spotlight": "In the spotlight",
+  "home_intro_eyebrow": "Take a closer look",
+  "home_intro_line1": "Different collections.",
+  "home_intro_line2": "Your own way to explore.",
+  "home_intro_description": "Start with a collection that catches your eye, then find the details that make it yours.",
+  "home_error_title": "Our collections couldn’t load",
+  "home_footer_tagline": "A little inspiration for your everyday.",
+  "home_back_to_top": "Back to top ↑",
+  "collections_list_eyebrow": "Find your inspiration",
+  "collections_list_title": "Explore our collections",
+  "collections_list_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} collection",
+        "countPlural=*": "{count} collections"
+      }
+    }
+  ],
+  "collections_list_empty_title": "Something new is on its way",
+  "collections_list_empty_description": "Our collections will appear here when they’re available. Come back soon.",
+  "collections_list_item_placeholder": "Explore the collection",
+  "collections_list_item_browse": "Explore collection",
+  "collections_list_item_eyebrow": "The collection"
+}

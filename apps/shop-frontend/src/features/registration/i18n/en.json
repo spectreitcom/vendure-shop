@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "registration_error": "Error during registration",
+  "registration_success": "Your registration has been submitted. Check your inbox for the next steps before signing in.",
+  "registration_eyebrow": "Join the shop",
+  "registration_description": "A simple start to your next favourite find.",
+  "registration_submit": "Create account",
+  "registration_have_account": "Already have an account?"
+}

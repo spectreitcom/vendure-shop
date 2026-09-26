@@ -5,6 +5,7 @@ import { useServerFn } from '@tanstack/react-start';
 import { removeCartLine } from '#/features/cart-view';
 import { useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{ orderLineId: string; productName: string }>;
 
@@ -26,7 +27,7 @@ export function DeleteCartLineButton({ orderLineId, productName }: Props) {
         setError(e.message);
         return;
       }
-      setError('An error occurred');
+      setError(m.cart_line_remove_error());
     } finally {
       setIsDeleting(false);
     }
@@ -36,8 +37,8 @@ export function DeleteCartLineButton({ orderLineId, productName }: Props) {
     <>
       <IconButton
         className="cart-remove-button"
-        aria-label={`Remove ${productName} from cart`}
-        title="Remove item"
+        aria-label={m.cart_line_remove_label({ productName })}
+        title={m.cart_line_remove_title()}
         onClick={handleDeleteCartLine}
         loading={isDeleting}
         disabled={isDeleting}

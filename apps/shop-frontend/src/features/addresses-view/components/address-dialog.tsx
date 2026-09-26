@@ -5,6 +5,7 @@ import { AddNewAddressForm } from './add-new-address-form';
 import type { AddNewAddressFormSchema } from '../schema';
 import '#/components/auth.css';
 import '../addresses.css';
+import { m } from '#/paraglide/messages';
 
 type Props = {
   open: boolean;
@@ -38,22 +39,24 @@ export function AddressDialog({
     >
       <div className="auth-surface">
         <div className="auth-dialog-header">
-          <span className="auth-eyebrow">Your address book</span>
+          <span className="auth-eyebrow">{m.address_dialog_eyebrow()}</span>
           <IconButton
             className="auth-close"
-            aria-label="Close address dialog"
+            aria-label={m.address_dialog_close_label()}
             onClick={onClose}
             disabled={submitting}
           >
             <Close fontSize="small" />
           </IconButton>
           <DialogTitle id={`${id}-title`} className="auth-dialog-title">
-            {values ? 'Edit address' : 'Add a new address'}
+            {values
+              ? m.address_dialog_edit_title()
+              : m.address_dialog_add_title()}
           </DialogTitle>
           <p id={`${id}-description`} className="auth-description">
             {values
-              ? 'Keep your delivery and billing details up to date.'
-              : 'Save your details for a smoother checkout next time.'}
+              ? m.address_dialog_edit_description()
+              : m.address_dialog_add_description()}
           </p>
         </div>
         <DialogContent className="auth-dialog-content">

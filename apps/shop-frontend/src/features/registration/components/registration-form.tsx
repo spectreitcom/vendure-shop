@@ -5,6 +5,7 @@ import { useForm } from '@tanstack/react-form';
 import { registerCustomerAccountInputSchema } from '#/features/registration/schemas';
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 export function RegistrationForm({
   hideTitle = false,
@@ -41,7 +42,7 @@ export function RegistrationForm({
         if (e instanceof Error) {
           setError(e.message);
         } else {
-          setError('Error during registration');
+          setError(m.registration_error());
         }
       } finally {
         setCreatingAccount(false);
@@ -55,18 +56,15 @@ export function RegistrationForm({
       onClick={onSignIn}
       disabled={creatingAccount}
     >
-      Sign in
+      {m.common_sign_in()}
     </Button>
   ) : (
-    <Link to="/auth/login">Sign in</Link>
+    <Link to="/auth/login">{m.common_sign_in()}</Link>
   );
   if (registered)
     return (
       <div>
-        <Alert severity="success">
-          Your registration has been submitted. Check your inbox for the next
-          steps before signing in.
-        </Alert>
+        <Alert severity="success">{m.registration_success()}</Alert>
         <div className="auth-switch">{signInLink}</div>
       </div>
     );
@@ -82,9 +80,9 @@ export function RegistrationForm({
     >
       {!hideTitle && (
         <header className="auth-form-heading">
-          <span className="auth-eyebrow">Join the shop</span>
-          <h1>Create an account</h1>
-          <p>A simple start to your next favourite find.</p>
+          <span className="auth-eyebrow">{m.registration_eyebrow()}</span>
+          <h1>{m.common_create_account()}</h1>
+          <p>{m.registration_description()}</p>
         </header>
       )}
       {error && <Alert severity="error">{error}</Alert>}
@@ -94,7 +92,7 @@ export function RegistrationForm({
           children={(field) => (
             <TextField
               fullWidth
-              label="Email address"
+              label={m.common_email_address()}
               type="email"
               autoComplete="email"
               name="email"
@@ -113,7 +111,7 @@ export function RegistrationForm({
           children={(field) => (
             <TextField
               fullWidth
-              label="Password"
+              label={m.common_password()}
               type="password"
               autoComplete="new-password"
               name="password"
@@ -124,7 +122,7 @@ export function RegistrationForm({
               helperText={
                 field.state.meta.errors.length
                   ? field.state.meta.errors.map((e) => e?.message).join(' ')
-                  : 'Use at least 6 characters.'
+                  : m.common_password_hint()
               }
             />
           )}
@@ -137,11 +135,11 @@ export function RegistrationForm({
           loading={creatingAccount}
           disabled={creatingAccount}
         >
-          Create account
+          {m.registration_submit()}
         </Button>
       </div>
       <div className="auth-switch">
-        <span>Already have an account?</span>
+        <span>{m.registration_have_account()}</span>
         {signInLink}
       </div>
     </form>

@@ -1,5 +1,6 @@
 import { Pagination as NativePagination, PaginationItem } from '@mui/material';
 import { Link } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   totalItems: number;
@@ -29,8 +30,8 @@ export function CollectionProductsPagination({
           <Link
             aria-label={
               item.type === 'page'
-                ? `Page ${item.page}`
-                : `Go to ${item.type} page`
+                ? m.common_pagination_page({ page: item.page ?? '' })
+                : m.common_pagination_go_to({ type: item.type })
             }
             aria-current={item.selected ? 'page' : undefined}
             to="/$categorySlug"

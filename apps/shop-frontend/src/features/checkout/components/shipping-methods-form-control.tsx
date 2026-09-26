@@ -12,6 +12,7 @@ import type {
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { cn } from '#/utils';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   value?: string;
@@ -45,7 +46,7 @@ export function ShippingMethodsFormControl({
         className="purchase-methods"
       >
         <RadioGroup
-          aria-label="Shipping method"
+          aria-label={m.checkout_shipping_method()}
           name="shippingMethod"
           value={value ?? ''}
         >
@@ -61,9 +62,7 @@ export function ShippingMethodsFormControl({
           ))}
         </RadioGroup>
         {!shippingMethods.length && (
-          <p className="purchase-note">
-            No shipping methods are available right now. Please try again later.
-          </p>
+          <p className="purchase-note">{m.checkout_no_shipping_methods()}</p>
         )}
         {error && helperText && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>

@@ -7,6 +7,7 @@ import { login } from '#/features/authentication';
 import { Link, useRouter } from '@tanstack/react-router';
 import { useActiveCart } from '#/features/shared/cart';
 import { useActiveUser } from '#/features/shared/authentication';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   skipRedirect?: boolean;
@@ -17,8 +18,8 @@ type Props = Readonly<{
 }>;
 
 const formValidationSchema = z.object({
-  username: z.email(),
-  password: z.string().min(1, 'Enter your password'),
+  username: z.email({ error: () => m.common_invalid_email() }),
+  password: z.string().min(1, { error: () => m.login_password_required() }),
 });
 
 export function LoginForm({
@@ -58,7 +59,7 @@ export function LoginForm({
         if (e instanceof Error) {
           setError(e.message);
         } else {
-          setError('Wrong credentials');
+          setError(m.login_wrong_credentials());
         }
       } finally {
         setLogging(false);
@@ -77,9 +78,9 @@ export function LoginForm({
     >
       {!hideTitle && (
         <header className="auth-form-heading">
-          <span className="auth-eyebrow">Your account</span>
-          <h1>Welcome back</h1>
-          <p>Sign in to pick up where you left off.</p>
+          <span className="auth-eyebrow">{m.common_your_account()}</span>
+          <h1>{m.login_title()}</h1>
+          <p>{m.login_description()}</p>
         </header>
       )}
       {error && <Alert severity="error">{error}</Alert>}
@@ -89,7 +90,7 @@ export function LoginForm({
           children={(field) => (
             <TextField
               fullWidth
-              label="Email address"
+              label={m.common_email_address()}
               type="email"
               autoComplete="username"
               name="email"
@@ -108,7 +109,7 @@ export function LoginForm({
           children={(field) => (
             <TextField
               fullWidth
-              label="Password"
+              label={m.common_password()}
               type="password"
               autoComplete="current-password"
               name="password"
@@ -124,7 +125,7 @@ export function LoginForm({
         />
         <div className="auth-forgot">
           <Link to="/auth/reset-password" onClick={onNavigateAway}>
-            Forgot password?
+            {m.login_forgot_password()}
           </Link>
         </div>
         <Button
@@ -135,21 +136,21 @@ export function LoginForm({
           loading={logging}
           disabled={logging}
         >
-          Sign in
+          {m.common_sign_in()}
         </Button>
       </div>
       <div className="auth-switch">
-        <span>New here?</span>
+        <span>{m.login_new_here()}</span>
         {onRegister ? (
           <Button
             className="auth-switch-button"
             onClick={onRegister}
             disabled={logging}
           >
-            Create an account
+            {m.common_create_account()}
           </Button>
         ) : (
-          <Link to="/auth/registration">Create an account</Link>
+          <Link to="/auth/registration">{m.common_create_account()}</Link>
         )}
       </div>
     </form>

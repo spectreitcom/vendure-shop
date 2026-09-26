@@ -17,6 +17,7 @@ import type {
   GetCollectionQuery,
 } from '#/graphql/generated.ts';
 import { validateSearchSchema } from '#/features/collection-view/schemas';
+import { m } from '#/paraglide/messages';
 
 const TAKE = 9;
 
@@ -85,11 +86,11 @@ function RouteComponent() {
     return (
       <main className="collection-page">
         <div className="collection-state collection-shell" role="alert">
-          <span className="collection-eyebrow">A little interruption</span>
-          <h1>We couldn’t load this collection.</h1>
-          <p>Please try again in a moment, or explore our other collections.</p>
+          <span className="collection-eyebrow">{m.common_error_eyebrow()}</span>
+          <h1>{m.collection_error_title()}</h1>
+          <p>{m.collection_error_description()}</p>
           <Link to="/" className="collection-text-link">
-            Back to shop <ArrowForward fontSize="small" />
+            {m.collection_back_to_shop()} <ArrowForward fontSize="small" />
           </Link>
         </div>
       </main>
@@ -104,8 +105,11 @@ function RouteComponent() {
   return (
     <main className="collection-page">
       <div className="collection-shell">
-        <nav className="collection-breadcrumbs" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
+        <nav
+          className="collection-breadcrumbs"
+          aria-label={m.common_breadcrumb_label()}
+        >
+          <Link to="/">{m.home_link_label()}</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{collection.name}</span>
         </nav>
@@ -113,7 +117,9 @@ function RouteComponent() {
           className={`collection-hero${collection.featuredAsset ? '' : ' collection-hero-text'}`}
         >
           <div className="collection-hero-copy">
-            <span className="collection-eyebrow">Explore the collection</span>
+            <span className="collection-eyebrow">
+              {m.collection_hero_eyebrow()}
+            </span>
             <h1>{collection.name}</h1>
             {collection.description && (
               <p className="collection-description">
@@ -124,7 +130,7 @@ function RouteComponent() {
               </p>
             )}
             <a className="collection-text-link" href="#">
-              Discover the collection <ArrowForward fontSize="small" />
+              {m.collection_discover_link()} <ArrowForward fontSize="small" />
             </a>
           </div>
           {collection.featuredAsset && (
@@ -139,7 +145,7 @@ function RouteComponent() {
         </header>
 
         <div className="collection-layout" id="collection-products">
-          <aside aria-label="Product filters">
+          <aside aria-label={m.collection_filters_label()}>
             <Filters
               facets={facets}
               collectionSlug={collection.slug}
@@ -147,22 +153,24 @@ function RouteComponent() {
             />
           </aside>
           <section
-            aria-label="Collection products"
+            aria-label={m.collection_products_label()}
             className="collection-results"
           >
             <div className="collection-results-heading">
               <div>
-                <span className="collection-eyebrow">The selection</span>
-                <h2>Explore {collection.name}</h2>
+                <span className="collection-eyebrow">
+                  {m.collection_selection_eyebrow()}
+                </span>
+                <h2>{m.collection_results_title({ name: collection.name })}</h2>
               </div>
               <span className="collection-count">
-                {totalItems} {totalItems === 1 ? 'product' : 'products'}
+                {m.collection_products_count({ count: totalItems })}
               </span>
             </div>
             {activeFilters.length > 0 && (
               <div
                 className="collection-active-filters"
-                aria-label="Active filters"
+                aria-label={m.collection_active_filters_label()}
               >
                 {activeFilters.map((value) => (
                   <Link
@@ -175,7 +183,9 @@ function RouteComponent() {
                         .filter((id) => id !== value.id)
                         .join(','),
                     }}
-                    aria-label={`Remove filter: ${value.name}`}
+                    aria-label={m.collection_remove_filter_label({
+                      name: value.name,
+                    })}
                   >
                     {value.name}
                     <span aria-hidden="true">×</span>
@@ -191,8 +201,11 @@ function RouteComponent() {
                 />
                 <div className="collection-pagination">
                   <span>
-                    Showing {(page - 1) * TAKE + 1}–
-                    {Math.min(page * TAKE, totalItems)} of {totalItems}
+                    {m.collection_showing({
+                      from: (page - 1) * TAKE + 1,
+                      to: Math.min(page * TAKE, totalItems),
+                      total: totalItems,
+                    })}
                   </span>
                   <CollectionProductsPagination
                     totalItems={calcTotalPageNumbers(totalItems, TAKE)}
@@ -205,11 +218,11 @@ function RouteComponent() {
             ) : (
               <div className="collection-state">
                 <SearchOff sx={{ fontSize: 40 }} />
-                <h2>No products found</h2>
+                <h2>{m.collection_empty_title()}</h2>
                 <p>
                   {facetValues.length
-                    ? 'Try removing a filter to discover more from this collection.'
-                    : 'There are no products in this collection yet. Explore the rest of the shop.'}
+                    ? m.collection_empty_filtered_description()
+                    : m.collection_empty_description()}
                 </p>
                 {facetValues.length ? (
                   <Link
@@ -218,11 +231,12 @@ function RouteComponent() {
                     params={{ categorySlug: collection.slug }}
                     search={{ page: 1 }}
                   >
-                    Clear all filters <ArrowForward fontSize="small" />
+                    {m.collection_clear_all_filters()}{' '}
+                    <ArrowForward fontSize="small" />
                   </Link>
                 ) : (
                   <Link className="collection-text-link" to="/">
-                    Explore the shop <ArrowForward fontSize="small" />
+                    {m.common_explore_shop()} <ArrowForward fontSize="small" />
                   </Link>
                 )}
               </div>

@@ -4,6 +4,7 @@ import { useActiveCart } from '#/features/shared/cart';
 import { ProductPrice } from './product-price';
 import '#/features/collection-view/collection.css';
 import './purchase.css';
+import { m } from '#/paraglide/messages';
 
 export function PurchaseLayout({
   step,
@@ -19,17 +20,27 @@ export function PurchaseLayout({
   return (
     <main className="collection-page purchase-page">
       <div className="collection-shell">
-        <nav className="collection-breadcrumbs" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
+        <nav
+          className="collection-breadcrumbs"
+          aria-label={m.common_breadcrumb_label()}
+        >
+          <Link to="/">{m.home_link_label()}</Link>
           <span>/</span>
-          <Link to="/cart">Cart</Link>
+          <Link to="/cart">{m.cart_label()}</Link>
           <span>/</span>
           <span aria-current="page">{title}</span>
         </nav>
-        <ol className="purchase-steps" aria-label="Order progress">
-          {['Delivery', 'Payment', 'Confirmation'].map((label, index) => (
+        <ol
+          className="purchase-steps"
+          aria-label={m.purchase_layout_order_progress()}
+        >
+          {[
+            m.purchase_layout_step_delivery(),
+            m.purchase_layout_step_payment(),
+            m.purchase_layout_step_confirmation(),
+          ].map((label, index) => (
             <li
-              key={label}
+              key={index}
               className={index + 1 <= step ? 'is-active' : ''}
               aria-current={index + 1 === step ? 'step' : undefined}
             >
@@ -40,7 +51,7 @@ export function PurchaseLayout({
         </ol>
         <header className="purchase-heading">
           <span className="collection-eyebrow">
-            Your selection, almost yours
+            {m.purchase_layout_eyebrow()}
           </span>
           <h1>{title}</h1>
           <p>{description}</p>
@@ -56,8 +67,8 @@ export function PurchaseSummary({ children }: { children: ReactNode }) {
   if (!activeCart) return null;
   return (
     <aside className="purchase-summary">
-      <span className="collection-eyebrow">The details</span>
-      <h2>Order summary</h2>
+      <span className="collection-eyebrow">{m.purchase_summary_eyebrow()}</span>
+      <h2>{m.purchase_summary_title()}</h2>
       <ul className="purchase-items">
         {activeCart.lines.map((line) => (
           <li key={line.id}>
@@ -66,7 +77,9 @@ export function PurchaseSummary({ children }: { children: ReactNode }) {
             )}
             <div>
               <span>{line.productVariant.name}</span>
-              <small>Quantity: {line.quantity}</small>
+              <small>
+                {m.purchase_summary_quantity({ quantity: line.quantity })}
+              </small>
             </div>
             <ProductPrice
               price={line.proratedLinePriceWithTax}
@@ -85,15 +98,13 @@ export function PurchaseSummary({ children }: { children: ReactNode }) {
         </div>
       ))}
       <div className="purchase-total" aria-live="polite">
-        <span>Total</span>
+        <span>{m.purchase_summary_total()}</span>
         <ProductPrice
           price={activeCart.totalWithTax}
           currencyCode={activeCart.currencyCode}
         />
       </div>
-      <p className="purchase-note">
-        Including tax. Any discounts are included in the total.
-      </p>
+      <p className="purchase-note">{m.purchase_summary_note()}</p>
       {children}
     </aside>
   );

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "cart_header": "Your shopping cart",
+  "cart_subheader": "A few good finds, all in one place.",
+  "cart_label": "Cart",
+  "cart_eyebrow": "Your selection",
+  "cart_loading_label": "Loading cart",
+  "cart_loading_message": "Gathering your selection…",
+  "cart_empty_title": "Your cart is waiting",
+  "cart_empty_description": "Explore our collections and find something to make yours.",
+  "cart_empty_explore_link": "Explore the shop",
+  "cart_items_title": "In your cart",
+  "cart_items_count": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "{count} item",
+        "countPlural=*": "{count} items"
+      }
+    }
+  ],
+  "cart_continue_shopping": "Continue shopping",
+  "cart_summary_eyebrow": "The details",
+  "cart_summary_title": "Order summary",
+  "cart_applied_savings": "Applied savings",
+  "cart_discounts_note": "Discounts are included in your total.",
+  "cart_total": "Total",
+  "cart_total_note": "Including tax. Delivery confirmed at checkout.",
+  "cart_checkout_button": "Proceed to checkout",
+  "cart_checkout_sign_in_note": "Sign in to complete your order.",
+  "cart_coupon_code_label": "Coupon code",
+  "cart_coupon_code_placeholder": "Enter your code",
+  "cart_coupon_code_min_length": "Enter a coupon code of at least 3 characters",
+  "cart_coupon_code_apply": "Apply",
+  "cart_coupon_code_applied": "Coupon code applied successfully",
+  "cart_coupon_code_apply_error": "Error during applying a coupon code",
+  "cart_coupon_code_removed": "Coupon code removed successfully",
+  "cart_coupon_code_remove_error": "An unknown error occurred",
+  "cart_line_no_image": "No image",
+  "cart_line_original_total_label": "Original line total",
+  "cart_line_total_note": "Line total · including tax",
+  "cart_line_remove_label": "Remove {productName} from cart",
+  "cart_line_remove_title": "Remove item",
+  "cart_line_remove_error": "An error occurred",
+  "cart_line_quantity_label": "Quantity for {productName}",
+  "cart_line_decrease_quantity_label": "Decrease quantity of {productName}",
+  "cart_line_increase_quantity_label": "Increase quantity of {productName}",
+  "cart_line_update_error": "Error occurred during updating a cart",
+  "cart_menu_label": [
+    {
+      "declarations": ["input count", "local countPlural = count: plural"],
+      "selectors": ["countPlural"],
+      "match": {
+        "countPlural=one": "Cart, {count} item",
+        "countPlural=*": "Cart, {count} items"
+      }
+    }
+  ]
+}

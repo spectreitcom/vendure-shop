@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useServerFn } from '@tanstack/react-start';
 import { addItemToCart, useActiveCart } from '#/features/shared/cart';
+import { m } from '#/paraglide/messages';
 
 type Props = {
   variant: 'small' | 'large';
@@ -44,7 +45,7 @@ export function AddToCartButton({
       setShowSuccessSnackbar(true);
       await refreshActiveCart();
     } catch {
-      setError(`Add to Cart Error`);
+      setError(m.add_to_cart_error());
     } finally {
       setAddingToCart(false);
     }
@@ -58,7 +59,7 @@ export function AddToCartButton({
         loading={addingToCart}
         className={className}
         size={'medium'}
-        aria-label="Add to cart"
+        aria-label={m.add_to_cart_label()}
         color={'primary'}
         onClick={handleAddToCart}
       >
@@ -77,7 +78,7 @@ export function AddToCartButton({
         onClick={handleAddToCart}
         startIcon={<ShoppingCart />}
       >
-        Add to Cart
+        {m.add_to_cart_button()}
       </Button>
     );
   }
@@ -94,7 +95,7 @@ export function AddToCartButton({
       <Snackbar
         open={showSuccessSnackbar}
         autoHideDuration={6000}
-        message={'Product został dodany poprawnie do koszyka'}
+        message={m.add_to_cart_success()}
         onClose={() => setShowSuccessSnackbar(false)}
       />
     </>

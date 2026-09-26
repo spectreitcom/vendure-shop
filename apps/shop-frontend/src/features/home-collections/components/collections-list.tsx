@@ -1,6 +1,7 @@
 import { CollectionsListItem } from './collections-list-item.tsx';
 import { cn } from '#/utils';
 import type { HomeCollectionItem } from '#/features/home-collections/types';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   items: ReadonlyArray<HomeCollectionItem>;
@@ -16,11 +17,13 @@ export function CollectionsList({ items, className }: Props) {
     >
       <div className="home-section-heading">
         <div>
-          <span className="collection-eyebrow">Find your inspiration</span>
-          <h2 id="home-collections-title">Explore our collections</h2>
+          <span className="collection-eyebrow">
+            {m.collections_list_eyebrow()}
+          </span>
+          <h2 id="home-collections-title">{m.collections_list_title()}</h2>
         </div>
         <span className="collection-count">
-          {items.length} {items.length === 1 ? 'collection' : 'collections'}
+          {m.collections_list_count({ count: items.length })}
         </span>
       </div>
       {items.length ? (
@@ -37,11 +40,8 @@ export function CollectionsList({ items, className }: Props) {
         </div>
       ) : (
         <div className="collection-state">
-          <h3>Something new is on its way</h3>
-          <p>
-            Our collections will appear here when they’re available. Come back
-            soon.
-          </p>
+          <h3>{m.collections_list_empty_title()}</h3>
+          <p>{m.collections_list_empty_description()}</p>
         </div>
       )}
     </section>

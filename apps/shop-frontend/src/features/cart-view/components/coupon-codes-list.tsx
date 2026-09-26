@@ -4,6 +4,7 @@ import { useServerFn } from '@tanstack/react-start';
 import { removeCouponCode } from '#/features/cart-view';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import { m } from '#/paraglide/messages';
 
 export function CouponCodesList() {
   const { activeCart, refresh } = useActiveCart();
@@ -27,7 +28,7 @@ export function CouponCodesList() {
       if (e instanceof Error) {
         setError(e.message);
       } else {
-        setError('An unknown error occurred');
+        setError(m.cart_coupon_code_remove_error());
       }
     } finally {
       setRemoving(false);
@@ -55,7 +56,7 @@ export function CouponCodesList() {
 
       <Snackbar
         open={showSuccess}
-        message="Coupon code removed successfully"
+        message={m.cart_coupon_code_removed()}
         autoHideDuration={6000}
         onClose={() => setShowSuccess(false)}
       />

@@ -1,5 +1,6 @@
 import { ArrowForward, CollectionsOutlined } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{
   slug: string;
@@ -23,16 +24,18 @@ export function CollectionsListItem({
           ) : (
             <div className="collection-image-placeholder">
               <CollectionsOutlined />
-              <span>Explore the collection</span>
+              <span>{m.collections_list_item_placeholder()}</span>
             </div>
           )}
           <span className="home-collection-browse">
-            Explore collection <ArrowForward fontSize="small" />
+            {m.collections_list_item_browse()} <ArrowForward fontSize="small" />
           </span>
         </div>
         <div className="home-collection-caption">
           <div>
-            <span className="collection-eyebrow">The collection</span>
+            <span className="collection-eyebrow">
+              {m.collections_list_item_eyebrow()}
+            </span>
             <h3>{title}</h3>
           </div>
           <ArrowForward fontSize="small" />

@@ -8,7 +8,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check-types": "turbo run check-types",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "i18n:compile": "npx @inlang/paraglide-js compile --project ./apps/shop-frontend/project.inlang"
   },
   "devDependencies": {
     "prettier": "3.9.6",

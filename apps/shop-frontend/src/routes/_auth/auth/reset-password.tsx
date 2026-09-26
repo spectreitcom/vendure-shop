@@ -6,6 +6,7 @@ import {
   ResetPasswordForm,
 } from '#/features/reset-password';
 import { z } from 'zod';
+import { m } from '#/paraglide/messages';
 
 const searchInputSchema = z.object({
   token: z.string().optional(),
@@ -23,9 +24,13 @@ function RouteComponent() {
 
   return (
     <AuthLayout
-      breadcrumb={token ? 'New password' : 'Reset password'}
-      introTitle={'A fresh start,\njust for you.'}
-      introDescription="Let’s get you back to your account and the things you love."
+      breadcrumb={
+        token
+          ? m.reset_password_breadcrumb_new()
+          : m.reset_password_breadcrumb()
+      }
+      introTitle={m.reset_password_intro_title()}
+      introDescription={m.reset_password_intro_description()}
     >
       {token ? (
         <ChangePasswordForm key={token} token={token} />

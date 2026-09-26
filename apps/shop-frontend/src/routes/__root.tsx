@@ -15,6 +15,8 @@ import type { ReactNode } from 'react';
 import type { ApolloClientIntegration } from '@apollo/client-integration-tanstack-start';
 import { ActiveCartProvider } from '#/features/shared/cart';
 import { ActiveUserProvider } from '#/features/shared/authentication';
+import { getLocale } from '#/paraglide/runtime';
+import { m } from '#/paraglide/messages';
 
 export const Route =
   createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
@@ -28,7 +30,7 @@ export const Route =
           content: 'width=device-width, initial-scale=1',
         },
         {
-          title: 'Vendure Shop',
+          title: m.app_title(),
         },
       ],
       links: [
@@ -43,7 +45,7 @@ export const Route =
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang={getLocale()}>
       <head>
         <HeadContent />
       </head>

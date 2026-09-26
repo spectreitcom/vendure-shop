@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LoginForm } from '#/features/authentication';
 import { RegistrationForm } from '#/features/registration';
 import '#/components/auth.css';
+import { m } from '#/paraglide/messages';
 
 type Props = Readonly<{ open: boolean; onClose: () => void }>;
 
@@ -27,22 +28,24 @@ function AuthDialogContent({ onClose }: { onClose: () => void }) {
     <div className="auth-surface">
       <div className="auth-dialog-header">
         <span className="auth-eyebrow">
-          {registering ? 'Join the shop' : 'Your account'}
+          {registering ? m.login_modal_join_eyebrow() : m.common_your_account()}
         </span>
         <IconButton
           className="auth-close"
-          aria-label="Close account dialog"
+          aria-label={m.login_modal_close_label()}
           onClick={onClose}
         >
           <Close fontSize="small" />
         </IconButton>
         <DialogTitle id="auth-dialog-title" className="auth-dialog-title">
-          {registering ? 'Create an account' : 'Welcome back'}
+          {registering
+            ? m.common_create_account()
+            : m.login_modal_welcome_back()}
         </DialogTitle>
         <p id="auth-dialog-description" className="auth-description">
           {registering
-            ? 'A simple start to your next favourite find.'
-            : 'Sign in to continue with your order.'}
+            ? m.login_modal_registration_description()
+            : m.login_modal_login_description()}
         </p>
       </div>
       <DialogContent className="auth-dialog-content">

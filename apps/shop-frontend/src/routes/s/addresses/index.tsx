@@ -10,6 +10,7 @@ import {
 import '#/features/collection-view/collection.css';
 import '#/features/orders-view/orders.css';
 import '#/features/addresses-view/addresses.css';
+import { m } from '#/paraglide/messages';
 
 export const Route = createFileRoute('/s/addresses/')({
   component: RouteComponent,
@@ -32,41 +33,45 @@ function RouteComponent() {
   return (
     <main className="collection-page addresses-page">
       <div className="collection-shell">
-        <nav className="collection-breadcrumbs" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
+        <nav
+          className="collection-breadcrumbs"
+          aria-label={m.common_breadcrumb_label()}
+        >
+          <Link to="/">{m.home_link_label()}</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">Addresses</span>
+          <span aria-current="page">{m.addresses_label()}</span>
         </nav>
         <header className="orders-heading addresses-heading">
           <div>
-            <span className="collection-eyebrow">Your account</span>
-            <h1>Your addresses</h1>
-            <p>Your saved shipping and billing addresses, all in one place.</p>
+            <span className="collection-eyebrow">
+              {m.common_your_account()}
+            </span>
+            <h1>{m.addresses_title()}</h1>
+            <p>{m.addresses_description()}</p>
           </div>
           <AddNewAddressBtn />
         </header>
         {error ? (
           <section className="collection-state orders-state" role="alert">
             <LocationOnOutlined sx={{ fontSize: 44 }} />
-            <h2>We couldn’t load your addresses</h2>
-            <p>Please try again in a moment.</p>
+            <h2>{m.addresses_error_title()}</h2>
+            <p>{m.common_try_again_in_moment()}</p>
             <Button variant="outlined" onClick={() => router.invalidate()}>
-              Try again
+              {m.common_try_again()}
             </Button>
           </section>
         ) : addresses.length === 0 ? (
           <section className="collection-state orders-state">
             <LocationOnOutlined sx={{ fontSize: 44 }} />
-            <h2>No saved addresses yet</h2>
-            <p>Your saved shipping and billing addresses will appear here.</p>
+            <h2>{m.addresses_empty_title()}</h2>
+            <p>{m.addresses_empty_description()}</p>
           </section>
         ) : (
           <section aria-labelledby="addresses-list-title">
             <div className="collection-results-heading">
-              <h2 id="addresses-list-title">Address book</h2>
+              <h2 id="addresses-list-title">{m.addresses_book_title()}</h2>
               <span className="collection-count">
-                {addresses.length}{' '}
-                {addresses.length === 1 ? 'address' : 'addresses'}
+                {m.addresses_count({ count: addresses.length })}
               </span>
             </div>
             <ul className="addresses-list">
@@ -74,12 +79,14 @@ function RouteComponent() {
                 <li className="addresses-card" key={address.id}>
                   <div className="addresses-card-heading">
                     <span className="collection-eyebrow">
-                      Address {index + 1}
+                      {m.addresses_card_eyebrow({ number: index + 1 })}
                     </span>
                     <LocationOnOutlined aria-hidden="true" fontSize="small" />
                   </div>
                   <h3>
-                    {address.fullName || address.company || 'Saved address'}
+                    {address.fullName ||
+                      address.company ||
+                      m.addresses_saved_fallback()}
                   </h3>
                   <div className="addresses-details">
                     {address.company && address.fullName && (
@@ -95,7 +102,7 @@ function RouteComponent() {
                     <p>{address.country.name}</p>
                     {address.phoneNumber && (
                       <p className="addresses-phone">
-                        <span>Phone: </span>
+                        <span>{m.addresses_phone()} </span>
                         {address.phoneNumber}
                       </p>
                     )}
@@ -105,12 +112,12 @@ function RouteComponent() {
                     <div className="addresses-badges">
                       {address.defaultShippingAddress && (
                         <span className="orders-status orders-status-success">
-                          Default shipping
+                          {m.addresses_default_shipping()}
                         </span>
                       )}
                       {address.defaultBillingAddress && (
                         <span className="orders-status orders-status-success">
-                          Default billing
+                          {m.addresses_default_billing()}
                         </span>
                       )}
                     </div>
