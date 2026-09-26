@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const getActiveCustomerFavoriteProductsInputSchema = z.object({
   page: z.int().positive().default(1),
-  take: z.int().positive().default(10),
+  take: z.int().positive().max(100).default(10),
 });
 
 export const addFavoriteProductInputSchema = z.object({

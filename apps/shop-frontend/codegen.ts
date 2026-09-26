@@ -1,7 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: import.meta.env.SHOP_API_URL,
+  schema: process.env.SHOP_API_URL ?? 'http://localhost:3000/shop-api',
   documents: ['src/**/*.{ts,tsx,graphql}', '!src/graphql/**'],
   generates: {
     'src/graphql/schema-types.ts': {

@@ -19,14 +19,13 @@ export class FavoriteProductsShopResolver {
     @Ctx() ctx: RequestContext,
     @Args()
     args: {
-      skip?: number;
-      take?: number;
+      options?: { skip?: number; take?: number };
     },
   ) {
     return await this.favoriteProductsService.findAll(
       ctx,
-      args.skip,
-      args.take,
+      args.options?.skip,
+      args.options?.take,
     );
   }
 

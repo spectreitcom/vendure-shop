@@ -12,6 +12,7 @@ import { AddToCartButton } from '#/features/shared/cart/components/add-to-cart-b
 import { m } from '#/paraglide/messages';
 import '#/features/collection-view/collection.css';
 import '#/features/orders-view/orders.css';
+import { ProductPrice } from '#/components/product-price.tsx';
 
 const TAKE = 12;
 
@@ -123,10 +124,11 @@ function RouteComponent() {
                           <div>
                             <h3>{productVariant.name}</h3>
                             <p className="collection-product-price">
-                              {new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: productVariant.currencyCode,
-                              }).format(productVariant.priceWithTax / 100)}
+                              <ProductPrice
+                                className="collection-product-price"
+                                price={productVariant.priceWithTax}
+                                currencyCode={productVariant.currencyCode}
+                              />
                             </p>
                           </div>
                           <AddToCartButton
