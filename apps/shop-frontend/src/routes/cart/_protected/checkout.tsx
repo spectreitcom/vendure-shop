@@ -2,11 +2,18 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { PendingComponent } from '#/components/pending-component.tsx';
 import { CheckoutView, getEligibleShippingMethods } from '#/features/checkout';
 import { PurchaseLayout } from '#/components/purchase-layout';
+import {
+  getAddresses,
+  getAddressCountries,
+} from '#/features/addresses-view/api';
+import type { SavedAddress } from '#/features/checkout/address-selection';
 import type { EligibleShippingMethodsQuery } from '#/graphql/generated.ts';
 import { m } from '#/paraglide/messages';
 
 type LoaderSuccess = {
   error: false;
+  addresses: Array<SavedAddress>;
+  countries: Array<{ code: string; name: string }>;
   shippingMethods: EligibleShippingMethodsQuery['eligibleShippingMethods'];
 };
 
@@ -22,10 +29,16 @@ export const Route = createFileRoute('/cart/_protected/checkout')({
   component: RouteComponent,
   loader: async () => {
     try {
-      const shippingMethods = await getEligibleShippingMethods();
+      const [shippingMethods, addresses, countries] = await Promise.all([
+        getEligibleShippingMethods(),
+        getAddresses(),
+        getAddressCountries(),
+      ]);
       return {
         error: false,
         shippingMethods,
+        addresses: addresses ?? [],
+        countries,
       } satisfies LoaderResult;
     } catch (e) {
       if (e instanceof Error) {
@@ -59,7 +72,11 @@ function RouteComponent() {
           </Link>
         </section>
       ) : (
-        <CheckoutView shippingMethods={data.shippingMethods} />
+        <CheckoutView
+          shippingMethods={data.shippingMethods}
+          addresses={data.addresses}
+          countries={data.countries}
+        />
       )}
     </PurchaseLayout>
   );
