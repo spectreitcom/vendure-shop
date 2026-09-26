@@ -9,6 +9,7 @@
   "plugin.inlang.messageFormat": {
     "pathPattern": [
       "./src/features/addresses-view/i18n/{locale}.json",
+      "./src/features/favorite-products/i18n/{locale}.json",
       "./src/features/authentication/i18n/{locale}.json",
       "./src/features/cart-view/i18n/{locale}.json",
       "./src/features/checkout/i18n/{locale}.json",

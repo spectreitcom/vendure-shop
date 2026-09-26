@@ -1,0 +1,19 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "favorites_add": "Add to favorites",
+  "favorites_remove": "Remove from favorites",
+  "favorites_status_error": "We couldn’t check whether this product is saved.",
+  "favorites_update_error": "We couldn’t update your favorites. Please try again.",
+  "favorites_title": "Your favorite products",
+  "favorites_description": "All the finds you love, saved in one place. Come back whenever you’re ready.",
+  "favorites_list_title": "Saved for later",
+  "favorites_count": "{count} saved",
+  "favorites_error_title": "We couldn’t load your favorites",
+  "favorites_empty_title": "Your next favorite is waiting",
+  "favorites_empty_description": "Products you like will appear here, ready for your next visit.",
+  "favorites_page_empty_title": "No favorites on this page",
+  "favorites_page_empty_description": "Return to the first page to see your saved products.",
+  "favorites_back": "Back to favorites",
+  "favorites_showing": "Showing {from}–{to} of {total} saved products",
+  "favorites_pagination_label": "Favorite products pages"
+}

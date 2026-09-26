@@ -1146,6 +1146,49 @@ export type FacetValueTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+/** Represents a product variant added by the customer to favorites. */
+export type FavoriteProduct = Node & {
+  __typename: 'FavoriteProduct';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  productVariant: ProductVariant;
+  productVariantId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type FavoriteProductFilterParameter = {
+  _and: InputMaybe<Array<FavoriteProductFilterParameter>>;
+  _or: InputMaybe<Array<FavoriteProductFilterParameter>>;
+  createdAt: InputMaybe<DateOperators>;
+  id: InputMaybe<IdOperators>;
+  productVariantId: InputMaybe<IdOperators>;
+  updatedAt: InputMaybe<DateOperators>;
+};
+
+export type FavoriteProductList = PaginatedList & {
+  __typename: 'FavoriteProductList';
+  items: Array<FavoriteProduct>;
+  totalItems: Scalars['Int']['output'];
+};
+
+export type FavoriteProductListOptions = {
+  /** Allows the results to be filtered */
+  filter: InputMaybe<FavoriteProductFilterParameter>;
+  /** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+  filterOperator: InputMaybe<LogicalOperator>;
+  skip: InputMaybe<Scalars['Int']['input']>;
+  /** Specifies which properties to sort the results by */
+  sort: InputMaybe<FavoriteProductSortParameter>;
+  take: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type FavoriteProductSortParameter = {
+  createdAt: InputMaybe<SortOrder>;
+  id: InputMaybe<SortOrder>;
+  productVariantId: InputMaybe<SortOrder>;
+  updatedAt: InputMaybe<SortOrder>;
+};
+
 export type FloatCustomFieldConfig = CustomField & {
   __typename: 'FloatCustomFieldConfig';
   deprecated: Maybe<Scalars['Boolean']['output']>;
@@ -1762,6 +1805,8 @@ export type MissingPasswordError = ErrorResult & {
 
 export type Mutation = {
   __typename: 'Mutation';
+  /** Adds a product variant to the active customer's favorites. */
+  addFavoriteProduct: FavoriteProduct;
   /** Adds an item to the Order. If custom fields are defined on the OrderLine entity, a third argument 'customFields' will be available. */
   addItemToOrder: UpdateOrderItemsResult;
   /** Adds mutliple items to the Order. Returns a list of errors for each item that failed to add. It will still add successful items. */
@@ -1823,6 +1868,8 @@ export type Mutation = {
   removeAllOrderLines: RemoveOrderItemsResult;
   /** Removes the given coupon code from the active Order */
   removeCouponCode: Maybe<Order>;
+  /** Removes a product variant from the active customer's favorites. */
+  removeFavoriteProduct: Scalars['Boolean']['output'];
   /** Remove an OrderLine from the Order */
   removeOrderLine: RemoveOrderItemsResult;
   /** Requests a password reset email to be sent */
@@ -1879,6 +1926,11 @@ export type Mutation = {
    * provided here.
    */
   verifyCustomerAccount: VerifyCustomerAccountResult;
+};
+
+
+export type MutationAddFavoriteProductArgs = {
+  productVariantId: Scalars['ID']['input'];
 };
 
 
@@ -1944,6 +1996,11 @@ export type MutationRegisterCustomerAccountArgs = {
 
 export type MutationRemoveCouponCodeArgs = {
   couponCode: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveFavoriteProductArgs = {
+  productVariantId: Scalars['ID']['input'];
 };
 
 
@@ -3032,6 +3089,8 @@ export type Query = {
   activeChannel: Channel;
   /** The active Customer */
   activeCustomer: Maybe<Customer>;
+  /** Returns a list of products added to favorites by the active customer. */
+  activeCustomerFavoriteProducts: FavoriteProductList;
   /**
    * The active Order. Will be `null` until an Order is created via `addItemToOrder`. Once an Order reaches the
    * state of `PaymentAuthorized` or `PaymentSettled`, then that Order is no longer considered "active" and this
@@ -3056,6 +3115,8 @@ export type Query = {
   facet: Maybe<Facet>;
   /** A list of Facets available to the shop */
   facets: FacetList;
+  /** Checks if a product variant is added to favorites by the active customer. */
+  isFavoriteProduct: Scalars['Boolean']['output'];
   /** Returns information about the current authenticated User */
   me: Maybe<CurrentUser>;
   /** Returns the possible next states that the activeOrder can transition to */
@@ -3081,6 +3142,11 @@ export type Query = {
 };
 
 
+export type QueryActiveCustomerFavoriteProductsArgs = {
+  options: InputMaybe<FavoriteProductListOptions>;
+};
+
+
 export type QueryCollectionArgs = {
   id: InputMaybe<Scalars['ID']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
@@ -3099,6 +3165,11 @@ export type QueryFacetArgs = {
 
 export type QueryFacetsArgs = {
   options: InputMaybe<FacetListOptions>;
+};
+
+
+export type QueryIsFavoriteProductArgs = {
+  productVariantId: Scalars['ID']['input'];
 };
 
 

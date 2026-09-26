@@ -77,6 +77,14 @@ type Query {
 
   """Get active shipping methods"""
   activeShippingMethods: [PublicShippingMethod]!
+
+  """Returns a list of products added to favorites by the active customer."""
+  activeCustomerFavoriteProducts(options: FavoriteProductListOptions): FavoriteProductList!
+
+  """
+  Checks if a product variant is added to favorites by the active customer.
+  """
+  isFavoriteProduct(productVariantId: ID!): Boolean!
 }
 
 type Mutation {
@@ -244,6 +252,12 @@ type Mutation {
 
   """Resets a Customer's password based on the provided token"""
   resetPassword(token: String!, password: String!): ResetPasswordResult!
+
+  """Adds a product variant to the active customer's favorites."""
+  addFavoriteProduct(productVariantId: ID!): FavoriteProduct!
+
+  """Removes a product variant from the active customer's favorites."""
+  removeFavoriteProduct(productVariantId: ID!): Boolean!
 }
 
 type Address implements Node {
@@ -3703,6 +3717,36 @@ input AddItemInput {
   quantity: Int!
 }
 
+"""Represents a product variant added by the customer to favorites."""
+type FavoriteProduct implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  productVariantId: ID!
+  productVariant: ProductVariant!
+}
+
+type FavoriteProductList implements PaginatedList {
+  items: [FavoriteProduct!]!
+  totalItems: Int!
+}
+
+input FavoriteProductListOptions {
+  skip: Int
+  take: Int
+
+  """Specifies which properties to sort the results by"""
+  sort: FavoriteProductSortParameter
+
+  """Allows the results to be filtered"""
+  filter: FavoriteProductFilterParameter
+
+  """
+  Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND.
+  """
+  filterOperator: LogicalOperator
+}
+
 input ProductVariantFilterParameter {
   id: IDOperators
   productId: IDOperators
@@ -3942,6 +3986,22 @@ input ProductSortParameter {
   name: SortOrder
   slug: SortOrder
   description: SortOrder
+}
+
+input FavoriteProductFilterParameter {
+  id: IDOperators
+  createdAt: DateOperators
+  updatedAt: DateOperators
+  productVariantId: IDOperators
+  _and: [FavoriteProductFilterParameter!]
+  _or: [FavoriteProductFilterParameter!]
+}
+
+input FavoriteProductSortParameter {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  productVariantId: SortOrder
 }
 
 input NativeAuthInput {

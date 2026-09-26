@@ -2,6 +2,7 @@ import { ImageNotSupportedOutlined, ArrowDownward } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart';
+import { FavoriteProductButton } from '#/features/favorite-products';
 import type { GetProductDetailsViewQuery } from '#/graphql/generated.ts';
 import { m } from '#/paraglide/messages';
 
@@ -99,6 +100,7 @@ export function ProductDetails({
               quantity={1}
               productVariantId={variant.id}
             />
+            <FavoriteProductButton productVariantId={variant.id} />
           </div>
 
           {otherVariants.length > 0 && (
