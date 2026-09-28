@@ -18,6 +18,7 @@ export const GET_PRODUCT_DETAILS_VIEW = gql`
         featuredAsset {
           preview
         }
+        stockLevel
       }
       facetValues {
         id

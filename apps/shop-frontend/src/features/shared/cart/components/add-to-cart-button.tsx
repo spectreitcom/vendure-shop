@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   quantity: number;
   productVariantId: string;
+  disabled: boolean;
 };
 
 export function AddToCartButton({
@@ -18,6 +19,7 @@ export function AddToCartButton({
   className,
   productVariantId,
   quantity,
+  disabled,
 }: Props) {
   const [addingToCart, setAddingToCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +31,8 @@ export function AddToCartButton({
   const handleAddToCart = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (disabled) return;
 
     setShowSuccessSnackbar(false);
     setError(null);
@@ -44,7 +48,11 @@ export function AddToCartButton({
       });
       setShowSuccessSnackbar(true);
       await refreshActiveCart();
-    } catch {
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        return;
+      }
       setError(m.add_to_cart_error());
     } finally {
       setAddingToCart(false);
@@ -62,6 +70,7 @@ export function AddToCartButton({
         aria-label={m.add_to_cart_label()}
         color={'primary'}
         onClick={handleAddToCart}
+        disabled={disabled || addingToCart}
       >
         <ShoppingCart />
       </IconButton>
@@ -72,6 +81,7 @@ export function AddToCartButton({
     component = (
       <Button
         loading={addingToCart}
+        disabled={disabled || addingToCart}
         className={['w-full', className].filter(Boolean).join(' ')}
         variant={'contained'}
         size={'large'}

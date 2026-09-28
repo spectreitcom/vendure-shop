@@ -90,6 +90,7 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
           variant="small"
           productVariantId={item.productVariantId}
           quantity={1}
+          disabled={!item.inStock}
         />
       </div>
     </article>

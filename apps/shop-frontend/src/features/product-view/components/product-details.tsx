@@ -18,6 +18,8 @@ type Props = Readonly<{
   otherVariants: ProductVariant[];
 }>;
 
+const OUT_OF_STOCK = 'OUT_OF_STOCK';
+
 const displayImage = (product: Product, productVariant: ProductVariant) => {
   if (productVariant.featuredAsset?.preview)
     return (
@@ -99,6 +101,7 @@ export function ProductDetails({
               variant="large"
               quantity={1}
               productVariantId={variant.id}
+              disabled={variant.stockLevel === OUT_OF_STOCK}
             />
             <FavoriteProductButton productVariantId={variant.id} />
           </div>
