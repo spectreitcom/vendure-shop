@@ -15,5 +15,6 @@
   "favorites_page_empty_description": "Return to the first page to see your saved products.",
   "favorites_back": "Back to favorites",
   "favorites_showing": "Showing {from}–{to} of {total} saved products",
-  "favorites_pagination_label": "Favorite products pages"
+  "favorites_pagination_label": "Favorite products pages",
+  "favorites_product_out_of_stock": "Out of stock"
 }

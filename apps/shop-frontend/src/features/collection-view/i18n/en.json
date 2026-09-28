@@ -30,5 +30,6 @@
   "collection_filters_caption": "Refine your selection",
   "collection_filters_clear_all": "Clear all",
   "collection_product_view": "View product",
-  "collection_product_pricing_fallback": "See product for pricing"
+  "collection_product_pricing_fallback": "See product for pricing",
+  "collection_product_out_of_stock": "Out of stock"
 }

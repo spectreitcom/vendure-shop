@@ -57,8 +57,12 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
         }).format(item.priceWithTax.value / 100)
       : null;
 
+  const isOutOfStock = !item.inStock;
+
   return (
-    <article className="collection-product">
+    <article
+      className={`collection-product${isOutOfStock ? ' is-out-of-stock' : ''}`}
+    >
       <Link
         className="collection-product-image"
         to="/$categorySlug/$productSlug"
@@ -66,6 +70,11 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
         search={{ productVariantId: item.productVariantId }}
       >
         {displayProductImage(item)}
+        {isOutOfStock && (
+          <span className="collection-product-badge out-of-stock">
+            {m.collection_product_out_of_stock()}
+          </span>
+        )}
         <span className="collection-product-discover">
           {m.collection_product_view()} <span aria-hidden="true">↗</span>
         </span>
@@ -84,13 +93,19 @@ export function CollectionProductsItem({ item, categorySlug }: Props) {
           <p className="collection-product-price">
             {price ?? m.collection_product_pricing_fallback()}
           </p>
+          {isOutOfStock && (
+            <span className="collection-product-stock out-of-stock">
+              {m.collection_product_out_of_stock()}
+            </span>
+          )}
         </div>
         <AddToCartButton
           className="collection-cart-button"
           variant="small"
           productVariantId={item.productVariantId}
           quantity={1}
-          disabled={!item.inStock}
+          disabled={isOutOfStock}
+          isOutOfStock={isOutOfStock}
         />
       </div>
     </article>

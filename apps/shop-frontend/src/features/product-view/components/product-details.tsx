@@ -64,6 +64,8 @@ export function ProductDetails({
   otherVariants,
 }: Props) {
   const variant = productVariant;
+  const isOutOfStock = variant.stockLevel === OUT_OF_STOCK;
+
   const features = Object.values(
     product.facetValues.reduce<
       Record<string, { name: string; values: Array<string> }>
@@ -90,18 +92,27 @@ export function ProductDetails({
             {displayProductName(product, productVariant)}
           </h1>
           <div className="product-purchase">
-            <ProductPrice
-              className="product-price"
-              price={variant.priceWithTax}
-              currencyCode={variant.currencyCode}
-            />
+            <div className="product-price-row">
+              <ProductPrice
+                className="product-price"
+                price={variant.priceWithTax}
+                currencyCode={variant.currencyCode}
+              />
+              <span
+                className={`product-stock-badge ${isOutOfStock ? 'out-of-stock' : 'in-stock'}`}
+              >
+                <span className="product-stock-dot" aria-hidden="true" />
+                {isOutOfStock ? m.product_out_of_stock() : m.product_in_stock()}
+              </span>
+            </div>
             <p className="product-price-note">{m.product_price_note()}</p>
             <AddToCartButton
               className="product-cart-button"
               variant="large"
               quantity={1}
               productVariantId={variant.id}
-              disabled={variant.stockLevel === OUT_OF_STOCK}
+              disabled={isOutOfStock}
+              isOutOfStock={isOutOfStock}
             />
             <FavoriteProductButton productVariantId={variant.id} />
           </div>
@@ -115,21 +126,37 @@ export function ProductDetails({
                 {m.product_other_variants()}
               </h2>
               <ul>
-                {otherVariants.map((otherVariant) => (
-                  <li key={otherVariant.id}>
-                    <Link
-                      to="/$categorySlug/$productSlug"
-                      params={{ categorySlug, productSlug: product.slug }}
-                      search={{ productVariantId: otherVariant.id }}
-                    >
-                      <span>{otherVariant.name}</span>
-                      <ProductPrice
-                        price={otherVariant.priceWithTax}
-                        currencyCode={otherVariant.currencyCode}
-                      />
-                    </Link>
-                  </li>
-                ))}
+                {otherVariants.map((otherVariant) => {
+                  const isOtherOutOfStock =
+                    otherVariant.stockLevel === OUT_OF_STOCK;
+                  return (
+                    <li key={otherVariant.id}>
+                      <Link
+                        to="/$categorySlug/$productSlug"
+                        params={{ categorySlug, productSlug: product.slug }}
+                        search={{ productVariantId: otherVariant.id }}
+                        className={
+                          isOtherOutOfStock
+                            ? 'product-variant-item-out-of-stock'
+                            : undefined
+                        }
+                      >
+                        <span>{otherVariant.name}</span>
+                        <div className="product-variant-meta">
+                          {isOtherOutOfStock && (
+                            <span className="product-variant-stock out-of-stock">
+                              {m.product_out_of_stock()}
+                            </span>
+                          )}
+                          <ProductPrice
+                            price={otherVariant.priceWithTax}
+                            currencyCode={otherVariant.currencyCode}
+                          />
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           )}
