@@ -15,8 +15,7 @@ export const getProductDetailsView = createServerFn({ method: 'GET' })
       },
     });
 
-    if (error || !data)
-      throw new Error('getProductDetailsView: Invalid Response');
+    if (error || !data) throw new Error(error?.message);
 
     return data.product;
   });

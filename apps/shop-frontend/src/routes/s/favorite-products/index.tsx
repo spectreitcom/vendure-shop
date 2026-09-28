@@ -15,6 +15,7 @@ import '#/features/orders-view/orders.css';
 import { ProductPrice } from '#/components/product-price.tsx';
 
 const TAKE = 12;
+const OUT_OF_STOCK = 'OUT_OF_STOCK';
 
 export const Route = createFileRoute('/s/favorite-products/')({
   component: RouteComponent,
@@ -102,9 +103,14 @@ function RouteComponent() {
                   const preview =
                     productVariant.featuredAsset?.preview ??
                     productVariant.product.featuredAsset?.preview;
+                  const isOutOfStock =
+                    productVariant.stockLevel === OUT_OF_STOCK;
+
                   return (
                     <li key={id}>
-                      <article className="collection-product">
+                      <article
+                        className={`collection-product${isOutOfStock ? ' is-out-of-stock' : ''}`}
+                      >
                         <div className="collection-product-image">
                           {preview ? (
                             <img
@@ -119,6 +125,11 @@ function RouteComponent() {
                               <span>{m.common_image_coming_soon()}</span>
                             </span>
                           )}
+                          {isOutOfStock && (
+                            <span className="collection-product-badge out-of-stock">
+                              {m.favorites_product_out_of_stock()}
+                            </span>
+                          )}
                         </div>
                         <div className="collection-product-info">
                           <div>
@@ -130,12 +141,19 @@ function RouteComponent() {
                                 currencyCode={productVariant.currencyCode}
                               />
                             </p>
+                            {isOutOfStock && (
+                              <span className="collection-product-stock out-of-stock">
+                                {m.favorites_product_out_of_stock()}
+                              </span>
+                            )}
                           </div>
                           <AddToCartButton
                             className="collection-cart-button"
                             variant="small"
                             productVariantId={productVariantId}
                             quantity={1}
+                            disabled={isOutOfStock}
+                            isOutOfStock={isOutOfStock}
                           />
                         </div>
                       </article>

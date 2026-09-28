@@ -24,23 +24,23 @@ export const addItemToCart = createServerFn({ method: 'POST' })
     }
 
     if (data.addItemToOrder.__typename === 'InsufficientStockError') {
-      throw new Error('addItemToCart: Insufficient stock');
+      throw new Error(data.addItemToOrder.message);
     }
 
     if (data.addItemToOrder.__typename === 'OrderLimitError') {
-      throw new Error('addItemToCart: Order limit reached');
+      throw new Error(data.addItemToOrder.message);
     }
 
     if (data.addItemToOrder.__typename === 'NegativeQuantityError') {
-      throw new Error('addItemToCart: Negative quantity');
+      throw new Error(data.addItemToOrder.message);
     }
 
     if (data.addItemToOrder.__typename === 'OrderModificationError') {
-      throw new Error('addItemToCart: Order modification error');
+      throw new Error(data.addItemToOrder.message);
     }
 
     if (data.addItemToOrder.__typename === 'OrderInterceptorError') {
-      throw new Error('addItemToCart: Order interceptor error');
+      throw new Error(data.addItemToOrder.message);
     }
 
     return data.addItemToOrder;
@@ -55,7 +55,7 @@ export const getActiveCart = createServerFn({ method: 'GET' }).handler(
     });
 
     if (error || !data) {
-      throw new Error('getActiveCart: Error');
+      throw new Error(error?.message);
     }
 
     if (!data.activeOrder) return null;

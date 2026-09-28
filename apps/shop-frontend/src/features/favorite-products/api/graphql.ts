@@ -20,6 +20,7 @@ export const ACTIVE_CUSTOMER_FAVORITE_PRODUCTS = gql`
           priceWithTax
           name
           currencyCode
+          stockLevel
         }
       }
       totalItems

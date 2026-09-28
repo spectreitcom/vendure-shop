@@ -1,5 +1,5 @@
 import { ShoppingCart } from '@mui/icons-material';
-import { Button, IconButton, Snackbar } from '@mui/material';
+import { Button, IconButton, Snackbar, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useServerFn } from '@tanstack/react-start';
@@ -11,6 +11,8 @@ type Props = {
   className?: string;
   quantity: number;
   productVariantId: string;
+  disabled?: boolean;
+  isOutOfStock?: boolean;
 };
 
 export function AddToCartButton({
@@ -18,6 +20,8 @@ export function AddToCartButton({
   className,
   productVariantId,
   quantity,
+  disabled = false,
+  isOutOfStock = false,
 }: Props) {
   const [addingToCart, setAddingToCart] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,9 +30,13 @@ export function AddToCartButton({
 
   const addItemToCartFn = useServerFn(addItemToCart);
 
+  const isDisabled = disabled || isOutOfStock || addingToCart;
+
   const handleAddToCart = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (isDisabled) return;
 
     setShowSuccessSnackbar(false);
     setError(null);
@@ -44,7 +52,11 @@ export function AddToCartButton({
       });
       setShowSuccessSnackbar(true);
       await refreshActiveCart();
-    } catch {
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        return;
+      }
       setError(m.add_to_cart_error());
     } finally {
       setAddingToCart(false);
@@ -54,17 +66,31 @@ export function AddToCartButton({
   let component = null;
 
   if (variant === 'small') {
-    component = (
+    const iconButton = (
       <IconButton
         loading={addingToCart}
-        className={className}
+        className={[className, isOutOfStock ? 'is-out-of-stock' : '']
+          .filter(Boolean)
+          .join(' ')}
         size={'medium'}
-        aria-label={m.add_to_cart_label()}
+        aria-label={
+          isOutOfStock ? m.add_to_cart_out_of_stock() : m.add_to_cart_label()
+        }
+        title={isOutOfStock ? m.add_to_cart_out_of_stock() : undefined}
         color={'primary'}
         onClick={handleAddToCart}
+        disabled={isDisabled}
       >
         <ShoppingCart />
       </IconButton>
+    );
+
+    component = isOutOfStock ? (
+      <Tooltip title={m.add_to_cart_out_of_stock()} arrow>
+        <span className="inline-flex">{iconButton}</span>
+      </Tooltip>
+    ) : (
+      iconButton
     );
   }
 
@@ -72,13 +98,16 @@ export function AddToCartButton({
     component = (
       <Button
         loading={addingToCart}
-        className={['w-full', className].filter(Boolean).join(' ')}
+        disabled={isDisabled}
+        className={['w-full', className, isOutOfStock ? 'is-out-of-stock' : '']
+          .filter(Boolean)
+          .join(' ')}
         variant={'contained'}
         size={'large'}
         onClick={handleAddToCart}
         startIcon={<ShoppingCart />}
       >
-        {m.add_to_cart_button()}
+        {isOutOfStock ? m.add_to_cart_out_of_stock() : m.add_to_cart_button()}
       </Button>
     );
   }

@@ -52,6 +52,7 @@ export const COLLECTION_PRODUCTS = gql`
         productId
         productVariantId
         currencyCode
+        inStock
         productAsset {
           preview
         }
