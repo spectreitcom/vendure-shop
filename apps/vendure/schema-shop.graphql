@@ -85,6 +85,12 @@ type Query {
   Checks if a product variant is added to favorites by the active customer.
   """
   isFavoriteProduct(productVariantId: ID!): Boolean!
+
+  """Returns a product variant rating"""
+  productVariantRating(productVariantId: ID!): ProductRating
+
+  """Returns a product variant rating based on channel and active customer"""
+  productVariantRatingByActiveCustomer(productVariantId: ID!): ProductRatingBoughtProductVariant!
 }
 
 type Mutation {
@@ -258,6 +264,9 @@ type Mutation {
 
   """Removes a product variant from the active customer's favorites."""
   removeFavoriteProduct(productVariantId: ID!): Boolean!
+
+  """Rates a product variant. The rating argument must be between 1 and 5."""
+  rateProductVariant(productVariantId: ID!, rating: Int!): RateProductVariantResult!
 }
 
 type Address implements Node {
@@ -3746,6 +3755,53 @@ input FavoriteProductListOptions {
   """
   filterOperator: LogicalOperator
 }
+
+"""Represents a product variant rating based on channel"""
+type ProductRating implements Node {
+  id: ID!
+  productVariantId: ID!
+  productVariant: ProductVariant!
+  average: Float!
+  votes: Int!
+  channelId: ID!
+  channel: Channel!
+}
+
+"""Represents a product variant rating based on channel and customer"""
+type ProductRatingBoughtProductVariant implements Node {
+  id: ID!
+  productVariantId: ID!
+  productVariant: ProductVariant!
+  channelId: ID!
+  channel: Channel!
+}
+
+"""Error codes for product rating"""
+enum ProductRatingErrorCode {
+  PRODUCT_RATING_PRODUCT_VARIANT_NOT_EXIST_ERROR
+  PRODUCT_RATING_PRODUCT_VARIANT_NOT_PURCHASED_ERROR
+  PRODUCT_RATING_VALIDATION_ERROR
+}
+
+"""Error when product variant does not exist"""
+type ProductVariantNotExistError {
+  errorCode: ProductRatingErrorCode!
+  message: String!
+}
+
+"""Error when product variant has not been purchased"""
+type ProductVariantNotPurchasedError {
+  errorCode: ProductRatingErrorCode!
+  message: String!
+}
+
+"""Error when input data are invalid"""
+type RatingValidationError {
+  errorCode: ProductRatingErrorCode!
+  message: String!
+}
+
+union RateProductVariantResult = ProductVariantNotExistError | ProductVariantNotPurchasedError | RatingValidationError
 
 input ProductVariantFilterParameter {
   id: IDOperators
