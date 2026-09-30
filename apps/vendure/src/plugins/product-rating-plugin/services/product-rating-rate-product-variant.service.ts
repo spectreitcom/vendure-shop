@@ -66,6 +66,11 @@ export class ProductRatingRateProductVariantService {
       rating,
       boughtProduct.rating,
     );
+
+    return {
+      __typename: "Success",
+      success: true,
+    };
   }
 
   /**

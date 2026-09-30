@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { ProductPrice } from '#/components/product-price.tsx';
 import { AddToCartButton } from '#/features/shared/cart';
 import { FavoriteProductButton } from '#/features/favorite-products';
+import { ProductVariantRating } from '#/features/rating/components';
 import type { GetProductDetailsViewQuery } from '#/graphql/generated.ts';
 import { m } from '#/paraglide/messages';
 
@@ -91,6 +92,7 @@ export function ProductDetails({
           <h1 id="product-title">
             {displayProductName(product, productVariant)}
           </h1>
+          <ProductVariantRating productVariantId={variant.id} />
           <div className="product-purchase">
             <div className="product-price-row">
               <ProductPrice

@@ -90,7 +90,7 @@ type Query {
   productVariantRating(productVariantId: ID!): ProductRating
 
   """Returns a product variant rating based on channel and active customer"""
-  productVariantRatingByActiveCustomer(productVariantId: ID!): ProductRatingBoughtProductVariant!
+  productVariantRatingByActiveCustomer(productVariantId: ID!): ProductRatingBoughtProductVariant
 }
 
 type Mutation {
@@ -3774,6 +3774,7 @@ type ProductRatingBoughtProductVariant implements Node {
   productVariant: ProductVariant!
   channelId: ID!
   channel: Channel!
+  rating: Int!
 }
 
 """Error codes for product rating"""
@@ -3801,7 +3802,7 @@ type RatingValidationError {
   message: String!
 }
 
-union RateProductVariantResult = ProductVariantNotExistError | ProductVariantNotPurchasedError | RatingValidationError
+union RateProductVariantResult = Success | ProductVariantNotExistError | ProductVariantNotPurchasedError | RatingValidationError
 
 input ProductVariantFilterParameter {
   id: IDOperators

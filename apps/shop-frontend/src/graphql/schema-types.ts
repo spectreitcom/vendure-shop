@@ -2,15 +2,15 @@ export type Maybe<T> = T | null;
 export type InputMaybe<T> = T | null | undefined;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: string; output: string; }
-  JSON: { input: unknown; output: unknown; }
-  Money: { input: number; output: number; }
-  Upload: { input: unknown; output: unknown; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  DateTime: { input: string; output: string };
+  JSON: { input: unknown; output: unknown };
+  Money: { input: number; output: number };
+  Upload: { input: unknown; output: unknown };
 };
 
 export type ActiveOrderResult = NoActiveOrderError | Order;
@@ -20,7 +20,15 @@ export type AddItemInput = {
   quantity: Scalars['Int']['input'];
 };
 
-export type AddPaymentToOrderResult = CouponRemovedDuringCheckoutError | IneligiblePaymentMethodError | NoActiveOrderError | Order | OrderPaymentStateError | OrderStateTransitionError | PaymentDeclinedError | PaymentFailedError;
+export type AddPaymentToOrderResult =
+  | CouponRemovedDuringCheckoutError
+  | IneligiblePaymentMethodError
+  | NoActiveOrderError
+  | Order
+  | OrderPaymentStateError
+  | OrderStateTransitionError
+  | PaymentDeclinedError
+  | PaymentFailedError;
 
 export type Address = Node & {
   __typename: 'Address';
@@ -51,9 +59,7 @@ export type Adjustment = {
 };
 
 export type AdjustmentType =
-  | 'DISTRIBUTED_ORDER_PROMOTION'
-  | 'OTHER'
-  | 'PROMOTION';
+  'DISTRIBUTED_ORDER_PROMOTION' | 'OTHER' | 'PROMOTION';
 
 /** Returned when attempting to set the Customer for an Order when already logged in. */
 export type AlreadyLoggedInError = ErrorResult & {
@@ -62,7 +68,11 @@ export type AlreadyLoggedInError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
-export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order;
+export type ApplyCouponCodeResult =
+  | CouponCodeExpiredError
+  | CouponCodeInvalidError
+  | CouponCodeLimitError
+  | Order;
 
 export type Asset = Node & {
   __typename: 'Asset';
@@ -99,10 +109,7 @@ export type AssetTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type AssetType =
-  | 'BINARY'
-  | 'IMAGE'
-  | 'VIDEO';
+export type AssetType = 'BINARY' | 'IMAGE' | 'VIDEO';
 
 export type AuthenticationInput = {
   native: InputMaybe<NativeAuthInput>;
@@ -116,7 +123,8 @@ export type AuthenticationMethod = Node & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type AuthenticationResult = CurrentUser | InvalidCredentialsError | NotVerifiedError;
+export type AuthenticationResult =
+  CurrentUser | InvalidCredentialsError | NotVerifiedError;
 
 export type BooleanCustomFieldConfig = CustomField & {
   __typename: 'BooleanCustomFieldConfig';
@@ -201,7 +209,6 @@ export type Collection = Node & {
   translations: Array<CollectionTranslation>;
   updatedAt: Scalars['DateTime']['output'];
 };
-
 
 export type CollectionProductVariantsArgs = {
   options: InputMaybe<ProductVariantListOptions>;
@@ -336,21 +343,22 @@ export type Coordinate = {
  * The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" etc. This code is used in certain inputs such as
  * `UpdateAddressInput` and `CreateAddressInput` to specify the country.
  */
-export type Country = Node & Region & {
-  __typename: 'Country';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields: Maybe<Scalars['JSON']['output']>;
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  parent: Maybe<Region>;
-  parentId: Maybe<Scalars['ID']['output']>;
-  translations: Array<RegionTranslation>;
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
+export type Country = Node &
+  Region & {
+    __typename: 'Country';
+    code: Scalars['String']['output'];
+    createdAt: Scalars['DateTime']['output'];
+    customFields: Maybe<Scalars['JSON']['output']>;
+    enabled: Scalars['Boolean']['output'];
+    id: Scalars['ID']['output'];
+    languageCode: LanguageCode;
+    name: Scalars['String']['output'];
+    parent: Maybe<Region>;
+    parentId: Maybe<Scalars['ID']['output']>;
+    translations: Array<RegionTranslation>;
+    type: Scalars['String']['output'];
+    updatedAt: Scalars['DateTime']['output'];
+  };
 
 export type CountryList = PaginatedList & {
   __typename: 'CountryList';
@@ -786,7 +794,17 @@ export type CustomField = {
   ui: Maybe<Scalars['JSON']['output']>;
 };
 
-export type CustomFieldConfig = BooleanCustomFieldConfig | DateTimeCustomFieldConfig | FloatCustomFieldConfig | IntCustomFieldConfig | LocaleStringCustomFieldConfig | LocaleTextCustomFieldConfig | RelationCustomFieldConfig | StringCustomFieldConfig | StructCustomFieldConfig | TextCustomFieldConfig;
+export type CustomFieldConfig =
+  | BooleanCustomFieldConfig
+  | DateTimeCustomFieldConfig
+  | FloatCustomFieldConfig
+  | IntCustomFieldConfig
+  | LocaleStringCustomFieldConfig
+  | LocaleTextCustomFieldConfig
+  | RelationCustomFieldConfig
+  | StringCustomFieldConfig
+  | StructCustomFieldConfig
+  | TextCustomFieldConfig;
 
 export type Customer = Node & {
   __typename: 'Customer';
@@ -803,7 +821,6 @@ export type Customer = Node & {
   updatedAt: Scalars['DateTime']['output'];
   user: Maybe<User>;
 };
-
 
 export type CustomerOrdersArgs = {
   options: InputMaybe<OrderListOptions>;
@@ -831,7 +848,6 @@ export type CustomerGroup = Node & {
   name: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
-
 
 export type CustomerGroupCustomersArgs = {
   options: InputMaybe<CustomerListOptions>;
@@ -1007,7 +1023,6 @@ export type Facet = Node & {
   valueList: FacetValueList;
   values: Array<FacetValue>;
 };
-
 
 export type FacetValueListArgs = {
   options: InputMaybe<FacetValueListOptions>;
@@ -1244,10 +1259,7 @@ export type FulfillmentLine = {
   quantity: Scalars['Int']['output'];
 };
 
-export type GlobalFlag =
-  | 'FALSE'
-  | 'INHERIT'
-  | 'TRUE';
+export type GlobalFlag = 'FALSE' | 'INHERIT' | 'TRUE';
 
 /** Returned when attempting to set the Customer on a guest checkout when the configured GuestCheckoutStrategy does not allow it. */
 export type GuestCheckoutError = ErrorResult & {
@@ -1792,9 +1804,7 @@ export type LocalizedString = {
   value: Scalars['String']['output'];
 };
 
-export type LogicalOperator =
-  | 'AND'
-  | 'OR';
+export type LogicalOperator = 'AND' | 'OR';
 
 /** Returned when attempting to register or verify a customer account without a password, when one is required. */
 export type MissingPasswordError = ErrorResult & {
@@ -1832,6 +1842,8 @@ export type Mutation = {
   login: NativeAuthenticationResult;
   /** End the current authenticated session */
   logout: Success;
+  /** Rates a product variant. The rating argument must be between 1 and 5. */
+  rateProductVariant: RateProductVariantResult;
   /** Regenerate and send a verification token for a new Customer registration. Only applicable if `authOptions.requireVerification` is set to true. */
   refreshCustomerVerification: RefreshCustomerVerificationResult;
   /**
@@ -1928,54 +1940,44 @@ export type Mutation = {
   verifyCustomerAccount: VerifyCustomerAccountResult;
 };
 
-
 export type MutationAddFavoriteProductArgs = {
   productVariantId: Scalars['ID']['input'];
 };
-
 
 export type MutationAddItemToOrderArgs = {
   productVariantId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
 };
 
-
 export type MutationAddItemsToOrderArgs = {
   inputs: Array<AddItemInput>;
 };
 
-
 export type MutationAddPaymentToOrderArgs = {
   input: PaymentInput;
 };
-
 
 export type MutationAdjustOrderLineArgs = {
   orderLineId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
 };
 
-
 export type MutationApplyCouponCodeArgs = {
   couponCode: Scalars['String']['input'];
 };
-
 
 export type MutationAuthenticateArgs = {
   input: AuthenticationInput;
   rememberMe: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-
 export type MutationCreateCustomerAddressArgs = {
   input: CreateAddressInput;
 };
 
-
 export type MutationDeleteCustomerAddressArgs = {
   id: Scalars['ID']['input'];
 };
-
 
 export type MutationLoginArgs = {
   password: Scalars['String']['input'];
@@ -1983,104 +1985,89 @@ export type MutationLoginArgs = {
   username: Scalars['String']['input'];
 };
 
+export type MutationRateProductVariantArgs = {
+  productVariantId: Scalars['ID']['input'];
+  rating: Scalars['Int']['input'];
+};
 
 export type MutationRefreshCustomerVerificationArgs = {
   emailAddress: Scalars['String']['input'];
 };
 
-
 export type MutationRegisterCustomerAccountArgs = {
   input: RegisterCustomerInput;
 };
-
 
 export type MutationRemoveCouponCodeArgs = {
   couponCode: Scalars['String']['input'];
 };
 
-
 export type MutationRemoveFavoriteProductArgs = {
   productVariantId: Scalars['ID']['input'];
 };
-
 
 export type MutationRemoveOrderLineArgs = {
   orderLineId: Scalars['ID']['input'];
 };
 
-
 export type MutationRequestPasswordResetArgs = {
   emailAddress: Scalars['String']['input'];
 };
-
 
 export type MutationRequestUpdateCustomerEmailAddressArgs = {
   newEmailAddress: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
-
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
 
-
 export type MutationSetCurrencyCodeForOrderArgs = {
   currencyCode: CurrencyCode;
 };
-
 
 export type MutationSetCustomerForOrderArgs = {
   input: CreateCustomerInput;
 };
 
-
 export type MutationSetOrderBillingAddressArgs = {
   input: CreateAddressInput;
 };
-
 
 export type MutationSetOrderCustomFieldsArgs = {
   input: UpdateOrderInput;
 };
 
-
 export type MutationSetOrderShippingAddressArgs = {
   input: CreateAddressInput;
 };
-
 
 export type MutationSetOrderShippingMethodArgs = {
   shippingMethodId: Array<Scalars['ID']['input']>;
 };
 
-
 export type MutationTransitionOrderToStateArgs = {
   state: Scalars['String']['input'];
 };
-
 
 export type MutationUpdateCustomerArgs = {
   input: UpdateCustomerInput;
 };
 
-
 export type MutationUpdateCustomerAddressArgs = {
   input: UpdateAddressInput;
 };
-
 
 export type MutationUpdateCustomerEmailAddressArgs = {
   token: Scalars['String']['input'];
 };
 
-
 export type MutationUpdateCustomerPasswordArgs = {
   currentPassword: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
 };
-
 
 export type MutationVerifyCustomerAccountArgs = {
   password: InputMaybe<Scalars['String']['input']>;
@@ -2099,7 +2086,11 @@ export type NativeAuthStrategyError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
-export type NativeAuthenticationResult = CurrentUser | InvalidCredentialsError | NativeAuthStrategyError | NotVerifiedError;
+export type NativeAuthenticationResult =
+  | CurrentUser
+  | InvalidCredentialsError
+  | NativeAuthStrategyError
+  | NotVerifiedError;
 
 /** Returned when attempting to set a negative OrderLine quantity. */
 export type NegativeQuantityError = ErrorResult & {
@@ -2210,7 +2201,6 @@ export type Order = Node & {
   type: OrderType;
   updatedAt: Scalars['DateTime']['output'];
 };
-
 
 export type OrderHistoryArgs = {
   options: InputMaybe<HistoryEntryListOptions>;
@@ -2436,10 +2426,7 @@ export type OrderTaxSummary = {
   taxTotal: Scalars['Money']['output'];
 };
 
-export type OrderType =
-  | 'Aggregate'
-  | 'Regular'
-  | 'Seller';
+export type OrderType = 'Aggregate' | 'Regular' | 'Seller';
 
 export type PaginatedList = {
   items: Array<Node>;
@@ -2822,7 +2809,6 @@ export type Product = Node & {
   variants: Array<ProductVariant>;
 };
 
-
 export type ProductVariantListArgs = {
   options: InputMaybe<ProductVariantListOptions>;
 };
@@ -2906,6 +2892,35 @@ export type ProductOptionTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+/** Represents a product variant rating based on channel */
+export type ProductRating = Node & {
+  __typename: 'ProductRating';
+  average: Scalars['Float']['output'];
+  channel: Channel;
+  channelId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  productVariant: ProductVariant;
+  productVariantId: Scalars['ID']['output'];
+  votes: Scalars['Int']['output'];
+};
+
+/** Represents a product variant rating based on channel and customer */
+export type ProductRatingBoughtProductVariant = Node & {
+  __typename: 'ProductRatingBoughtProductVariant';
+  channel: Channel;
+  channelId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  productVariant: ProductVariant;
+  productVariantId: Scalars['ID']['output'];
+  rating: Scalars['Int']['output'];
+};
+
+/** Error codes for product rating */
+export type ProductRatingErrorCode =
+  | 'PRODUCT_RATING_PRODUCT_VARIANT_NOT_EXIST_ERROR'
+  | 'PRODUCT_RATING_PRODUCT_VARIANT_NOT_PURCHASED_ERROR'
+  | 'PRODUCT_RATING_VALIDATION_ERROR';
+
 export type ProductSortParameter = {
   createdAt: InputMaybe<SortOrder>;
   description: InputMaybe<SortOrder>;
@@ -2985,6 +3000,20 @@ export type ProductVariantListOptions = {
   take: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Error when product variant does not exist */
+export type ProductVariantNotExistError = {
+  __typename: 'ProductVariantNotExistError';
+  errorCode: ProductRatingErrorCode;
+  message: Scalars['String']['output'];
+};
+
+/** Error when product variant has not been purchased */
+export type ProductVariantNotPurchasedError = {
+  __typename: 'ProductVariantNotPurchasedError';
+  errorCode: ProductRatingErrorCode;
+  message: Scalars['String']['output'];
+};
+
 export type ProductVariantSortParameter = {
   createdAt: InputMaybe<SortOrder>;
   id: InputMaybe<SortOrder>;
@@ -3041,21 +3070,22 @@ export type PromotionTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type Province = Node & Region & {
-  __typename: 'Province';
-  code: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  customFields: Maybe<Scalars['JSON']['output']>;
-  enabled: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
-  languageCode: LanguageCode;
-  name: Scalars['String']['output'];
-  parent: Maybe<Region>;
-  parentId: Maybe<Scalars['ID']['output']>;
-  translations: Array<RegionTranslation>;
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
-};
+export type Province = Node &
+  Region & {
+    __typename: 'Province';
+    code: Scalars['String']['output'];
+    createdAt: Scalars['DateTime']['output'];
+    customFields: Maybe<Scalars['JSON']['output']>;
+    enabled: Scalars['Boolean']['output'];
+    id: Scalars['ID']['output'];
+    languageCode: LanguageCode;
+    name: Scalars['String']['output'];
+    parent: Maybe<Region>;
+    parentId: Maybe<Scalars['ID']['output']>;
+    translations: Array<RegionTranslation>;
+    type: Scalars['String']['output'];
+    updatedAt: Scalars['DateTime']['output'];
+  };
 
 export type ProvinceList = PaginatedList & {
   __typename: 'ProvinceList';
@@ -3135,70 +3165,85 @@ export type Query = {
   orderByCode: Maybe<Order>;
   /** Get a Product either by id or slug. If neither 'id' nor 'slug' is specified, an error will result. */
   product: Maybe<Product>;
+  /** Returns a product variant rating */
+  productVariantRating: Maybe<ProductRating>;
+  /** Returns a product variant rating based on channel and active customer */
+  productVariantRatingByActiveCustomer: Maybe<ProductRatingBoughtProductVariant>;
   /** Get a list of Products */
   products: ProductList;
   /** Search Products based on the criteria set by the `SearchInput` */
   search: SearchResponse;
 };
 
-
 export type QueryActiveCustomerFavoriteProductsArgs = {
   options: InputMaybe<FavoriteProductListOptions>;
 };
-
 
 export type QueryCollectionArgs = {
   id: InputMaybe<Scalars['ID']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryCollectionsArgs = {
   options: InputMaybe<CollectionListOptions>;
 };
-
 
 export type QueryFacetArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type QueryFacetsArgs = {
   options: InputMaybe<FacetListOptions>;
 };
-
 
 export type QueryIsFavoriteProductArgs = {
   productVariantId: Scalars['ID']['input'];
 };
 
-
 export type QueryOrderArgs = {
   id: Scalars['ID']['input'];
 };
 
-
 export type QueryOrderByCodeArgs = {
   code: Scalars['String']['input'];
 };
-
 
 export type QueryProductArgs = {
   id: InputMaybe<Scalars['ID']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
 
+export type QueryProductVariantRatingArgs = {
+  productVariantId: Scalars['ID']['input'];
+};
+
+export type QueryProductVariantRatingByActiveCustomerArgs = {
+  productVariantId: Scalars['ID']['input'];
+};
 
 export type QueryProductsArgs = {
   options: InputMaybe<ProductListOptions>;
 };
 
-
 export type QuerySearchArgs = {
   input: SearchInput;
 };
 
-export type RefreshCustomerVerificationResult = NativeAuthStrategyError | Success;
+export type RateProductVariantResult =
+  | ProductVariantNotExistError
+  | ProductVariantNotPurchasedError
+  | RatingValidationError
+  | Success;
+
+/** Error when input data are invalid */
+export type RatingValidationError = {
+  __typename: 'RatingValidationError';
+  errorCode: ProductRatingErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type RefreshCustomerVerificationResult =
+  NativeAuthStrategyError | Success;
 
 export type Refund = Node & {
   __typename: 'Refund';
@@ -3251,7 +3296,11 @@ export type RegionTranslation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type RegisterCustomerAccountResult = MissingPasswordError | NativeAuthStrategyError | PasswordValidationError | Success;
+export type RegisterCustomerAccountResult =
+  | MissingPasswordError
+  | NativeAuthStrategyError
+  | PasswordValidationError
+  | Success;
 
 export type RegisterCustomerInput = {
   emailAddress: Scalars['String']['input'];
@@ -3280,13 +3329,24 @@ export type RelationCustomFieldConfig = CustomField & {
   ui: Maybe<Scalars['JSON']['output']>;
 };
 
-export type RemoveOrderItemsResult = Order | OrderInterceptorError | OrderModificationError;
+export type RemoveOrderItemsResult =
+  Order | OrderInterceptorError | OrderModificationError;
 
 export type RequestPasswordResetResult = NativeAuthStrategyError | Success;
 
-export type RequestUpdateCustomerEmailAddressResult = EmailAddressConflictError | InvalidCredentialsError | NativeAuthStrategyError | Success;
+export type RequestUpdateCustomerEmailAddressResult =
+  | EmailAddressConflictError
+  | InvalidCredentialsError
+  | NativeAuthStrategyError
+  | Success;
 
-export type ResetPasswordResult = CurrentUser | NativeAuthStrategyError | NotVerifiedError | PasswordResetTokenExpiredError | PasswordResetTokenInvalidError | PasswordValidationError;
+export type ResetPasswordResult =
+  | CurrentUser
+  | NativeAuthStrategyError
+  | NotVerifiedError
+  | PasswordResetTokenExpiredError
+  | PasswordResetTokenInvalidError
+  | PasswordValidationError;
 
 export type Role = Node & {
   __typename: 'Role';
@@ -3379,9 +3439,18 @@ export type Seller = Node & {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type SetCustomerForOrderResult = AlreadyLoggedInError | EmailAddressConflictError | GuestCheckoutError | NoActiveOrderError | Order;
+export type SetCustomerForOrderResult =
+  | AlreadyLoggedInError
+  | EmailAddressConflictError
+  | GuestCheckoutError
+  | NoActiveOrderError
+  | Order;
 
-export type SetOrderShippingMethodResult = IneligibleShippingMethodError | NoActiveOrderError | Order | OrderModificationError;
+export type SetOrderShippingMethodResult =
+  | IneligibleShippingMethodError
+  | NoActiveOrderError
+  | Order
+  | OrderModificationError;
 
 export type ShippingLine = {
   __typename: 'ShippingLine';
@@ -3446,9 +3515,7 @@ export type SinglePrice = {
   value: Scalars['Money']['output'];
 };
 
-export type SortOrder =
-  | 'ASC'
-  | 'DESC';
+export type SortOrder = 'ASC' | 'DESC';
 
 export type StringCustomFieldConfig = CustomField & {
   __typename: 'StringCustomFieldConfig';
@@ -3531,7 +3598,13 @@ export type StructField = {
   ui: Maybe<Scalars['JSON']['output']>;
 };
 
-export type StructFieldConfig = BooleanStructFieldConfig | DateTimeStructFieldConfig | FloatStructFieldConfig | IntStructFieldConfig | StringStructFieldConfig | TextStructFieldConfig;
+export type StructFieldConfig =
+  | BooleanStructFieldConfig
+  | DateTimeStructFieldConfig
+  | FloatStructFieldConfig
+  | IntStructFieldConfig
+  | StringStructFieldConfig
+  | TextStructFieldConfig;
 
 /** Indicates that an operation succeeded, where we do not want to return any more specific information. */
 export type Success = {
@@ -3653,7 +3726,11 @@ export type UpdateAddressInput = {
   streetLine2: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateCustomerEmailAddressResult = IdentifierChangeTokenExpiredError | IdentifierChangeTokenInvalidError | NativeAuthStrategyError | Success;
+export type UpdateCustomerEmailAddressResult =
+  | IdentifierChangeTokenExpiredError
+  | IdentifierChangeTokenInvalidError
+  | NativeAuthStrategyError
+  | Success;
 
 export type UpdateCustomerInput = {
   customFields: InputMaybe<Scalars['JSON']['input']>;
@@ -3663,7 +3740,11 @@ export type UpdateCustomerInput = {
   title: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateCustomerPasswordResult = InvalidCredentialsError | NativeAuthStrategyError | PasswordValidationError | Success;
+export type UpdateCustomerPasswordResult =
+  | InvalidCredentialsError
+  | NativeAuthStrategyError
+  | PasswordValidationError
+  | Success;
 
 /**
  * Returned when multiple items are added to an Order.
@@ -3680,9 +3761,20 @@ export type UpdateOrderInput = {
 };
 
 /** Union type of all possible errors that can occur when adding or removing items from an Order. */
-export type UpdateOrderItemErrorResult = InsufficientStockError | NegativeQuantityError | OrderInterceptorError | OrderLimitError | OrderModificationError;
+export type UpdateOrderItemErrorResult =
+  | InsufficientStockError
+  | NegativeQuantityError
+  | OrderInterceptorError
+  | OrderLimitError
+  | OrderModificationError;
 
-export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderInterceptorError | OrderLimitError | OrderModificationError;
+export type UpdateOrderItemsResult =
+  | InsufficientStockError
+  | NegativeQuantityError
+  | Order
+  | OrderInterceptorError
+  | OrderLimitError
+  | OrderModificationError;
 
 export type User = Node & {
   __typename: 'User';
@@ -3717,7 +3809,14 @@ export type VerificationTokenInvalidError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
-export type VerifyCustomerAccountResult = CurrentUser | MissingPasswordError | NativeAuthStrategyError | PasswordAlreadySetError | PasswordValidationError | VerificationTokenExpiredError | VerificationTokenInvalidError;
+export type VerifyCustomerAccountResult =
+  | CurrentUser
+  | MissingPasswordError
+  | NativeAuthStrategyError
+  | PasswordAlreadySetError
+  | PasswordValidationError
+  | VerificationTokenExpiredError
+  | VerificationTokenInvalidError;
 
 export type Zone = Node & {
   __typename: 'Zone';

@@ -23,6 +23,7 @@ export const productRatingShopApiExtensions = gql`
     productVariant: ProductVariant!
     channelId: ID!
     channel: Channel!
+    rating: Int!
   }
 
   extend type Query {
@@ -36,7 +37,7 @@ export const productRatingShopApiExtensions = gql`
     """
     productVariantRatingByActiveCustomer(
       productVariantId: ID!
-    ): ProductRatingBoughtProductVariant!
+    ): ProductRatingBoughtProductVariant
   }
 
   """
@@ -73,6 +74,7 @@ export const productRatingShopApiExtensions = gql`
   }
 
   union RateProductVariantResult =
+    | Success
     | ProductVariantNotExistError
     | ProductVariantNotPurchasedError
     | RatingValidationError

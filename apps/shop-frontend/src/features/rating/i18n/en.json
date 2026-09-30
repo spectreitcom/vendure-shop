@@ -1,0 +1,17 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "rating_title": "Customer ratings",
+  "rating_loading": "Loading ratings…",
+  "rating_no_votes": "No ratings yet",
+  "rating_vote_count": "Ratings: {count}",
+  "rating_star_label": "{score} out of 5 stars",
+  "rating_sign_in": "Sign in to rate this product",
+  "rating_your_rating": "Your rating",
+  "rating_submit": "Submit rating",
+  "rating_update": "Update rating",
+  "rating_purchase_hint": "You can rate products you have purchased.",
+  "rating_customer_required": "A signed-in customer account is required to rate this product.",
+  "rating_saved": "Your rating has been saved.",
+  "rating_save_error": "We couldn’t save your rating. Please try again.",
+  "rating_load_error": "We couldn’t load the ratings. Please try again."
+}
