@@ -8,6 +8,7 @@ import { ProductRatingShopApiResolver } from "./api/shop/product-rating-shop-api
 import { ProductRatingRateProductVariantService } from "./services/product-rating-rate-product-variant.service";
 
 @VendurePlugin({
+  compatibility: "^3.0.0",
   imports: [PluginCommonModule],
   entities: [ProductRating, ProductRatingBoughtProductVariant],
   providers: [
