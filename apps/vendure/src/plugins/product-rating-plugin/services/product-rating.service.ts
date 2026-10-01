@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import {
   CustomerService,
-  EntityHydrator,
   ForbiddenError,
   ID,
   RequestContext,
@@ -15,7 +14,6 @@ export class ProductRatingService {
   constructor(
     private readonly connection: TransactionalConnection,
     private readonly customerService: CustomerService,
-    private readonly entityHydrator: EntityHydrator, // todo: użyć lub nie użyć
   ) {}
 
   async findProductRatingByProductVariantId(
