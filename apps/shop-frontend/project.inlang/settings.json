@@ -19,6 +19,7 @@
       "./src/features/orders-view/i18n/{locale}.json",
       "./src/features/payment/i18n/{locale}.json",
       "./src/features/product-view/i18n/{locale}.json",
+      "./src/features/rating/i18n/{locale}.json",
       "./src/features/registration/i18n/{locale}.json",
       "./src/features/reset-password/i18n/{locale}.json",
       "./src/features/shared/active-customer/i18n/{locale}.json",

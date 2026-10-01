@@ -1,0 +1,88 @@
+.product-rating {
+  margin: 0 0 28px;
+  padding: 20px 0;
+  border-top: 1px solid var(--collection-line, #e1e3db);
+  border-bottom: 1px solid var(--collection-line, #e1e3db);
+  color: var(--collection-ink, #292d29);
+  font-family: 'Roboto', Arial, sans-serif;
+}
+.product-rating-title {
+  margin: 0 0 12px;
+  color: var(--collection-accent, #465542);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.3px;
+  text-transform: uppercase;
+}
+.product-rating-summary,
+.product-rating-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.product-rating .MuiRating-root {
+  color: var(--collection-accent, #465542);
+}
+.product-rating .MuiRating-iconEmpty {
+  color: #b3b9ac;
+}
+.product-rating .MuiRating-root.Mui-focusVisible .MuiRating-iconActive {
+  outline: 2px solid var(--collection-accent, #465542);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.product-rating-average {
+  font-size: 16px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.product-rating-caption {
+  color: var(--collection-muted, #71766e);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.product-rating-form {
+  margin-top: 18px;
+}
+.product-rating-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.product-rating-form > p {
+  margin: 8px 0 0;
+}
+.product-rating .product-rating-submit,
+.product-rating .product-rating-link {
+  min-height: 36px;
+  border-radius: 4px;
+  color: var(--collection-accent, #465542);
+  font-size: 12px;
+  text-transform: none;
+}
+.product-rating .product-rating-submit {
+  padding: 6px 14px;
+  border-color: var(--collection-line, #e1e3db);
+}
+.product-rating .product-rating-link {
+  margin-top: 8px;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.product-rating-summary .product-rating-link {
+  margin-top: 0;
+}
+.product-rating .product-rating-submit:hover,
+.product-rating .product-rating-link:hover {
+  background: #edf0e8;
+}
+.product-rating .MuiButton-root.Mui-disabled {
+  color: var(--collection-muted, #71766e);
+}
+.product-rating .MuiButton-root:focus-visible {
+  outline: 2px solid var(--collection-accent, #465542);
+  outline-offset: 3px;
+}

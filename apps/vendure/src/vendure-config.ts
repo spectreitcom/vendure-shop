@@ -16,6 +16,7 @@ import { GraphiqlPlugin } from "@vendure/graphiql-plugin";
 import "dotenv/config";
 import path from "path";
 import { FavoriteProductsPlugin } from "./plugins/favorite-products-plugin/favorite-products-plugin";
+import { ProductRatingPlugin } from "./plugins/product-rating-plugin/product-rating-plugin";
 
 const IS_DEV = process.env.APP_ENV === "dev";
 // PORT wins because hosting platforms inject it into the environment at runtime, and that
@@ -122,5 +123,6 @@ export const config: VendureConfig = {
         : path.join(__dirname, "dashboard"),
     }),
     FavoriteProductsPlugin,
+    ProductRatingPlugin,
   ],
 };
