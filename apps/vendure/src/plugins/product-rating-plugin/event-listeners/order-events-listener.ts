@@ -27,7 +27,7 @@ export class OrderEventsListener implements OnModuleInit, OnModuleDestroy {
   onModuleInit() {
     this.eventBus$ = this.eventBus
       .ofType(OrderPlacedEvent)
-      .pipe(tap((event) => this.handleOrderPlaced(event)))
+      .pipe(tap(async (event) => void (await this.handleOrderPlaced(event))))
       .subscribe();
   }
 
@@ -40,7 +40,7 @@ export class OrderEventsListener implements OnModuleInit, OnModuleDestroy {
       const customer = await this.getActiveCustomer(transactionalCtx);
 
       const boughtProductVariantRepository = this.connection.getRepository(
-        ctx,
+        transactionalCtx,
         ProductRatingBoughtProductVariant,
       );
 
@@ -73,7 +73,7 @@ export class OrderEventsListener implements OnModuleInit, OnModuleDestroy {
       }
 
       const productVariantRepository = this.connection.getRepository(
-        ctx,
+        transactionalCtx,
         ProductVariant,
       );
 
@@ -98,8 +98,8 @@ export class OrderEventsListener implements OnModuleInit, OnModuleDestroy {
             new ProductRatingBoughtProductVariant({
               customerId: customer.id,
               customer: customer,
-              channelId: ctx.channelId,
-              channel: ctx.channel,
+              channelId: transactionalCtx.channelId,
+              channel: transactionalCtx.channel,
               productVariantId: variant.id,
               productVariant: variant,
             }),
