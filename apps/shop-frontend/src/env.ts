@@ -5,6 +5,9 @@ export const env = createEnv({
   server: {
     SERVER_URL: z.url().optional(),
     SHOP_API_URL: z.url(),
+    UNLEASH_URL: z.url(),
+    UNLEASH_APP_NAME: z.string(),
+    UNLEASH_API_TOKEN: z.string(),
   },
 
   /**

@@ -30,7 +30,8 @@
     "@vendure/email-plugin": "3.7.3",
     "@vendure/graphiql-plugin": "3.7.3",
     "dotenv": "^16.4.5",
-    "mysql2": "^3.24.4"
+    "mysql2": "^3.24.4",
+    "unleash-client": "^6.12.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

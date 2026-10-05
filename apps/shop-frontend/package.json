@@ -43,6 +43,7 @@
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.1.18",
+    "unleash-client": "^6.12.2",
     "zod": "^4.6.2"
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
     "@graphql-codegen/typed-document-node": "^7.1.0",
     "@graphql-codegen/typescript": "^6.1.0",
     "@graphql-codegen/typescript-operations": "^6.1.6",
+    "@inlang/paraglide-js": "^2.25.4",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tanstack/devtools-event-client": "latest",
     "@tanstack/devtools-vite": "latest",
@@ -64,8 +66,7 @@
     "prettier": "^3.8.1",
     "typescript": "5.8.2",
     "vite": "^8.0.0",
-    "vitest": "^5.0.0",
-    "@inlang/paraglide-js": "^2.25.4"
+    "vitest": "^5.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
