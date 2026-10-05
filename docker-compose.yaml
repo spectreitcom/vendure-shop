@@ -58,11 +58,46 @@ services:
     ports:
       - "3001:3001"
 
+  unleash_db:
+    container_name: unleash_db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: unleash
+      POSTGRES_USER: unleash
+      POSTGRES_PASSWORD: unleash
+    networks:
+      vendure_shop_network:
+    volumes:
+      - unleash_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "unleash", "-d", "unleash"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  unleash:
+    container_name: unleash
+    image: unleashorg/unleash-server:latest
+    environment:
+      DATABASE_URL: postgres://unleash:unleash@unleash_db:5432/unleash
+      DATABASE_SSL: "false"
+      LOG_LEVEL: warn
+    depends_on:
+      unleash_db:
+        condition: service_healthy
+    networks:
+      vendure_shop_network:
+    ports:
+      - "4242:4242"
+
 volumes:
   vendure_db_data:
   vendure_app_node_modules:
   shop_frontend_repo_node_modules:
   shop_frontend_app_node_modules:
+  unleash_db_data:
 
 networks:
   vendure_shop_network:

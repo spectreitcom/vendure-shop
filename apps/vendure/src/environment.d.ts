@@ -17,6 +17,9 @@ declare global {
       DB_NAME: string;
       DB_USERNAME: string;
       DB_PASSWORD: string;
+      UNLEASH_URL: string;
+      UNLEASH_APP_NAME: string;
+      UNLEASH_API_TOKEN: string;
     }
   }
 }
